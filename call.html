@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Call | Connectly</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#222e70 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#48165f 0%,transparent 40%),
+        #070916;
+    color:white;
+    overflow:hidden;
+}
+
+/* Main Call Screen */
+
+.call-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    padding:25px;
+}
+
+/* Video Area */
+
+.video-area{
+    position:absolute;
+    inset:0;
+    display:none;
+    background:#05060d;
+}
+
+.remote-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.local-video{
+    position:absolute;
+    right:25px;
+    bottom:110px;
+    width:180px;
+    height:240px;
+    object-fit:cover;
+    border-radius:18px;
+    border:2px solid rgba(255,255,255,.4);
+    background:#15192b;
+}
+
+/* Top */
+
+.top{
+    position:absolute;
+    top:25px;
+    left:25px;
+    right:25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:10;
+}
+
+.back-btn{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:14px;
+    background:rgba(0,0,0,.3);
+    color:white;
+    font-size:21px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+}
+
+.top-title{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.top-menu{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:14px;
+    background:rgba(0,0,0,.3);
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* User */
+
+.user-section{
+    text-align:center;
+    z-index:5;
+    margin-top:-60px;
+}
+
+.avatar-wrap{
+    width:130px;
+    height:130px;
+    margin:auto;
+    padding:4px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#765aff,#b14cff,#5688ff);
+    box-shadow:0 15px 50px rgba(0,0,0,.45);
+}
+
+.avatar{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #101326;
+}
+
+.user-name{
+    margin-top:22px;
+    font-size:30px;
+}
+
+.call-type{
+    margin-top:8px;
+    color:#aeb3ca;
+    font-size:14px;
+}
+
+.call-status{
+    margin-top:15px;
+    color:#8c92ac;
+    font-size:15px;
+}
+
+.timer{
+    display:none;
+    margin-top:8px;
+    color:#aeb3ca;
+    font-size:14px;
+}
+
+/* Wave */
+
+.wave{
+    margin:25px auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    height:35px;
+}
+
+.wave span{
+    width:4px;
+    height:15px;
+    border-radius:10px;
+    background:#8d72ff;
+    animation:wave 1s infinite ease-in-out;
+}
+
+.wave span:nth-child(2){
+    animation-delay:.1s;
+}
+
+.wave span:nth-child(3){
+    animation-delay:.2s;
+}
+
+.wave span:nth-child(4){
+    animation-delay:.3s;
+}
+
+.wave span:nth-child(5){
+    animation-delay:.4s;
+}
+
+@keyframes wave{
+
+    0%,100%{
+        height:10px;
+    }
+
+    50%{
+        height:32px;
+    }
+
+}
+
+/* Controls */
+
+.controls{
+    position:absolute;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+    z-index:20;
+}
+
+.control{
+    width:54px;
+    height:54px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.09);
+    color:white;
+    font-size:21px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.control.active{
+    background:white;
+    color:#111;
+}
+
+.end-call{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    border:none;
+    background:#ff4f63;
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(255,79,99,.3);
+}
+
+/* Connection */
+
+.connection{
+    position:absolute;
+    top:85px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:8px 15px;
+    border-radius:20px;
+    background:rgba(0,0,0,.3);
+    color:#b9bdd0;
+    font-size:12px;
+    z-index:20;
+}
+
+/* Menu */
+
+.menu{
+    display:none;
+    position:absolute;
+    top:80px;
+    right:25px;
+    width:190px;
+    background:#15192d;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:16px;
+    overflow:hidden;
+    z-index:30;
+}
+
+.menu button{
+    width:100%;
+    padding:14px 16px;
+    background:none;
+    border:none;
+    color:white;
+    text-align:left;
+    cursor:pointer;
+}
+
+.menu button:hover{
+    background:rgba(255,255,255,.08);
+}
+
+/* Video mode */
+
+body.video-mode .video-area{
+    display:block;
+}
+
+body.video-mode .user-section{
+    display:none;
+}
+
+body.video-mode .connection{
+    background:rgba(0,0,0,.5);
+}
+
+body.video-mode .controls{
+    bottom:30px;
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    .call-screen{
+        padding:15px;
+    }
+
+    .top{
+        left:15px;
+        right:15px;
+        top:15px;
+    }
+
+    .user-name{
+        font-size:25px;
+    }
+
+    .avatar-wrap{
+        width:110px;
+        height:110px;
+    }
+
+    .control{
+        width:48px;
+        height:48px;
+        font-size:18px;
+    }
+
+    .end-call{
+        width:60px;
+        height:60px;
+    }
+
+    .local-video{
+        right:15px;
+        bottom:120px;
+        width:120px;
+        height:170px;
+    }
+
+    .controls{
+        gap:9px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="call-screen">
+
+    <!-- Video area -->
+
+    <div class="video-area">
+
+        <!-- Demo remote video -->
+        <img
+            class="remote-video"
+            src="https://i.pravatar.cc/900?img=12"
+            alt="Remote video">
+
+        <!-- Demo local camera -->
+        <div class="local-video"
+             id="localVideo">
+            <div style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#15192b;
+                font-size:40px;">
+                📷
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Top -->
+
+    <div class="top">
+
+        <button class="back-btn"
+                onclick="goBack()">
+            ←
+        </button>
+
+        <div class="top-title"
+             id="topTitle">
+            Connectly Call
+        </div>
+
+        <button class="top-menu"
+                onclick="toggleMenu()">
+            ⋮
+        </button>
+
+    </div>
+
+
+    <!-- Connection -->
+
+    <div class="connection"
+         id="connection">
+        Connecting...
+    </div>
+
+
+    <!-- Menu -->
+
+    <div class="menu"
+         id="menu">
+
+        <button onclick="openProfile()">
+            👤 View Profile
+        </button>
+
+        <button onclick="muteCall()">
+            🔇 Mute
+        </button>
+
+        <button onclick="speaker()">
+            🔊 Speaker
+        </button>
+
+        <button onclick="reportUser()">
+            ⚠ Report User
+        </button>
+
+    </div>
+
+
+    <!-- User -->
+
+    <div class="user-section">
+
+        <div class="avatar-wrap">
+
+            <img
+                id="avatar"
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=12"
+                alt="User">
+
+        </div>
+
+        <h1 class="user-name"
+            id="userName">
+            Alex Morgan
+        </h1>
+
+        <p class="call-type"
+           id="callType">
+            Voice Call
+        </p>
+
+        <p class="call-status"
+           id="callStatus">
+            Calling...
+        </p>
+
+        <p class="timer"
+           id="timer">
+            00:00
+        </p>
+
+
+        <!-- Voice animation -->
+
+        <div class="wave"
+             id="wave">
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Controls -->
+
+    <div class="controls">
+
+        <button class="control"
+                id="muteBtn"
+                onclick="toggleMute()">
+            🎙️
+        </button>
+
+        <button class="control"
+                id="speakerBtn"
+                onclick="toggleSpeaker()">
+            🔊
+        </button>
+
+        <button class="end-call"
+                onclick="endCall()">
+            ☎
+        </button>
+
+        <button class="control"
+                id="cameraBtn"
+                onclick="toggleCamera()">
+            📹
+        </button>
+
+        <button class="control"
+                id="flipBtn"
+                onclick="flipCamera()">
+            🔄
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* Read URL */
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const type =
+    params.get("type") || "voice";
+
+const user =
+    params.get("user") || "Alex Morgan";
+
+
+/* Demo profile photos */
+
+const photos = {
+
+    "Alex Morgan":
+        "https://i.pravatar.cc/150?img=12",
+
+    "Sarah Wilson":
+        "https://i.pravatar.cc/150?img=47",
+
+    "Daniel Lee":
+        "https://i.pravatar.cc/150?img=11",
+
+    "Emma Brown":
+        "https://i.pravatar.cc/150?img=44",
+
+    "Olivia Smith":
+        "https://i.pravatar.cc/150?img=45",
+
+    "Ryan Cooper":
+        "https://i.pravatar.cc/150?img=68"
+
+};
+
+
+/* Set user */
+
+document.getElementById("userName")
+    .innerText = user;
+
+document.getElementById("avatar")
+    .src =
+    photos[user] ||
+    "https://i.pravatar.cc/150?img=12";
+
+
+/* Set call type */
+
+if(type === "video"){
+
+    document.body.classList.add("video-mode");
+
+    document.getElementById("callType")
+        .innerText = "Video Call";
+
+    document.getElementById("topTitle")
+        .innerText = "Video Call";
+
+}else{
+
+    document.getElementById("callType")
+        .innerText = "Voice Call";
+
+    document.getElementById("topTitle")
+        .innerText = "Voice Call";
+
+}
+
+
+/* Connection simulation */
+
+setTimeout(function(){
+
+    document.getElementById("connection")
+        .innerText = "Calling...";
+
+},1000);
+
+
+setTimeout(function(){
+
+    document.getElementById("connection")
+        .innerText = "Connected";
+
+    document.getElementById("callStatus")
+        .innerText = "Connected";
+
+    document.getElementById("timer")
+        .style.display = "block";
+
+    startTimer();
+
+},3500);
+
+
+/* Timer */
+
+let seconds = 0;
+let timerInterval;
+
+function startTimer(){
+
+    timerInterval =
+        setInterval(function(){
+
+            seconds++;
+
+            const mins =
+                Math.floor(seconds / 60);
+
+            const secs =
+                seconds % 60;
+
+            document.getElementById("timer")
+                .innerText =
+                String(mins).padStart(2,"0")
+                + ":" +
+                String(secs).padStart(2,"0");
+
+        },1000);
+
+}
+
+
+/* Mute */
+
+let muted = false;
+
+function toggleMute(){
+
+    muted = !muted;
+
+    const btn =
+        document.getElementById("muteBtn");
+
+    if(muted){
+
+        btn.innerText = "🔇";
+        btn.classList.add("active");
+
+        document.getElementById("callStatus")
+            .innerText = "Microphone muted";
+
+    }else{
+
+        btn.innerText = "🎙️";
+        btn.classList.remove("active");
+
+        document.getElementById("callStatus")
+            .innerText = "Connected";
+
+    }
+
+}
+
+
+/* Speaker */
+
+let speakerOn = false;
+
+function toggleSpeaker(){
+
+    speakerOn = !speakerOn;
+
+    document.getElementById("speakerBtn")
+        .classList.toggle("active");
+
+}
+
+
+/* Camera */
+
+let cameraOn = true;
+
+function toggleCamera(){
+
+    cameraOn = !cameraOn;
+
+    const btn =
+        document.getElementById("cameraBtn");
+
+    if(cameraOn){
+
+        btn.innerText = "📹";
+        btn.classList.remove("active");
+
+    }else{
+
+        btn.innerText = "🚫";
+        btn.classList.add("active");
+
+    }
+
+}
+
+
+/* Flip camera */
+
+function flipCamera(){
+
+    alert("Camera switched. (Demo)");
+
+}
+
+
+/* End call */
+
+function endCall(){
+
+    clearInterval(timerInterval);
+
+    alert("Call ended. (Demo)");
+
+    window.location.href =
+        "calls.html";
+
+}
+
+
+/* Back */
+
+function goBack(){
+
+    clearInterval(timerInterval);
+
+    window.location.href =
+        "calls.html";
+
+}
+
+
+/* Menu */
+
+function toggleMenu(){
+
+    const menu =
+        document.getElementById("menu");
+
+    if(menu.style.display === "block"){
+
+        menu.style.display = "none";
+
+    }else{
+
+        menu.style.display = "block";
+
+    }
+
+}
+
+
+/* Profile */
+
+function openProfile(){
+
+    window.location.href =
+        "user-profile.html?user=" +
+        encodeURIComponent(user);
+
+}
+
+
+/* Mute menu */
+
+function muteCall(){
+
+    toggleMute();
+
+    document.getElementById("menu")
+        .style.display = "none";
+
+}
+
+
+/* Speaker menu */
+
+function speaker(){
+
+    toggleSpeaker();
+
+    document.getElementById("menu")
+        .style.display = "none";
+
+}
+
+
+/* Report */
+
+function reportUser(){
+
+    alert("User reported. (Demo)");
+
+    document.getElementById("menu")
+        .style.display = "none";
+
+}
+
+</script>
+
+</body>
+</html>

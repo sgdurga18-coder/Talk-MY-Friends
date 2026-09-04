@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Verify Email - Talk MY Friends</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+
+      background:
+        radial-gradient(circle at top left, #263b8f, transparent 35%),
+        radial-gradient(circle at bottom right, #671c91, transparent 35%),
+        #07111f;
+    }
+
+    .box {
+      width: 100%;
+      max-width: 460px;
+
+      padding: 35px;
+
+      text-align: center;
+
+      background: rgba(255,255,255,0.08);
+
+      border: 1px solid rgba(255,255,255,0.15);
+
+      border-radius: 25px;
+
+      backdrop-filter: blur(20px);
+
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 25px;
+    }
+
+    .logo span {
+      color: #a855f7;
+    }
+
+    .icon {
+      width: 85px;
+      height: 85px;
+
+      margin: 0 auto 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      font-size: 40px;
+
+      background: rgba(168,85,247,0.15);
+
+      border: 1px solid rgba(168,85,247,0.25);
+    }
+
+    h1 {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      color: #b8c0d4;
+      line-height: 1.6;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .email {
+      display: none;
+
+      padding: 12px;
+
+      margin: 15px 0;
+
+      border-radius: 10px;
+
+      background: rgba(99,102,241,0.12);
+
+      color: #c4b5fd;
+
+      word-break: break-word;
+
+      font-size: 14px;
+    }
+
+    .status {
+      display: none;
+
+      padding: 13px;
+
+      margin-top: 18px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+    .status.success {
+      display: block;
+
+      color: #86efac;
+
+      background: rgba(34,197,94,0.13);
+
+      border: 1px solid rgba(34,197,94,0.2);
+    }
+
+    .status.error {
+      display: block;
+
+      color: #fca5a5;
+
+      background: rgba(239,68,68,0.13);
+
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+
+    .check-btn {
+      width: 100%;
+
+      padding: 15px;
+
+      margin-top: 10px;
+
+      border: none;
+
+      border-radius: 13px;
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(135deg, #6366f1, #a855f7);
+    }
+
+    .check-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .resend-btn {
+      width: 100%;
+
+      padding: 13px;
+
+      margin-top: 12px;
+
+      border-radius: 12px;
+
+      border: 1px solid rgba(168,85,247,0.35);
+
+      background: rgba(168,85,247,0.10);
+
+      color: #d8b4fe;
+
+      font-size: 14px;
+
+      cursor: pointer;
+    }
+
+    .resend-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .login-btn {
+      display: none;
+
+      width: 100%;
+
+      padding: 15px;
+
+      margin-top: 12px;
+
+      border: none;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(135deg, #22c55e, #16a34a);
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      text-decoration: none;
+    }
+
+    .back {
+      display: block;
+
+      margin-top: 22px;
+
+      color: #8f9bb2;
+
+      text-decoration: none;
+
+      font-size: 14px;
+    }
+
+    .steps {
+      text-align: left;
+
+      margin-top: 25px;
+
+      padding: 18px;
+
+      border-radius: 14px;
+
+      background: rgba(0,0,0,0.15);
+
+      color: #b8c0d4;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+    }
+
+    .steps strong {
+      color: white;
+    }
+
+    @media (max-width: 500px) {
+
+      .box {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .logo {
+        font-size: 25px;
+      }
+
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <div class="box">
+
+    <div class="logo">
+      Talk MY <span>Friends</span>
+    </div>
+
+
+    <div class="icon">
+      ✉️
+    </div>
+
+
+    <h1>Verify Your Email</h1>
+
+
+    <p class="description">
+      We've sent a verification link to your email address.
+      Please open your email and click the verification link
+      to activate your Talk MY Friends account.
+    </p>
+
+
+    <div class="email" id="emailBox"></div>
+
+
+    <button
+      class="check-btn"
+      id="checkBtn"
+    >
+      I've Verified My Email
+    </button>
+
+
+    <button
+      class="resend-btn"
+      id="resendBtn"
+    >
+      Resend Verification Email
+    </button>
+
+
+    <div
+      class="status"
+      id="status"
+    ></div>
+
+
+    <a
+      href="login.html"
+      class="login-btn"
+      id="loginBtn"
+    >
+      Go to Login
+    </a>
+
+
+    <div class="steps">
+
+      <strong>How to verify:</strong>
+
+      <br>
+
+      1. Open your email inbox.
+
+      <br>
+
+      2. Find the Talk MY Friends verification email.
+
+      <br>
+
+      3. Click the verification link.
+
+      <br>
+
+      4. Come back here.
+
+      <br>
+
+      5. Click <strong>I've Verified My Email</strong>.
+
+    </div>
+
+
+    <a
+      href="index.html"
+      class="back"
+    >
+      ← Back to Home
+    </a>
+
+  </div>
+
+
+
+  <!-- =====================================
+       FIREBASE EMAIL VERIFICATION
+  ====================================== -->
+
+  <script type="module">
+
+    import { auth } from "./firebase-config.js";
+
+    import {
+      onAuthStateChanged,
+      sendEmailVerification,
+      reload
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    const emailBox =
+      document.getElementById("emailBox");
+
+    const checkBtn =
+      document.getElementById("checkBtn");
+
+    const resendBtn =
+      document.getElementById("resendBtn");
+
+    const status =
+      document.getElementById("status");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+
+    let currentUser = null;
+
+    let resendCooldown = false;
+
+
+    /*
+      Show status message
+    */
+
+    function showStatus(text, type) {
+
+      status.textContent = text;
+
+      status.className =
+        "status " + type;
+
+    }
+
+
+    /*
+      Check Firebase login state
+    */
+
+    onAuthStateChanged(auth, (user) => {
+
+      currentUser = user;
+
+
+      if (user) {
+
+        emailBox.style.display = "block";
+
+        emailBox.textContent =
+          user.email;
+
+
+        /*
+          If already verified
+        */
+
+        if (user.emailVerified) {
+
+          showVerified();
+
+        }
+
+      } else {
+
+        showStatus(
+          "No account is currently signed in. Please create an account first.",
+          "error"
+        );
+
+        checkBtn.disabled = true;
+
+        resendBtn.disabled = true;
+
+      }
+
+    });
+
+
+    /*
+      Successfully verified
+    */
+
+    function showVerified() {
+
+      showStatus(
+        "Email verified successfully! Your Talk MY Friends account is ready.",
+        "success"
+      );
+
+
+      checkBtn.style.display = "none";
+
+      resendBtn.style.display = "none";
+
+      loginBtn.style.display = "block";
+
+    }
+
+
+    /*
+      Check verification
+    */
+
+    checkBtn.addEventListener("click", async () => {
+
+      if (!currentUser) {
+
+        showStatus(
+          "No account found. Please create an account first.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      checkBtn.disabled = true;
+
+      checkBtn.textContent =
+        "Checking...";
+
+
+      try {
+
+        /*
+          Refresh Firebase user information
+        */
+
+        await reload(currentUser);
+
+
+        if (currentUser.emailVerified) {
+
+          showVerified();
+
+        } else {
+
+          showStatus(
+            "Your email is not verified yet. Please click the verification link in your email first.",
+            "error"
+          );
+
+          checkBtn.disabled = false;
+
+          checkBtn.textContent =
+            "I've Verified My Email";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+          "Could not check verification status. Please try again.",
+          "error"
+        );
+
+        checkBtn.disabled = false;
+
+        checkBtn.textContent =
+          "I've Verified My Email";
+
+      }
+
+    });
+
+
+    /*
+      Resend verification email
+    */
+
+    resendBtn.addEventListener("click", async () => {
+
+      if (!currentUser) {
+
+        showStatus(
+          "Please create an account first.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (currentUser.emailVerified) {
+
+        showVerified();
+
+        return;
+
+      }
+
+
+      if (resendCooldown) {
+
+        return;
+
+      }
+
+
+      resendBtn.disabled = true;
+
+      resendBtn.textContent =
+        "Sending...";
+
+
+      try {
+
+        await sendEmailVerification(
+          currentUser
+        );
+
+
+        showStatus(
+          "A new verification email has been sent. Please check your inbox.",
+          "success"
+        );
+
+
+        /*
+          30 second cooldown
+        */
+
+        resendCooldown = true;
+
+        let seconds = 30;
+
+        resendBtn.textContent =
+          "Resend in " + seconds + "s";
+
+
+        const timer =
+          setInterval(() => {
+
+            seconds--;
+
+            resendBtn.textContent =
+              "Resend in " + seconds + "s";
+
+
+            if (seconds <= 0) {
+
+              clearInterval(timer);
+
+              resendCooldown = false;
+
+              resendBtn.disabled = false;
+
+              resendBtn.textContent =
+                "Resend Verification Email";
+
+            }
+
+          }, 1000);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        if (
+          error.code ===
+          "auth/too-many-requests"
+        ) {
+
+          showStatus(
+            "Too many requests. Please wait a little before requesting another email.",
+            "error"
+          );
+
+        } else {
+
+          showStatus(
+            "Could not send verification email. Please try again later.",
+            "error"
+          );
+
+        }
+
+
+        resendBtn.disabled = false;
+
+        resendBtn.textContent =
+          "Resend Verification Email";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

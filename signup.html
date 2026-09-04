@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Talk MY Friends</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #263b8f, transparent 35%),
+        radial-gradient(circle at bottom right, #671c91, transparent 35%),
+        #07111f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .box {
+      width: 100%;
+      max-width: 480px;
+      padding: 35px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 25px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .logo span {
+      color: #a855f7;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #b8c0d4;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      color: #dce3f5;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.2);
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #8b5cf6;
+    }
+
+    .terms {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 18px 0;
+      font-size: 13px;
+      color: #b8c0d4;
+    }
+
+    .terms input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .terms a {
+      color: #a855f7;
+      text-decoration: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .login {
+      text-align: center;
+      margin-top: 22px;
+      color: #b8c0d4;
+    }
+
+    .login a {
+      color: #a855f7;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #9ca8c2;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <div class="logo">
+      Talk MY <span>Friends</span>
+    </div>
+
+    <h1>Create Account</h1>
+    <p class="subtitle">Join Talk MY Friends today</p>
+
+    <form id="signupForm">
+
+      <label>Full Name</label>
+      <input
+        type="text"
+        id="fullName"
+        placeholder="Enter your full name"
+        required
+      >
+
+      <label>Username</label>
+      <input
+        type="text"
+        id="username"
+        placeholder="@username"
+        required
+      >
+
+      <label>Email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        required
+      >
+
+      <label>Password</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Minimum 6 characters"
+        required
+      >
+
+      <label>Confirm Password</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        placeholder="Re-enter password"
+        required
+      >
+
+      <div class="terms">
+        <input type="checkbox" id="terms" required>
+
+        <div>
+          I agree to the
+          <a href="terms.html">Terms</a>
+          and
+          <a href="privacy.html">Privacy Policy</a>.
+        </div>
+      </div>
+
+      <button type="submit" id="signupBtn">
+        Create Account
+      </button>
+
+      <div class="message" id="message"></div>
+
+    </form>
+
+    <div class="login">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+
+    <a href="index.html" class="back">← Back to Home</a>
+
+  </div>
+
+
+  <!-- Firebase Signup -->
+  <script type="module">
+
+    import { auth, db } from "./firebase-config.js";
+
+    import {
+      createUserWithEmailAndPassword,
+      sendEmailVerification
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import {
+      doc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    const form = document.getElementById("signupForm");
+    const button = document.getElementById("signupBtn");
+    const message = document.getElementById("message");
+
+
+    function showMessage(text, success = false) {
+
+      message.style.display = "block";
+      message.textContent = text;
+
+      if (success) {
+        message.style.background = "rgba(34,197,94,0.15)";
+        message.style.color = "#86efac";
+      } else {
+        message.style.background = "rgba(239,68,68,0.15)";
+        message.style.color = "#fca5a5";
+      }
+    }
+
+
+    form.addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      const fullName =
+        document.getElementById("fullName").value.trim();
+
+      const username =
+        document.getElementById("username").value
+        .trim()
+        .replace(/^@/, "");
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+
+      if (password.length < 6) {
+
+        showMessage("Password must be at least 6 characters.");
+
+        return;
+      }
+
+
+      if (password !== confirmPassword) {
+
+        showMessage("Passwords do not match.");
+
+        return;
+      }
+
+
+      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+
+        showMessage(
+          "Username can contain only letters, numbers and underscore."
+        );
+
+        return;
+      }
+
+
+      button.disabled = true;
+      button.textContent = "Creating Account...";
+
+
+      try {
+
+        /*
+          1. Create Firebase Authentication account
+        */
+
+        const userCredential =
+          await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        const user = userCredential.user;
+
+
+        /*
+          2. Save user profile in Firestore
+        */
+
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+
+            uid: user.uid,
+
+            fullName: fullName,
+
+            username: username,
+
+            usernameLower: username.toLowerCase(),
+
+            email: email,
+
+            bio: "",
+
+            photoURL: "",
+
+            createdAt: serverTimestamp(),
+
+            updatedAt: serverTimestamp()
+
+          }
+        );
+
+
+        /*
+          3. Send Firebase verification email
+        */
+
+        await sendEmailVerification(user);
+
+
+        /*
+          Save basic info locally
+          temporarily for the next page.
+        */
+
+        localStorage.setItem(
+          "talkMyFriendsSignup",
+          JSON.stringify({
+            uid: user.uid,
+            email: email,
+            fullName: fullName,
+            username: username
+          })
+        );
+
+
+        showMessage(
+          "Account created! Verification email sent. Check your email.",
+          true
+        );
+
+
+        button.textContent = "Account Created";
+
+
+        /*
+          Go to verification page
+        */
+
+        setTimeout(() => {
+
+          window.location.href =
+            "verify.html?email=" +
+            encodeURIComponent(email);
+
+        }, 1800);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        let errorMessage =
+          "Something went wrong. Please try again.";
+
+
+        if (error.code === "auth/email-already-in-use") {
+
+          errorMessage =
+            "This email is already registered.";
+
+        }
+
+        else if (error.code === "auth/invalid-email") {
+
+          errorMessage =
+            "Please enter a valid email address.";
+
+        }
+
+        else if (error.code === "auth/weak-password") {
+
+          errorMessage =
+            "Password is too weak.";
+
+        }
+
+        else if (error.code === "auth/network-request-failed") {
+
+          errorMessage =
+            "Network error. Check your internet connection.";
+
+        }
+
+
+        showMessage(errorMessage);
+
+        button.disabled = false;
+        button.textContent = "Create Account";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

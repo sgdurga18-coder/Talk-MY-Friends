@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contacts - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #382080 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #152f72 0%, transparent 35%),
+        #080b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .left-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #9b6cff;
+    }
+
+    .add-btn {
+      padding: 11px 17px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #7652ff, #a554ff);
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .add-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Title */
+
+    .title-section {
+      margin-bottom: 22px;
+    }
+
+    .title-section h1 {
+      font-size: 32px;
+      margin-bottom: 7px;
+    }
+
+    .title-section p {
+      color: #a5aabd;
+      font-size: 14px;
+    }
+
+    /* Search */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 22px;
+    }
+
+    .search-icon {
+      font-size: 19px;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      font-size: 15px;
+    }
+
+    .search-box input::placeholder {
+      color: #7f859c;
+    }
+
+    .clear-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #aaa;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    /* Filter */
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      padding: 9px 16px;
+      border-radius: 11px;
+      background: rgba(255,255,255,0.05);
+      color: #aeb3c5;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #7652ff, #a554ff);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Contacts */
+
+    .contacts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 17px;
+      border-radius: 17px;
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.2s;
+    }
+
+    .contact-card:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(155,108,255,0.3);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7652ff, #b44cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .online-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      right: 0;
+      bottom: 1px;
+      border-radius: 50%;
+      background: #28d17c;
+      border: 3px solid #101426;
+    }
+
+    .offline-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      right: 0;
+      bottom: 1px;
+      border-radius: 50%;
+      background: #73798c;
+      border: 3px solid #101426;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .contact-username {
+      color: #9298ad;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .contact-status {
+      color: #68dfa0;
+      font-size: 12px;
+    }
+
+    .contact-status.offline {
+      color: #858b9f;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .contact-action {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 17px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .contact-action:hover {
+      background: rgba(255,255,255,0.13);
+    }
+
+    .chat-action {
+      background: linear-gradient(135deg, #7652ff, #a554ff);
+    }
+
+    /* Empty */
+
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: #9197ab;
+    }
+
+    .no-results-icon {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+
+    .no-results h2 {
+      color: white;
+      margin-bottom: 7px;
+    }
+
+    /* Info */
+
+    .info-box {
+      margin-top: 25px;
+      padding: 17px;
+      border-radius: 15px;
+      background: rgba(108,76,255,0.08);
+      border: 1px solid rgba(125,91,255,0.15);
+      color: #a9afc2;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      color: white;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 15px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .add-btn {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+
+      .title-section h1 {
+        font-size: 27px;
+      }
+
+      .contact-card {
+        padding: 14px;
+      }
+
+      .avatar {
+        width: 52px;
+        height: 52px;
+      }
+
+      .contact-actions {
+        gap: 5px;
+      }
+
+      .contact-action {
+        width: 38px;
+        height: 38px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+
+      <div class="left-header">
+
+        <button class="back-btn" onclick="goBack()">
+          ←
+        </button>
+
+        <div class="logo">
+          Connect<span>ly</span>
+        </div>
+
+      </div>
+
+      <button class="add-btn" onclick="addContact()">
+        + Add Contact
+      </button>
+
+    </div>
+
+
+    <!-- Title -->
+
+    <div class="title-section">
+
+      <h1>Contacts</h1>
+
+      <p>
+        People you've connected with on Connectly.
+      </p>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+      <span class="search-icon">🔍</span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search contacts..."
+        autocomplete="off"
+      >
+
+      <button
+        class="clear-btn"
+        id="clearBtn"
+        onclick="clearSearch()">
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Filters -->
+
+    <div class="filters">
+
+      <button
+        class="filter-btn active"
+        onclick="changeFilter('all', this)">
+        All
+      </button>
+
+      <button
+        class="filter-btn"
+        onclick="changeFilter('online', this)">
+        🟢 Online
+      </button>
+
+      <button
+        class="filter-btn"
+        onclick="changeFilter('offline', this)">
+        ⚪ Offline
+      </button>
+
+    </div>
+
+
+    <!-- Contact List -->
+
+    <div
+      class="contacts-list"
+      id="contactsList">
+
+
+      <!-- Alex -->
+
+      <div
+        class="contact-card"
+        data-name="Alex Morgan"
+        data-username="alexmorgan"
+        data-status="online">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            AM
+          </div>
+
+          <div class="online-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Alex Morgan
+          </div>
+
+          <div class="contact-username">
+            @alexmorgan
+          </div>
+
+          <div class="contact-status">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Alex Morgan')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Alex Morgan')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Sarah -->
+
+      <div
+        class="contact-card"
+        data-name="Sarah Wilson"
+        data-username="sarahwilson"
+        data-status="online">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            SW
+          </div>
+
+          <div class="online-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Sarah Wilson
+          </div>
+
+          <div class="contact-username">
+            @sarahwilson
+          </div>
+
+          <div class="contact-status">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Sarah Wilson')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Sarah Wilson')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Daniel -->
+
+      <div
+        class="contact-card"
+        data-name="Daniel Lee"
+        data-username="daniellee"
+        data-status="offline">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            DL
+          </div>
+
+          <div class="offline-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Daniel Lee
+          </div>
+
+          <div class="contact-username">
+            @daniellee
+          </div>
+
+          <div class="contact-status offline">
+            Offline
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Daniel Lee')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Daniel Lee')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Emma -->
+
+      <div
+        class="contact-card"
+        data-name="Emma Brown"
+        data-username="emmabrown"
+        data-status="online">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            EB
+          </div>
+
+          <div class="online-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Emma Brown
+          </div>
+
+          <div class="contact-username">
+            @emmabrown
+          </div>
+
+          <div class="contact-status">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Emma Brown')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Emma Brown')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Olivia -->
+
+      <div
+        class="contact-card"
+        data-name="Olivia Smith"
+        data-username="oliviasmith"
+        data-status="online">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            OS
+          </div>
+
+          <div class="online-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Olivia Smith
+          </div>
+
+          <div class="contact-username">
+            @oliviasmith
+          </div>
+
+          <div class="contact-status">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Olivia Smith')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Olivia Smith')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Ryan -->
+
+      <div
+        class="contact-card"
+        data-name="Ryan Cooper"
+        data-username="ryancooper"
+        data-status="offline">
+
+        <div class="avatar-wrapper">
+
+          <div class="avatar">
+            RC
+          </div>
+
+          <div class="offline-dot"></div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-name">
+            Ryan Cooper
+          </div>
+
+          <div class="contact-username">
+            @ryancooper
+          </div>
+
+          <div class="contact-status offline">
+            Offline
+          </div>
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          <button
+            class="contact-action chat-action"
+            title="Chat"
+            onclick="startChat('Ryan Cooper')">
+            💬
+          </button>
+
+          <button
+            class="contact-action"
+            title="Profile"
+            onclick="viewProfile('Ryan Cooper')">
+            👤
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- No Results -->
+
+    <div
+      class="no-results"
+      id="noResults">
+
+      <div class="no-results-icon">
+        🔎
+      </div>
+
+      <h2>No contacts found</h2>
+
+      <p>
+        Try searching with another name or username.
+      </p>
+
+    </div>
+
+
+    <!-- Info -->
+
+    <div class="info-box">
+
+      <strong>👥 Your Contacts</strong><br>
+
+      In the real Connectly app, contacts will be connected
+      to your account and stored in the database. New contacts
+      can be added from the worldwide user search.
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let currentFilter = "all";
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const contacts =
+      document.querySelectorAll(".contact-card");
+
+    const noResults =
+      document.getElementById("noResults");
+
+
+    // Search
+
+    searchInput.addEventListener(
+      "input",
+      function() {
+
+        clearBtn.style.display =
+          this.value.trim()
+            ? "block"
+            : "none";
+
+        filterContacts();
+
+      }
+    );
+
+
+    // Filter contacts
+
+    function filterContacts() {
+
+      const search =
+        searchInput.value
+          .toLowerCase()
+          .trim()
+          .replace("@", "");
+
+      let count = 0;
+
+
+      contacts.forEach(contact => {
+
+        const name =
+          contact.dataset.name.toLowerCase();
+
+        const username =
+          contact.dataset.username.toLowerCase();
+
+        const status =
+          contact.dataset.status;
+
+
+        const matchesSearch =
+          name.includes(search) ||
+          username.includes(search);
+
+
+        const matchesFilter =
+          currentFilter === "all" ||
+          status === currentFilter;
+
+
+        if (
+          matchesSearch &&
+          matchesFilter
+        ) {
+
+          contact.style.display = "flex";
+
+          count++;
+
+        } else {
+
+          contact.style.display = "none";
+
+        }
+
+      });
+
+
+      noResults.style.display =
+        count === 0
+          ? "block"
+          : "none";
+
+    }
+
+
+    // Change filter
+
+    function changeFilter(
+      filter,
+      button
+    ) {
+
+      currentFilter = filter;
+
+
+      document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn => {
+
+          btn.classList.remove("active");
+
+        });
+
+
+      button.classList.add("active");
+
+      filterContacts();
+
+    }
+
+
+    // Clear search
+
+    function clearSearch() {
+
+      searchInput.value = "";
+
+      clearBtn.style.display = "none";
+
+      filterContacts();
+
+      searchInput.focus();
+
+    }
+
+
+    // Start chat
+
+    function startChat(name) {
+
+      window.location.href =
+        "chat.html?user=" +
+        encodeURIComponent(name);
+
+    }
+
+
+    // View profile
+
+    function viewProfile(name) {
+
+      window.location.href =
+        "user-profile.html?user=" +
+        encodeURIComponent(name);
+
+    }
+
+
+    // Add contact
+
+    function addContact() {
+
+      window.location.href =
+        "users.html";
+
+    }
+
+
+    // Back
+
+    function goBack() {
+
+      window.location.href =
+        "home.html";
+
+    }
+
+  </script>
+
+</body>
+</html>

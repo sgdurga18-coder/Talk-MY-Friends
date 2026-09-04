@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Support - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, rgba(100,70,230,.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0,180,255,.15), transparent 35%),
+        #070b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.12);
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      color: #929bb0;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    /* Search */
+
+    .search-card {
+      padding: 25px;
+      border-radius: 22px;
+      margin-bottom: 20px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+      backdrop-filter: blur(15px);
+    }
+
+    .search-card h2 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .search-card p {
+      text-align: center;
+      color: #8992a7;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 15px 18px 15px 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 14px;
+    }
+
+    .search-box input::placeholder {
+      color: #737c90;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 13px;
+      font-size: 19px;
+      color: #8b94a9;
+    }
+
+    /* Quick Help */
+
+    .section-title {
+      font-size: 19px;
+      margin: 25px 0 14px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .quick-card {
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,.08);
+    }
+
+    .quick-icon {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .quick-card h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .quick-card p {
+      color: #858ea3;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* FAQ */
+
+    .faq-card {
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .faq {
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .faq:last-child {
+      border-bottom: none;
+    }
+
+    .question {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .question:hover {
+      background: rgba(255,255,255,.035);
+    }
+
+    .arrow {
+      color: #9d8cff;
+      font-size: 18px;
+      transition: .2s;
+    }
+
+    .answer {
+      display: none;
+      padding: 0 18px 18px;
+      color: #929bb0;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .faq.active .answer {
+      display: block;
+    }
+
+    .faq.active .arrow {
+      transform: rotate(180deg);
+    }
+
+    /* Support */
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .support-card {
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .support-card .icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg,#6847ff,#a23cff);
+      font-size: 21px;
+      margin-bottom: 14px;
+    }
+
+    .support-card h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .support-card p {
+      color: #8992a7;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .support-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 15px;
+      background: rgba(110,80,255,.15);
+      border: 1px solid rgba(120,100,255,.2);
+      color: #c3b8ff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .support-btn:hover {
+      background: rgba(110,80,255,.25);
+    }
+
+    /* Report */
+
+    .report {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,70,90,.06);
+      border: 1px solid rgba(255,70,90,.12);
+    }
+
+    .report h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .report p {
+      color: #969fb3;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .report-btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,100,110,.2);
+      background: rgba(255,80,100,.1);
+      color: #ff8994;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Footer */
+
+    .footer {
+      text-align: center;
+      color: #687186;
+      font-size: 12px;
+      margin-top: 25px;
+      line-height: 1.7;
+    }
+
+    /* Modal */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.72);
+      z-index: 100;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 430px;
+      padding: 25px;
+      border-radius: 22px;
+      background: #101628;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #929bb0;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .modal-box textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      background: rgba(255,255,255,.06);
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .cancel {
+      background: #282f43;
+    }
+
+    .send {
+      background: linear-gradient(135deg,#6847ff,#a23cff);
+    }
+
+    @media(max-width:700px) {
+
+      .container {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+
+      <button class="back-btn" onclick="goBack()">
+        ←
+      </button>
+
+      <div>
+        <h1>Help & Support</h1>
+        <p>How can we help you?</p>
+      </div>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="search-card">
+
+      <h2>How can we help?</h2>
+
+      <p>
+        Search for answers, guides and solutions
+      </p>
+
+      <div class="search-box">
+
+        <span class="search-icon">🔎</span>
+
+        <input
+          type="text"
+          id="helpSearch"
+          placeholder="Search help topics..."
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- Quick Help -->
+
+    <h2 class="section-title">
+      Quick Help
+    </h2>
+
+    <div class="quick-grid">
+
+      <div class="quick-card"
+           onclick="showTopic('Account & Login')">
+
+        <div class="quick-icon">👤</div>
+
+        <h3>Account & Login</h3>
+
+        <p>
+          Login, signup, password and account problems.
+        </p>
+
+      </div>
+
+
+      <div class="quick-card"
+           onclick="showTopic('Messages')">
+
+        <div class="quick-icon">💬</div>
+
+        <h3>Messages</h3>
+
+        <p>
+          Sending messages, delivery and read status.
+        </p>
+
+      </div>
+
+
+      <div class="quick-card"
+           onclick="showTopic('Calls')">
+
+        <div class="quick-icon">📞</div>
+
+        <h3>Calls</h3>
+
+        <p>
+          Voice calls, video calls and call problems.
+        </p>
+
+      </div>
+
+
+      <div class="quick-card"
+           onclick="showTopic('Privacy')">
+
+        <div class="quick-icon">🔐</div>
+
+        <h3>Privacy</h3>
+
+        <p>
+          Privacy settings, blocking and account security.
+        </p>
+
+      </div>
+
+
+      <div class="quick-card"
+           onclick="showTopic('Groups')">
+
+        <div class="quick-icon">👥</div>
+
+        <h3>Groups</h3>
+
+        <p>
+          Create groups, members and group settings.
+        </p>
+
+      </div>
+
+
+      <div class="quick-card"
+           onclick="showTopic('Status')">
+
+        <div class="quick-icon">⭕</div>
+
+        <h3>Status & Stories</h3>
+
+        <p>
+          Share and manage your status updates.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- FAQ -->
+
+    <h2 class="section-title">
+      Frequently Asked Questions
+    </h2>
+
+    <div class="faq-card" id="faqList">
+
+      <div class="faq">
+
+        <button class="question">
+          How do I create a Connectly account?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Open the signup page, enter your name, username,
+          email and password, then complete the verification
+          process.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          I forgot my password. What should I do?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Go to the Login page and select
+          "Forgot Password". You can then request a reset
+          code and create a new password.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          How do I start a new chat?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Open New Chat or Find People, search for a person
+          using their name or username, and select Chat.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          How can I block someone?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Open the person's profile, choose the menu and
+          select Block User. Blocked users can be managed
+          from Settings → Blocked Users.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          Can I make voice and video calls?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Yes. Connectly is designed to support both voice
+          and video calling. The real version will use a
+          real-time calling system.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          How do I change my privacy settings?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Go to Settings → Privacy. You can control profile
+          visibility, online status, read receipts, calls,
+          status visibility and discoverability.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          Can I create a group?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          Yes. Open Groups and select Create Group.
+          Add members, choose a group name and create your
+          group.
+        </div>
+
+      </div>
+
+
+      <div class="faq">
+
+        <button class="question">
+          Is Connectly available on mobile?
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="answer">
+          The Connectly interface is designed to work on
+          both desktop and mobile screens. A real mobile
+          application can later be connected to the same
+          backend system.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Contact Support -->
+
+    <h2 class="section-title">
+      Contact Support
+    </h2>
+
+    <div class="support-grid">
+
+      <div class="support-card">
+
+        <div class="icon">💬</div>
+
+        <h3>Live Support</h3>
+
+        <p>
+          Get help from the Connectly support team.
+        </p>
+
+        <button
+          class="support-btn"
+          onclick="liveSupport()"
+        >
+          Start Chat
+        </button>
+
+      </div>
+
+
+      <div class="support-card">
+
+        <div class="icon">✉️</div>
+
+        <h3>Email Support</h3>
+
+        <p>
+          Send us a detailed description of your problem.
+        </p>
+
+        <button
+          class="support-btn"
+          onclick="emailSupport()"
+        >
+          Contact Us
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Report Problem -->
+
+    <div class="report">
+
+      <h3>⚠️ Report a Problem</h3>
+
+      <p>
+        Found a bug or something isn't working correctly?
+        Tell us what happened so it can be investigated.
+      </p>
+
+      <button
+        class="report-btn"
+        onclick="openReport()"
+      >
+        Report Problem
+      </button>
+
+    </div>
+
+
+    <!-- Footer -->
+
+    <div class="footer">
+
+      Connectly Help Center<br>
+
+      Connect. Chat. Share.<br><br>
+
+      © 2026 Connectly. All rights reserved.
+
+    </div>
+
+  </div>
+
+
+  <!-- Report Modal -->
+
+  <div class="modal" id="reportModal">
+
+    <div class="modal-box">
+
+      <h2>Report a Problem</h2>
+
+      <p>
+        Please describe the problem you experienced.
+      </p>
+
+      <textarea
+        id="problemText"
+        placeholder="Describe your problem..."
+      ></textarea>
+
+      <div class="modal-actions">
+
+        <button
+          class="cancel"
+          onclick="closeReport()"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="send"
+          onclick="submitReport()"
+        >
+          Send Report
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* Back to Settings */
+
+    function goBack() {
+      window.location.href = "settings.html";
+    }
+
+
+    /* FAQ */
+
+    const questions =
+      document.querySelectorAll(".question");
+
+    questions.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const current =
+          button.parentElement;
+
+        document
+          .querySelectorAll(".faq")
+          .forEach(item => {
+
+            if (item !== current) {
+              item.classList.remove("active");
+            }
+
+          });
+
+        current.classList.toggle("active");
+
+      });
+
+    });
+
+
+    /* Search Help */
+
+    const search =
+      document.getElementById("helpSearch");
+
+    const faqs =
+      document.querySelectorAll(".faq");
+
+    search.addEventListener("input", function() {
+
+      const value =
+        this.value.toLowerCase().trim();
+
+      faqs.forEach(faq => {
+
+        const text =
+          faq.textContent.toLowerCase();
+
+        if (text.includes(value)) {
+          faq.style.display = "block";
+        } else {
+          faq.style.display = "none";
+        }
+
+      });
+
+    });
+
+
+    /* Quick Help */
+
+    function showTopic(topic) {
+
+      alert(
+        topic +
+        " help will be available here. " +
+        "In the real Connectly app, this section can be connected to the support knowledge base."
+      );
+
+    }
+
+
+    /* Live Support */
+
+    function liveSupport() {
+
+      alert(
+        "Live Support will connect to the real Connectly support system after the backend is added."
+      );
+
+    }
+
+
+    /* Email Support */
+
+    function emailSupport() {
+
+      alert(
+        "Email support will be connected to the official Connectly support email in the real version."
+      );
+
+    }
+
+
+    /* Open Report */
+
+    function openReport() {
+
+      document.getElementById("reportModal")
+        .style.display = "flex";
+
+    }
+
+
+    /* Close Report */
+
+    function closeReport() {
+
+      document.getElementById("reportModal")
+        .style.display = "none";
+
+    }
+
+
+    /* Submit Report */
+
+    function submitReport() {
+
+      const text =
+        document.getElementById("problemText")
+        .value.trim();
+
+      if (!text) {
+
+        alert(
+          "Please describe the problem first."
+        );
+
+        return;
+
+      }
+
+
+      /*
+        Real version:
+
+        POST /api/support/report
+
+        The report will be stored in the
+        backend/database and shown in
+        the admin support panel.
+      */
+
+      localStorage.setItem(
+        "connectlyLastReport",
+        text
+      );
+
+
+      alert(
+        "Thank you! Your problem report has been saved."
+      );
+
+
+      document.getElementById("problemText")
+        .value = "";
+
+      closeReport();
+
+    }
+
+
+    /* Close modal by clicking outside */
+
+    document
+      .getElementById("reportModal")
+      .addEventListener(
+        "click",
+        function(e) {
+
+          if (e.target === this) {
+            closeReport();
+          }
+
+        }
+      );
+
+  </script>
+
+</body>
+</html>

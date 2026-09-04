@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Settings | Talk My Friends</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #263c91 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d249c 0%, transparent 35%),
+        #080d1f;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+      padding: 22px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.14);
+    }
+
+    .header h1 {
+      font-size: 24px;
+    }
+
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(18px);
+      margin-bottom: 22px;
+    }
+
+    .profile-avatar {
+      width: 65px;
+      height: 65px;
+      min-width: 65px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      font-size: 23px;
+      font-weight: bold;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .profile-info p {
+      color: #8f9ab8;
+      font-size: 13px;
+    }
+
+    .profile-btn {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 11px;
+      color: white;
+      background: rgba(255,255,255,.09);
+      cursor: pointer;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      color: #8792af;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin: 0 0 9px 8px;
+    }
+
+    .settings-card {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 21px;
+      background: rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .setting + .setting {
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .setting:hover {
+      background: rgba(255,255,255,.06);
+    }
+
+    .setting-icon {
+      width: 43px;
+      height: 43px;
+      min-width: 43px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.08);
+      font-size: 20px;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-info h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .setting-info p {
+      color: #78839f;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .arrow {
+      color: #68738f;
+      font-size: 21px;
+    }
+
+    .switch {
+      position: relative;
+      width: 45px;
+      height: 25px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: #303951;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: white;
+      transition: .2s;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .danger {
+      color: #ff6b81;
+    }
+
+    .danger .setting-icon {
+      background: rgba(255,80,100,.1);
+    }
+
+    .version {
+      text-align: center;
+      color: #59647f;
+      font-size: 11px;
+      padding: 20px 0 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+      padding: 25px;
+      border-radius: 23px;
+      background: #111831;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #9ba6c7;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .cancel {
+      background: rgba(255,255,255,.1);
+    }
+
+    .logout-confirm {
+      background: #e5485d;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 16px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .profile-card {
+        padding: 16px;
+      }
+
+      .profile-avatar {
+        width: 57px;
+        height: 57px;
+        min-width: 57px;
+      }
+
+      .profile-btn {
+        padding: 9px 11px;
+      }
+
+      .setting {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <h1>Settings</h1>
+  </div>
+
+
+  <!-- Profile -->
+  <div class="profile-card">
+
+    <div class="profile-avatar" id="profileAvatar">
+      ME
+    </div>
+
+    <div class="profile-info">
+      <h2 id="profileName">My Profile</h2>
+      <p id="profileUsername">@username</p>
+    </div>
+
+    <button class="profile-btn" onclick="openProfile()">
+      View
+    </button>
+
+  </div>
+
+
+  <!-- Account -->
+  <div class="section">
+
+    <div class="section-title">
+      Account
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="openProfile()">
+
+        <div class="setting-icon">👤</div>
+
+        <div class="setting-info">
+          <h3>Profile</h3>
+          <p>Edit your name, photo, username and bio</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting" onclick="openAccount()">
+
+        <div class="setting-icon">🔐</div>
+
+        <div class="setting-info">
+          <h3>Account</h3>
+          <p>Email, password and account information</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Privacy -->
+  <div class="section">
+
+    <div class="section-title">
+      Privacy & Security
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="openPrivacy()">
+
+        <div class="setting-icon">🛡️</div>
+
+        <div class="setting-info">
+          <h3>Privacy</h3>
+          <p>Control who can contact and interact with you</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting" onclick="openBlocked()">
+
+        <div class="setting-icon">🚫</div>
+
+        <div class="setting-info">
+          <h3>Blocked Users</h3>
+          <p>Manage people you've blocked</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting" onclick="securityInfo()">
+
+        <div class="setting-icon">🔒</div>
+
+        <div class="setting-info">
+          <h3>Security</h3>
+          <p>Login activity and security options</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Notifications -->
+  <div class="section">
+
+    <div class="section-title">
+      Notifications
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="openNotifications()">
+
+        <div class="setting-icon">🔔</div>
+
+        <div class="setting-info">
+          <h3>Notifications</h3>
+          <p>Messages, calls and group notifications</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div class="setting-icon">👁️</div>
+
+        <div class="setting-info">
+          <h3>Notification Preview</h3>
+          <p>Show message content in notifications</p>
+        </div>
+
+        <label class="switch" onclick="event.stopPropagation()">
+
+          <input
+            type="checkbox"
+            id="previewToggle"
+            checked
+            onchange="saveToggle('preview')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Appearance -->
+  <div class="section">
+
+    <div class="section-title">
+      Appearance
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="changeTheme()">
+
+        <div class="setting-icon">🌙</div>
+
+        <div class="setting-info">
+          <h3>Theme</h3>
+          <p id="themeText">Dark theme</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div class="setting-icon">📳</div>
+
+        <div class="setting-info">
+          <h3>Vibration</h3>
+          <p>Vibrate for new messages and calls</p>
+        </div>
+
+        <label class="switch" onclick="event.stopPropagation()">
+
+          <input
+            type="checkbox"
+            checked
+            onchange="saveToggle('vibration')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Storage -->
+  <div class="section">
+
+    <div class="section-title">
+      Data & Storage
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="storageInfo()">
+
+        <div class="setting-icon">💾</div>
+
+        <div class="setting-info">
+          <h3>Storage & Data</h3>
+          <p>Manage media storage and data usage</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Support -->
+  <div class="section">
+
+    <div class="section-title">
+      Support
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting" onclick="openHelp()">
+
+        <div class="setting-icon">❓</div>
+
+        <div class="setting-info">
+          <h3>Help & Support</h3>
+          <p>Get help with Talk My Friends</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+
+      <div class="setting" onclick="openAbout()">
+
+        <div class="setting-icon">ℹ️</div>
+
+        <div class="setting-info">
+          <h3>About Talk My Friends</h3>
+          <p>App information and version</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Logout -->
+  <div class="section">
+
+    <div class="settings-card">
+
+      <div class="setting danger" onclick="logout()">
+
+        <div class="setting-icon">🚪</div>
+
+        <div class="setting-info">
+          <h3>Log Out</h3>
+          <p>Sign out from this device</p>
+        </div>
+
+        <div class="arrow">›</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="version">
+    Talk My Friends • Version 1.0.0
+  </div>
+
+</div>
+
+
+<!-- Logout Modal -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <h2>Log Out?</h2>
+
+    <p>
+      Are you sure you want to log out from this device?
+    </p>
+
+    <div class="modal-buttons">
+
+      <button
+        class="cancel"
+        onclick="closeModal()">
+        Cancel
+      </button>
+
+      <button
+        class="logout-confirm"
+        onclick="confirmLogout()">
+        Log Out
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  function goBack() {
+    window.location.href = "home.html";
+  }
+
+
+  function openProfile() {
+    window.location.href = "profile.html";
+  }
+
+
+  function openAccount() {
+
+    alert(
+      "Account Manager\n\n" +
+      "Email, password and account information."
+    );
+
+  }
+
+
+  function openPrivacy() {
+    window.location.href = "privacy.html";
+  }
+
+
+  function openBlocked() {
+    window.location.href = "blocked.html";
+  }
+
+
+  function openNotifications() {
+    window.location.href = "notifications.html";
+  }
+
+
+  function openHelp() {
+    window.location.href = "help.html";
+  }
+
+
+  function openAbout() {
+    window.location.href = "about.html";
+  }
+
+
+  function securityInfo() {
+
+    alert(
+      "Security settings\n\n" +
+      "Login activity, password changes, " +
+      "two-step verification and active sessions."
+    );
+
+  }
+
+
+  function storageInfo() {
+
+    alert(
+      "Storage & Data\n\n" +
+      "Manage photos, videos, files and data usage."
+    );
+
+  }
+
+
+  function changeTheme() {
+
+    const text =
+      document.getElementById("themeText");
+
+    if (text.textContent === "Dark theme") {
+
+      text.textContent =
+        "Dark theme • Default";
+
+    } else {
+
+      text.textContent =
+        "Dark theme";
+
+    }
+
+  }
+
+
+  function saveToggle(type) {
+
+    let value;
+
+    if (type === "preview") {
+
+      value =
+        document.getElementById(
+          "previewToggle"
+        ).checked;
+
+    }
+
+    localStorage.setItem(
+      "talkMyFriends_" + type,
+      value
+    );
+
+  }
+
+
+  function logout() {
+
+    document.getElementById(
+      "modal"
+    ).style.display = "flex";
+
+  }
+
+
+  function closeModal() {
+
+    document.getElementById(
+      "modal"
+    ).style.display = "none";
+
+  }
+
+
+  function confirmLogout() {
+
+    localStorage.removeItem(
+      "talkMyFriendsProfile"
+    );
+
+    localStorage.removeItem(
+      "talkMyFriends_preview"
+    );
+
+    localStorage.removeItem(
+      "talkMyFriends_vibration"
+    );
+
+    window.location.href =
+      "login.html";
+
+  }
+
+
+  // Load saved profile
+  const savedProfile =
+    localStorage.getItem(
+      "talkMyFriendsProfile"
+    );
+
+  if (savedProfile) {
+
+    try {
+
+      const profile =
+        JSON.parse(savedProfile);
+
+
+      if (profile.fullName) {
+
+        document.getElementById(
+          "profileName"
+        ).textContent =
+          profile.fullName;
+
+
+        const initials =
+          profile.fullName
+            .split(" ")
+            .map(word => word[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+
+        document.getElementById(
+          "profileAvatar"
+        ).textContent =
+          initials;
+
+      }
+
+
+      if (profile.username) {
+
+        document.getElementById(
+          "profileUsername"
+        ).textContent =
+          "@" + profile.username;
+
+      }
+
+
+      if (profile.photo) {
+
+        document.getElementById(
+          "profileAvatar"
+        ).innerHTML =
+          `<img src="${profile.photo}" alt="Profile">`;
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "Profile could not be loaded."
+      );
+
+    }
+
+  }
+
+
+  // Load notification setting
+  const savedPreview =
+    localStorage.getItem(
+      "talkMyFriends_preview"
+    );
+
+  if (savedPreview !== null) {
+
+    document.getElementById(
+      "previewToggle"
+    ).checked =
+      savedPreview === "true";
+
+  }
+
+</script>
+
+</body>
+</html>

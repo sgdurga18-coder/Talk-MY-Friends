@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left, rgba(90, 70, 220, 0.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0, 180, 255, 0.15), transparent 35%),
+        #070b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 45px;
+      height: 45px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      color: #9ba3b7;
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(15px);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #704cff, #a43cff);
+      font-size: 20px;
+    }
+
+    .card-title h2 {
+      font-size: 18px;
+    }
+
+    .card-title p {
+      color: #8e97ad;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* Setting Row */
+    .setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .setting:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .setting:first-child {
+      padding-top: 0;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-info h3 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .setting-info p {
+      color: #8f98ad;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Select */
+    select {
+      background: #11172a;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Toggle */
+    .switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #2a3042;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 4px;
+      top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(135deg, #6847ff, #a23cff);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Buttons */
+    .action-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      color: white;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .action-btn:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .danger-btn {
+      background: rgba(255,70,90,0.1);
+      color: #ff7180;
+      border: 1px solid rgba(255,70,90,0.2);
+    }
+
+    .danger-btn:hover {
+      background: rgba(255,70,90,0.18);
+    }
+
+    /* Info */
+    .info-box {
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(80,100,255,0.08);
+      border: 1px solid rgba(100,120,255,0.15);
+      color: #aeb8d0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 430px;
+      background: #101628;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .modal-box .big-icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #929bb0;
+      line-height: 1.6;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
+
+    .cancel {
+      background: #252c40;
+    }
+
+    .confirm {
+      background: linear-gradient(135deg, #6847ff, #a23cff);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .setting {
+        align-items: flex-start;
+      }
+
+      select {
+        max-width: 130px;
+      }
+
+      .setting-info h3 {
+        font-size: 14px;
+      }
+
+      .setting-info p {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">←</button>
+
+      <div>
+        <h1>Privacy</h1>
+        <p>Control your privacy and visibility</p>
+      </div>
+    </div>
+
+
+    <!-- Profile Privacy -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">👤</div>
+
+        <div>
+          <h2>Profile Privacy</h2>
+          <p>Choose who can see your information</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Profile Photo</h3>
+          <p>Who can see your profile photo?</p>
+        </div>
+
+        <select id="profilePhoto">
+          <option>Everyone</option>
+          <option>My Contacts</option>
+          <option>Nobody</option>
+        </select>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>About & Bio</h3>
+          <p>Who can see your About information?</p>
+        </div>
+
+        <select id="aboutPrivacy">
+          <option>Everyone</option>
+          <option>My Contacts</option>
+          <option>Nobody</option>
+        </select>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Last Seen</h3>
+          <p>Show when you were last active</p>
+        </div>
+
+        <select id="lastSeen">
+          <option>Everyone</option>
+          <option>My Contacts</option>
+          <option>Nobody</option>
+        </select>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Online Status</h3>
+          <p>Show when you are currently online</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="onlineStatus" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+
+    <!-- Messages Privacy -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">💬</div>
+
+        <div>
+          <h2>Messages</h2>
+          <p>Control your messaging privacy</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Read Receipts</h3>
+          <p>Let others know when you have read their messages</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="readReceipts" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Typing Indicator</h3>
+          <p>Show when you are typing a message</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="typingIndicator" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Who Can Message Me</h3>
+          <p>Choose who can start a conversation with you</p>
+        </div>
+
+        <select id="messagePrivacy">
+          <option>Everyone</option>
+          <option>My Contacts</option>
+          <option>Nobody</option>
+        </select>
+      </div>
+
+    </div>
+
+
+    <!-- Calls Privacy -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">📞</div>
+
+        <div>
+          <h2>Calls</h2>
+          <p>Control who can contact you</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Voice Calls</h3>
+          <p>Allow people to make voice calls to you</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="voiceCalls" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Video Calls</h3>
+          <p>Allow people to make video calls to you</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="videoCalls" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+
+    <!-- Status Privacy -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">⭕</div>
+
+        <div>
+          <h2>Status & Stories</h2>
+          <p>Choose who can view your updates</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Who Can View My Status</h3>
+          <p>Control who can see your status updates</p>
+        </div>
+
+        <select id="statusPrivacy">
+          <option>Everyone</option>
+          <option>My Contacts</option>
+          <option>Only Selected People</option>
+        </select>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Status Replies</h3>
+          <p>Allow people to reply to your status</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="statusReplies" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+
+    <!-- Search Privacy -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">🔎</div>
+
+        <div>
+          <h2>Discoverability</h2>
+          <p>Control how people can find you</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Find Me by Username</h3>
+          <p>Allow people to find your profile using your username</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="usernameSearch" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Find Me by Email</h3>
+          <p>Allow people to find your account using your email</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="emailSearch">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+
+    <!-- Security -->
+    <div class="card">
+
+      <div class="card-title">
+        <div class="icon">🔐</div>
+
+        <div>
+          <h2>Security</h2>
+          <p>Protect your Connectly account</p>
+        </div>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Two-Step Verification</h3>
+          <p>Add an extra layer of security to your account</p>
+        </div>
+
+        <button class="action-btn" onclick="twoStep()">
+          Set Up
+        </button>
+      </div>
+
+
+      <div class="setting">
+        <div class="setting-info">
+          <h3>Active Sessions</h3>
+          <p>See where your account is currently logged in</p>
+        </div>
+
+        <button class="action-btn" onclick="sessions()">
+          View
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="info-box">
+      🔒 <strong>Your privacy matters.</strong><br><br>
+
+      Connectly will use these settings to control who can
+      see your profile, contact you, view your status and
+      interact with your account.
+
+      <br><br>
+
+      <strong>Note:</strong> These controls are currently saved
+      only on this device. In the real Connectly version,
+      privacy settings will be securely stored in the backend
+      database and applied to real users.
+    </div>
+
+
+    <!-- Reset -->
+    <div style="margin-top:18px;text-align:center;">
+      <button class="action-btn danger-btn" onclick="openReset()">
+        Reset Privacy Settings
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- Reset Modal -->
+  <div class="modal" id="resetModal">
+
+    <div class="modal-box">
+
+      <div class="big-icon">⚠️</div>
+
+      <h2>Reset Privacy Settings?</h2>
+
+      <p>
+        All privacy settings will return to their default values.
+      </p>
+
+      <div class="modal-buttons">
+
+        <button class="cancel" onclick="closeReset()">
+          Cancel
+        </button>
+
+        <button class="confirm" onclick="resetPrivacy()">
+          Reset
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* Back */
+    function goBack() {
+      window.location.href = "settings.html";
+    }
+
+
+    /* Save privacy settings */
+    const controls = document.querySelectorAll(
+      "input, select"
+    );
+
+    controls.forEach(control => {
+
+      const saved = localStorage.getItem(
+        "privacy_" + control.id
+      );
+
+      if (saved !== null) {
+
+        if (control.type === "checkbox") {
+          control.checked = saved === "true";
+        } else {
+          control.value = saved;
+        }
+
+      }
+
+      control.addEventListener("change", function() {
+
+        if (control.type === "checkbox") {
+
+          localStorage.setItem(
+            "privacy_" + control.id,
+            control.checked
+          );
+
+        } else {
+
+          localStorage.setItem(
+            "privacy_" + control.id,
+            control.value
+          );
+
+        }
+
+      });
+
+    });
+
+
+    /* Two Step Verification */
+    function twoStep() {
+
+      alert(
+        "Two-Step Verification will be connected to OTP/email verification in the real backend."
+      );
+
+    }
+
+
+    /* Active Sessions */
+    function sessions() {
+
+      alert(
+        "Active Sessions will show your logged-in devices after the real authentication system is connected."
+      );
+
+    }
+
+
+    /* Reset Modal */
+    function openReset() {
+      document.getElementById("resetModal").style.display = "flex";
+    }
+
+    function closeReset() {
+      document.getElementById("resetModal").style.display = "none";
+    }
+
+
+    /* Reset settings */
+    function resetPrivacy() {
+
+      controls.forEach(control => {
+
+        localStorage.removeItem(
+          "privacy_" + control.id
+        );
+
+      });
+
+      location.reload();
+
+    }
+
+
+    /* Close modal by clicking outside */
+    document.getElementById("resetModal").addEventListener(
+      "click",
+      function(e) {
+
+        if (e.target === this) {
+          closeReset();
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

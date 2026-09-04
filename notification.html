@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Notifications | Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #263c91 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d249c 0%, transparent 35%),
+        #080d1f;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+      padding: 22px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.14);
+    }
+
+    .header h1 {
+      font-size: 24px;
+    }
+
+    /* Notification controls */
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .top-actions p {
+      color: #8f9ab8;
+      font-size: 13px;
+    }
+
+    .mark-read {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .mark-read:hover {
+      background: rgba(255,255,255,.14);
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .filter {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.06);
+      color: #9da7c2;
+      padding: 10px 17px;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .filter.active {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Section */
+    .section-title {
+      color: #8994b0;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 10px;
+    }
+
+    /* Notification card */
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .notification {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .notification:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    .notification.unread {
+      border-left: 3px solid #7c5cff;
+      background: rgba(92,80,190,.11);
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 15px;
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      position: relative;
+    }
+
+    .type-icon {
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111831;
+      border: 2px solid #111831;
+      font-size: 11px;
+    }
+
+    .notification-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notification-content h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .notification-content p {
+      color: #929dbc;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .time {
+      color: #68738f;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .unread-dot {
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      border-radius: 50%;
+      background: #8b5cf6;
+    }
+
+    /* Empty */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 70px 20px;
+      color: #8993ae;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .empty p {
+      font-size: 13px;
+    }
+
+    /* Notification settings */
+    .settings-box {
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.05);
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 0;
+    }
+
+    .settings-row + .settings-row {
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .settings-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .settings-text {
+      flex: 1;
+    }
+
+    .settings-text h3 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .settings-text p {
+      color: #78839f;
+      font-size: 11px;
+    }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      width: 45px;
+      height: 25px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: #303951;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: white;
+      transition: .2s;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    @media (max-width: 600px) {
+
+      .page {
+        padding: 16px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .notification {
+        padding: 13px;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+      }
+
+      .time {
+        align-self: flex-start;
+      }
+
+      .top-actions {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+
+      <button class="back-btn" onclick="goBack()">
+        ←
+      </button>
+
+      <h1>Notifications</h1>
+
+    </div>
+
+
+    <!-- Top Actions -->
+    <div class="top-actions">
+
+      <p id="notificationCount">
+        You have 4 unread notifications
+      </p>
+
+      <button
+        class="mark-read"
+        onclick="markAllRead()"
+      >
+        Mark all as read
+      </button>
+
+    </div>
+
+
+    <!-- Filters -->
+    <div class="filters">
+
+      <button
+        class="filter active"
+        onclick="filterNotifications('all', this)"
+      >
+        All
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterNotifications('message', this)"
+      >
+        Messages
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterNotifications('group', this)"
+      >
+        Groups
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterNotifications('call', this)"
+      >
+        Calls
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterNotifications('social', this)"
+      >
+        Social
+      </button>
+
+    </div>
+
+
+    <!-- Today -->
+    <div class="section-title">
+      Today
+    </div>
+
+    <div
+      class="notification-list"
+      id="notificationList"
+    >
+
+
+      <!-- Notification 1 -->
+      <div
+        class="notification unread"
+        data-type="message"
+        onclick="openMessage('Alex Morgan')"
+      >
+
+        <div class="avatar">
+          AM
+          <span class="type-icon">💬</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Alex Morgan sent you a message</h3>
+
+          <p>
+            "Hey! Are you free this evening?"
+          </p>
+
+        </div>
+
+        <span class="time">
+          5 min
+        </span>
+
+        <span class="unread-dot"></span>
+
+      </div>
+
+
+      <!-- Notification 2 -->
+      <div
+        class="notification unread"
+        data-type="group"
+        onclick="openGroup()"
+      >
+
+        <div class="avatar">
+          👥
+          <span class="type-icon">👥</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Weekend Friends</h3>
+
+          <p>
+            Sarah added a new message to the group.
+          </p>
+
+        </div>
+
+        <span class="time">
+          18 min
+        </span>
+
+        <span class="unread-dot"></span>
+
+      </div>
+
+
+      <!-- Notification 3 -->
+      <div
+        class="notification unread"
+        data-type="call"
+        onclick="openCall()"
+      >
+
+        <div class="avatar">
+          SW
+          <span class="type-icon">📞</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Missed call from Sarah Wilson</h3>
+
+          <p>
+            Sarah tried to call you.
+          </p>
+
+        </div>
+
+        <span class="time">
+          32 min
+        </span>
+
+        <span class="unread-dot"></span>
+
+      </div>
+
+
+      <!-- Notification 4 -->
+      <div
+        class="notification unread"
+        data-type="social"
+        onclick="openProfile()"
+      >
+
+        <div class="avatar">
+          RC
+          <span class="type-icon">👤</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Ryan Cooper sent you a friend request</h3>
+
+          <p>
+            Tap to view Ryan's profile.
+          </p>
+
+        </div>
+
+        <span class="time">
+          1 hr
+        </span>
+
+        <span class="unread-dot"></span>
+
+      </div>
+
+
+      <!-- Notification 5 -->
+      <div
+        class="notification"
+        data-type="social"
+        onclick="openStatus()"
+      >
+
+        <div class="avatar">
+          EB
+          <span class="type-icon">⭕</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Emma Brown added a new status</h3>
+
+          <p>
+            "Weekend vibes ✨"
+          </p>
+
+        </div>
+
+        <span class="time">
+          2 hr
+        </span>
+
+      </div>
+
+
+      <!-- Notification 6 -->
+      <div
+        class="notification"
+        data-type="message"
+        onclick="openMessage('Olivia Smith')"
+      >
+
+        <div class="avatar">
+          OS
+          <span class="type-icon">💬</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Olivia Smith sent you a message</h3>
+
+          <p>
+            "Don't forget about tomorrow!"
+          </p>
+
+        </div>
+
+        <span class="time">
+          3 hr
+        </span>
+
+      </div>
+
+
+      <!-- Notification 7 -->
+      <div
+        class="notification"
+        data-type="group"
+        onclick="openGroup()"
+      >
+
+        <div class="avatar">
+          🎮
+          <span class="type-icon">👥</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Gaming Squad</h3>
+
+          <p>
+            Daniel changed the group photo.
+          </p>
+
+        </div>
+
+        <span class="time">
+          5 hr
+        </span>
+
+      </div>
+
+
+      <!-- Notification 8 -->
+      <div
+        class="notification"
+        data-type="call"
+        onclick="openCall()"
+      >
+
+        <div class="avatar">
+          DL
+          <span class="type-icon">📹</span>
+        </div>
+
+        <div class="notification-content">
+
+          <h3>Video call ended</h3>
+
+          <p>
+            Daniel Lee's video call lasted 12 minutes.
+          </p>
+
+        </div>
+
+        <span class="time">
+          Yesterday
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Empty State -->
+    <div
+      class="empty"
+      id="emptyState"
+    >
+
+      <div class="empty-icon">
+        🔔
+      </div>
+
+      <h2>No Notifications</h2>
+
+      <p>
+        You're all caught up!
+      </p>
+
+    </div>
+
+
+    <!-- Notification Settings -->
+    <div class="settings-box">
+
+      <div class="section-title">
+        Notification Settings
+      </div>
+
+
+      <div class="settings-row">
+
+        <div class="settings-icon">
+          🔔
+        </div>
+
+        <div class="settings-text">
+
+          <h3>Push Notifications</h3>
+
+          <p>
+            Receive notifications for new activity
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="pushNotifications"
+            checked
+            onchange="toggleSetting('push')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div class="settings-icon">
+          💬
+        </div>
+
+        <div class="settings-text">
+
+          <h3>Message Notifications</h3>
+
+          <p>
+            Notify me when someone messages me
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            checked
+            onchange="toggleSetting('message')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div class="settings-icon">
+          📞
+        </div>
+
+        <div class="settings-text">
+
+          <h3>Call Notifications</h3>
+
+          <p>
+            Notify me about incoming calls
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            checked
+            onchange="toggleSetting('call')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div class="settings-icon">
+          👥
+        </div>
+
+        <div class="settings-text">
+
+          <h3>Group Notifications</h3>
+
+          <p>
+            Receive updates from your groups
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            checked
+            onchange="toggleSetting('group')"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* Back */
+    function goBack() {
+
+      window.location.href =
+        "home.html";
+
+    }
+
+
+    /* Mark all as read */
+    function markAllRead() {
+
+      document
+        .querySelectorAll(".notification.unread")
+        .forEach(notification => {
+
+          notification.classList.remove("unread");
+
+          const dot =
+            notification.querySelector(".unread-dot");
+
+          if (dot) {
+            dot.remove();
+          }
+
+        });
+
+      updateCount();
+
+    }
+
+
+    /* Update unread count */
+    function updateCount() {
+
+      const unread =
+        document.querySelectorAll(
+          ".notification.unread"
+        ).length;
+
+      const count =
+        document.getElementById(
+          "notificationCount"
+        );
+
+      if (unread === 0) {
+
+        count.textContent =
+          "You're all caught up";
+
+      } else {
+
+        count.textContent =
+          "You have " +
+          unread +
+          " unread notifications";
+
+      }
+
+    }
+
+
+    /* Filter */
+    function filterNotifications(type, button) {
+
+      document
+        .querySelectorAll(".filter")
+        .forEach(btn => {
+
+          btn.classList.remove("active");
+
+        });
+
+      button.classList.add("active");
+
+      const notifications =
+        document.querySelectorAll(
+          ".notification"
+        );
+
+      let visible = 0;
+
+      notifications.forEach(notification => {
+
+        if (
+          type === "all" ||
+          notification.dataset.type === type
+        ) {
+
+          notification.style.display =
+            "flex";
+
+          visible++;
+
+        } else {
+
+          notification.style.display =
+            "none";
+
+        }
+
+      });
+
+      const empty =
+        document.getElementById(
+          "emptyState"
+        );
+
+      const list =
+        document.getElementById(
+          "notificationList"
+        );
+
+      if (visible === 0) {
+
+        list.style.display = "none";
+        empty.style.display = "block";
+
+      } else {
+
+        list.style.display = "flex";
+        empty.style.display = "none";
+
+      }
+
+    }
+
+
+    /* Message */
+    function openMessage(user) {
+
+      window.location.href =
+        "chat.html?user=" +
+        encodeURIComponent(user);
+
+    }
+
+
+    /* Group */
+    function openGroup() {
+
+      window.location.href =
+        "group.html?group=Weekend%20Friends";
+
+    }
+
+
+    /* Call */
+    function openCall() {
+
+      window.location.href =
+        "calls.html";
+
+    }
+
+
+    /* Profile */
+    function openProfile() {
+
+      window.location.href =
+        "user-profile.html?user=Ryan%20Cooper";
+
+    }
+
+
+    /* Status */
+    function openStatus() {
+
+      window.location.href =
+        "status.html";
+
+    }
+
+
+    /* Settings */
+    function toggleSetting(type) {
+
+      let message = "";
+
+      if (type === "push") {
+        message = "Push notification setting updated.";
+      }
+
+      if (type === "message") {
+        message = "Message notification setting updated.";
+      }
+
+      if (type === "call") {
+        message = "Call notification setting updated.";
+      }
+
+      if (type === "group") {
+        message = "Group notification setting updated.";
+      }
+
+      console.log(message);
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Media | Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #263c91 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d249c 0%, transparent 35%),
+        #080d1f;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.14);
+    }
+
+    .header-info h1 {
+      font-size: 23px;
+      margin-bottom: 5px;
+    }
+
+    .header-info p {
+      color: #8e99b8;
+      font-size: 13px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .tab {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.06);
+      color: #9da7c2;
+      padding: 11px 19px;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Sections */
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .section-title {
+      color: #aab3cf;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 15px;
+    }
+
+    /* Media grid */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .media-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 14px;
+      cursor: pointer;
+      background: rgba(255,255,255,.08);
+    }
+
+    .media-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: .3s;
+    }
+
+    .media-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .video-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(0,0,0,.6);
+      font-size: 14px;
+    }
+
+    .media-date {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 4px 7px;
+      border-radius: 7px;
+      background: rgba(0,0,0,.55);
+      font-size: 10px;
+    }
+
+    /* Files */
+    .files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .file-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.06);
+    }
+
+    .file-icon {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      background: rgba(79,124,255,.13);
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-info h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-info p {
+      color: #78839f;
+      font-size: 11px;
+    }
+
+    .download-btn {
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .download-btn:hover {
+      background: rgba(255,255,255,.15);
+    }
+
+    /* Links */
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-card {
+      display: flex;
+      gap: 13px;
+      padding: 16px;
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.06);
+    }
+
+    .link-icon {
+      width: 45px;
+      height: 45px;
+      min-width: 45px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(168,85,247,.13);
+      font-size: 20px;
+    }
+
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-info h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .link-info p {
+      color: #78839f;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .open-link {
+      border: none;
+      padding: 9px 13px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8993ae;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .empty p {
+      font-size: 13px;
+    }
+
+    /* Viewer */
+    .viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.88);
+      padding: 20px;
+    }
+
+    .viewer img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 18px;
+      object-fit: contain;
+    }
+
+    .close-viewer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+
+      .page {
+        padding: 15px;
+      }
+
+      .media-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .media-item {
+        border-radius: 10px;
+      }
+
+      .media-date {
+        display: none;
+      }
+
+      .file-card,
+      .link-card {
+        padding: 13px;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      .media-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .header-info h1 {
+        font-size: 20px;
+      }
+
+      .file-info h3 {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+
+      <button class="back-btn" onclick="goBack()">
+        ←
+      </button>
+
+      <div class="header-info">
+
+        <h1>Media & Files</h1>
+
+        <p id="groupName">
+          Weekend Friends
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Tabs -->
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        onclick="showTab('photos', this)"
+      >
+        🖼️ Photos
+      </button>
+
+      <button
+        class="tab"
+        onclick="showTab('videos', this)"
+      >
+        🎥 Videos
+      </button>
+
+      <button
+        class="tab"
+        onclick="showTab('files', this)"
+      >
+        📄 Files
+      </button>
+
+      <button
+        class="tab"
+        onclick="showTab('links', this)"
+      >
+        🔗 Links
+      </button>
+
+    </div>
+
+
+    <!-- Photos -->
+    <div
+      class="content-section active"
+      id="photos"
+    >
+
+      <div class="section-title">
+        Shared Photos
+      </div>
+
+      <div class="media-grid">
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=11')"
+        >
+          <img src="https://picsum.photos/500/500?random=11">
+          <span class="media-date">Today</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=12')"
+        >
+          <img src="https://picsum.photos/500/500?random=12">
+          <span class="media-date">Today</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=13')"
+        >
+          <img src="https://picsum.photos/500/500?random=13">
+          <span class="media-date">Yesterday</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=14')"
+        >
+          <img src="https://picsum.photos/500/500?random=14">
+          <span class="media-date">Yesterday</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=15')"
+        >
+          <img src="https://picsum.photos/500/500?random=15">
+          <span class="media-date">Aug 31</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=16')"
+        >
+          <img src="https://picsum.photos/500/500?random=16">
+          <span class="media-date">Aug 30</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=17')"
+        >
+          <img src="https://picsum.photos/500/500?random=17">
+          <span class="media-date">Aug 29</span>
+        </div>
+
+        <div
+          class="media-item"
+          onclick="openImage('https://picsum.photos/800/800?random=18')"
+        >
+          <img src="https://picsum.photos/500/500?random=18">
+          <span class="media-date">Aug 28</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Videos -->
+    <div
+      class="content-section"
+      id="videos"
+    >
+
+      <div class="section-title">
+        Shared Videos
+      </div>
+
+      <div class="media-grid">
+
+        <div
+          class="media-item"
+          onclick="playVideo()"
+        >
+          <img src="https://picsum.photos/500/500?random=21">
+
+          <span class="video-icon">
+            ▶
+          </span>
+
+          <span class="media-date">
+            0:32
+          </span>
+
+        </div>
+
+
+        <div
+          class="media-item"
+          onclick="playVideo()"
+        >
+          <img src="https://picsum.photos/500/500?random=22">
+
+          <span class="video-icon">
+            ▶
+          </span>
+
+          <span class="media-date">
+            1:14
+          </span>
+
+        </div>
+
+
+        <div
+          class="media-item"
+          onclick="playVideo()"
+        >
+          <img src="https://picsum.photos/500/500?random=23">
+
+          <span class="video-icon">
+            ▶
+          </span>
+
+          <span class="media-date">
+            0:48
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Files -->
+    <div
+      class="content-section"
+      id="files"
+    >
+
+      <div class="section-title">
+        Shared Files
+      </div>
+
+      <div class="files-list">
+
+
+        <div class="file-card">
+
+          <div class="file-icon">
+            📕
+          </div>
+
+          <div class="file-info">
+
+            <h3>Weekend_Plan.pdf</h3>
+
+            <p>
+              PDF • 2.4 MB • Alex Morgan
+            </p>
+
+          </div>
+
+          <button
+            class="download-btn"
+            onclick="downloadFile('Weekend_Plan.pdf')"
+          >
+            ↓
+          </button>
+
+        </div>
+
+
+        <div class="file-card">
+
+          <div class="file-icon">
+            📊
+          </div>
+
+          <div class="file-info">
+
+            <h3>Trip_Budget.xlsx</h3>
+
+            <p>
+              Excel • 856 KB • Sarah Wilson
+            </p>
+
+          </div>
+
+          <button
+            class="download-btn"
+            onclick="downloadFile('Trip_Budget.xlsx')"
+          >
+            ↓
+          </button>
+
+        </div>
+
+
+        <div class="file-card">
+
+          <div class="file-icon">
+            📝
+          </div>
+
+          <div class="file-info">
+
+            <h3>Group_Notes.docx</h3>
+
+            <p>
+              Word • 1.1 MB • Emma Brown
+            </p>
+
+          </div>
+
+          <button
+            class="download-btn"
+            onclick="downloadFile('Group_Notes.docx')"
+          >
+            ↓
+          </button>
+
+        </div>
+
+
+        <div class="file-card">
+
+          <div class="file-icon">
+            📦
+          </div>
+
+          <div class="file-info">
+
+            <h3>Photos.zip</h3>
+
+            <p>
+              ZIP • 18.6 MB • Daniel Lee
+            </p>
+
+          </div>
+
+          <button
+            class="download-btn"
+            onclick="downloadFile('Photos.zip')"
+          >
+            ↓
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Links -->
+    <div
+      class="content-section"
+      id="links"
+    >
+
+      <div class="section-title">
+        Shared Links
+      </div>
+
+      <div class="links-list">
+
+
+        <div class="link-card">
+
+          <div class="link-icon">
+            🌐
+          </div>
+
+          <div class="link-info">
+
+            <h3>Weekend Travel Guide</h3>
+
+            <p>
+              https://example.com/travel-guide
+            </p>
+
+          </div>
+
+          <button
+            class="open-link"
+            onclick="openLink()"
+          >
+            Open
+          </button>
+
+        </div>
+
+
+        <div class="link-card">
+
+          <div class="link-icon">
+            🎵
+          </div>
+
+          <div class="link-info">
+
+            <h3>Our Weekend Playlist</h3>
+
+            <p>
+              https://example.com/playlist
+            </p>
+
+          </div>
+
+          <button
+            class="open-link"
+            onclick="openLink()"
+          >
+            Open
+          </button>
+
+        </div>
+
+
+        <div class="link-card">
+
+          <div class="link-icon">
+            📍
+          </div>
+
+          <div class="link-info">
+
+            <h3>Meeting Location</h3>
+
+            <p>
+              https://maps.google.com/
+            </p>
+
+          </div>
+
+          <button
+            class="open-link"
+            onclick="openMaps()"
+          >
+            Open
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Image Viewer -->
+  <div
+    class="viewer"
+    id="viewer"
+    onclick="closeViewer()"
+  >
+
+    <button
+      class="close-viewer"
+      onclick="closeViewer()"
+    >
+      ×
+    </button>
+
+    <img
+      id="viewerImage"
+      src=""
+      onclick="event.stopPropagation()"
+    >
+
+  </div>
+
+
+  <script>
+
+    /* Read Group */
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const group =
+      params.get("group");
+
+    if (group) {
+
+      document.getElementById(
+        "groupName"
+      ).textContent = group;
+
+    }
+
+
+    /* Back */
+    function goBack() {
+
+      window.location.href =
+        "group-info.html?group=" +
+        encodeURIComponent(
+          group || "Weekend Friends"
+        );
+
+    }
+
+
+    /* Tabs */
+    function showTab(tabName, button) {
+
+      document
+        .querySelectorAll(".content-section")
+        .forEach(section => {
+
+          section.classList.remove("active");
+
+        });
+
+
+      document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+          tab.classList.remove("active");
+
+        });
+
+
+      document
+        .getElementById(tabName)
+        .classList.add("active");
+
+
+      button.classList.add("active");
+
+    }
+
+
+    /* Image Viewer */
+    function openImage(url) {
+
+      document.getElementById(
+        "viewerImage"
+      ).src = url;
+
+      document.getElementById(
+        "viewer"
+      ).style.display = "flex";
+
+    }
+
+
+    function closeViewer() {
+
+      document.getElementById(
+        "viewer"
+      ).style.display = "none";
+
+    }
+
+
+    /* Video */
+    function playVideo() {
+
+      alert(
+        "Video player will be connected to real uploaded videos later."
+      );
+
+    }
+
+
+    /* Files */
+    function downloadFile(name) {
+
+      alert(
+        name +
+        " download will work after real file storage is connected."
+      );
+
+    }
+
+
+    /* Links */
+    function openLink() {
+
+      alert(
+        "Real shared link will open here after backend connection."
+      );
+
+    }
+
+
+    function openMaps() {
+
+      window.open(
+        "https://maps.google.com/",
+        "_blank"
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>

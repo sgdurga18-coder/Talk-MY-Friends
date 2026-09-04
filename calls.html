@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calls | Connectly</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#202c68 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#40145f 0%,transparent 35%),
+        #080b18;
+    color:white;
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    margin:auto;
+    padding:25px;
+}
+
+/* Header */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.06);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#9b6cff;
+}
+
+.call-btn{
+    padding:11px 16px;
+    border:none;
+    border-radius:13px;
+    background:linear-gradient(135deg,#7357ff,#a34cff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Title */
+
+.title{
+    margin-bottom:25px;
+}
+
+.title h1{
+    font-size:34px;
+    margin-bottom:7px;
+}
+
+.title p{
+    color:#a9aec7;
+}
+
+/* Quick call */
+
+.quick-call{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.quick-card{
+    padding:20px;
+    border-radius:20px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.08);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.quick-card:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,.09);
+}
+
+.quick-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:23px;
+    background:rgba(125,92,255,.18);
+    margin-bottom:12px;
+}
+
+.quick-card h3{
+    margin-bottom:5px;
+}
+
+.quick-card p{
+    color:#9298b2;
+    font-size:13px;
+}
+
+/* Section */
+
+.section-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.section-header h2{
+    font-size:19px;
+}
+
+.section-header span{
+    color:#8e95ae;
+    font-size:13px;
+}
+
+/* Call list */
+
+.call-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.call-item{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:16px;
+    border-radius:18px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.07);
+    transition:.25s;
+}
+
+.call-item:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.call-info{
+    flex:1;
+}
+
+.call-info h3{
+    font-size:16px;
+    margin-bottom:6px;
+}
+
+.call-time{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#9298b1;
+    font-size:13px;
+}
+
+.incoming{
+    color:#62d59a;
+}
+
+.outgoing{
+    color:#8b72ff;
+}
+
+.missed{
+    color:#ff6577;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+}
+
+.action-btn{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,.07);
+    color:white;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.action-btn:hover{
+    background:rgba(126,92,255,.25);
+}
+
+/* Empty */
+
+.empty{
+    display:none;
+    text-align:center;
+    padding:50px 20px;
+    color:#9298b1;
+}
+
+.empty-icon{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+/* Search */
+
+.search-box{
+    width:100%;
+    padding:14px 16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.055);
+    color:white;
+    outline:none;
+    margin-bottom:20px;
+}
+
+.search-box::placeholder{
+    color:#858ba5;
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    .container{
+        padding:18px;
+    }
+
+    .title h1{
+        font-size:28px;
+    }
+
+    .quick-call{
+        grid-template-columns:1fr;
+    }
+
+    .call-item{
+        padding:13px;
+    }
+
+    .avatar{
+        width:50px;
+        height:50px;
+    }
+
+    .action-btn{
+        width:36px;
+        height:36px;
+    }
+
+    .call-btn{
+        padding:9px 12px;
+        font-size:12px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <div class="left">
+
+            <button class="back-btn"
+                    onclick="location.href='home.html'">
+                ←
+            </button>
+
+            <div class="logo">
+                Connect<span>ly</span>
+            </div>
+
+        </div>
+
+        <button class="call-btn"
+                onclick="location.href='new-chat.html'">
+            + New Call
+        </button>
+
+    </div>
+
+
+    <!-- Title -->
+
+    <div class="title">
+
+        <h1>Calls</h1>
+
+        <p>
+            Connect with your friends through voice and video calls.
+        </p>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+
+    <div class="quick-call">
+
+        <div class="quick-card"
+             onclick="startCall('voice')">
+
+            <div class="quick-icon">
+                📞
+            </div>
+
+            <h3>Voice Call</h3>
+
+            <p>
+                Start a voice call with a contact
+            </p>
+
+        </div>
+
+
+        <div class="quick-card"
+             onclick="startCall('video')">
+
+            <div class="quick-icon">
+                📹
+            </div>
+
+            <h3>Video Call</h3>
+
+            <p>
+                Start a video call with a contact
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <input
+        type="text"
+        id="search"
+        class="search-box"
+        placeholder="Search call history...">
+
+
+    <!-- Recent Calls -->
+
+    <div class="section-header">
+
+        <h2>Recent Calls</h2>
+
+        <span id="count">
+            6 calls
+        </span>
+
+    </div>
+
+
+    <div class="call-list" id="callList">
+
+
+        <!-- Call 1 -->
+
+        <div class="call-item"
+             data-name="Alex Morgan">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=12">
+
+            <div class="call-info">
+
+                <h3>Alex Morgan</h3>
+
+                <div class="call-time">
+
+                    <span class="outgoing">
+                        ↗
+                    </span>
+
+                    <span>
+                        Today, 12:35 PM
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Alex Morgan','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Alex Morgan','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Call 2 -->
+
+        <div class="call-item"
+             data-name="Sarah Wilson">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=47">
+
+            <div class="call-info">
+
+                <h3>Sarah Wilson</h3>
+
+                <div class="call-time">
+
+                    <span class="incoming">
+                        ↙
+                    </span>
+
+                    <span>
+                        Today, 11:20 AM
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Sarah Wilson','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Sarah Wilson','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Call 3 -->
+
+        <div class="call-item"
+             data-name="Daniel Lee">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=11">
+
+            <div class="call-info">
+
+                <h3>Daniel Lee</h3>
+
+                <div class="call-time">
+
+                    <span class="missed">
+                        ↙
+                    </span>
+
+                    <span>
+                        Yesterday, 8:45 PM • Missed
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Daniel Lee','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Daniel Lee','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Call 4 -->
+
+        <div class="call-item"
+             data-name="Emma Brown">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=44">
+
+            <div class="call-info">
+
+                <h3>Emma Brown</h3>
+
+                <div class="call-time">
+
+                    <span class="outgoing">
+                        ↗
+                    </span>
+
+                    <span>
+                        Yesterday, 6:10 PM
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Emma Brown','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Emma Brown','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Call 5 -->
+
+        <div class="call-item"
+             data-name="Olivia Smith">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=45">
+
+            <div class="call-info">
+
+                <h3>Olivia Smith</h3>
+
+                <div class="call-time">
+
+                    <span class="incoming">
+                        ↙
+                    </span>
+
+                    <span>
+                        Monday, 4:30 PM
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Olivia Smith','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Olivia Smith','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Call 6 -->
+
+        <div class="call-item"
+             data-name="Ryan Cooper">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/150?img=68">
+
+            <div class="call-info">
+
+                <h3>Ryan Cooper</h3>
+
+                <div class="call-time">
+
+                    <span class="missed">
+                        ↙
+                    </span>
+
+                    <span>
+                        Sunday, 9:15 PM • Missed
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn"
+                        onclick="callUser('Ryan Cooper','voice')">
+                    📞
+                </button>
+
+                <button class="action-btn"
+                        onclick="callUser('Ryan Cooper','video')">
+                    📹
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Empty -->
+
+    <div class="empty" id="empty">
+
+        <div class="empty-icon">
+            📞
+        </div>
+
+        <h3>No calls found</h3>
+
+        <p>
+            Your call history will appear here.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* Start a new call */
+
+function startCall(type){
+
+    window.location.href =
+        "new-chat.html?call=" +
+        encodeURIComponent(type);
+
+}
+
+
+/* Call a specific user */
+
+function callUser(name,type){
+
+    window.location.href =
+        "call.html?type=" +
+        encodeURIComponent(type) +
+        "&user=" +
+        encodeURIComponent(name);
+
+}
+
+
+/* Search call history */
+
+const search =
+    document.getElementById("search");
+
+search.addEventListener("input",function(){
+
+    const value =
+        this.value.toLowerCase().trim();
+
+    const items =
+        document.querySelectorAll(".call-item");
+
+    let visible = 0;
+
+    items.forEach(function(item){
+
+        const name =
+            item.dataset.name.toLowerCase();
+
+        if(name.includes(value)){
+
+            item.style.display="flex";
+
+            visible++;
+
+        }else{
+
+            item.style.display="none";
+
+        }
+
+    });
+
+
+    document.getElementById("count")
+        .innerText =
+        visible + " calls";
+
+
+    if(visible === 0){
+
+        document.getElementById("empty")
+            .style.display="block";
+
+    }else{
+
+        document.getElementById("empty")
+            .style.display="none";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

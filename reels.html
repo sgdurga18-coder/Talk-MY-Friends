@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk My Friends — Reels</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    overflow:hidden;
+}
+
+.app{
+    height:100vh;
+    width:100%;
+    position:relative;
+}
+
+/* TOP BAR */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:65px;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    background:linear-gradient(
+        rgba(0,0,0,.75),
+        rgba(0,0,0,0)
+    );
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    background:linear-gradient(45deg,#ff2d55,#8a2be2,#00c6ff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+}
+
+.icon-btn{
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* TABS */
+
+.tabs{
+    position:fixed;
+    top:63px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:45;
+    display:flex;
+    gap:25px;
+    font-size:14px;
+}
+
+.tab{
+    color:#aaa;
+    cursor:pointer;
+    padding-bottom:7px;
+}
+
+.tab.active{
+    color:#fff;
+    border-bottom:2px solid #fff;
+}
+
+/* FEED */
+
+.feed{
+    height:100vh;
+    width:100%;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    scrollbar-width:none;
+}
+
+.feed::-webkit-scrollbar{
+    display:none;
+}
+
+.reel{
+    height:100vh;
+    width:100%;
+    position:relative;
+    scroll-snap-align:start;
+    background:#111;
+    overflow:hidden;
+}
+
+.reel video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    background:#111;
+}
+
+.video-gradient{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(0,0,0,.45),
+        transparent 25%,
+        transparent 55%,
+        rgba(0,0,0,.8)
+    );
+}
+
+/* INFO */
+
+.info{
+    position:absolute;
+    left:16px;
+    bottom:30px;
+    right:85px;
+    z-index:10;
+}
+
+.creator{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid white;
+}
+
+.username{
+    font-weight:bold;
+}
+
+.follow{
+    margin-left:5px;
+    border:1px solid white;
+    background:transparent;
+    color:white;
+    border-radius:8px;
+    padding:5px 10px;
+    cursor:pointer;
+}
+
+.caption{
+    font-size:15px;
+    line-height:1.4;
+    margin-bottom:8px;
+}
+
+.hashtags{
+    color:#80cfff;
+}
+
+/* SIDE ACTIONS */
+
+.actions{
+    position:absolute;
+    right:12px;
+    bottom:35px;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+}
+
+.action{
+    text-align:center;
+    cursor:pointer;
+    user-select:none;
+}
+
+.action-icon{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.35);
+    font-size:26px;
+}
+
+.action-count{
+    font-size:12px;
+    margin-top:3px;
+}
+
+.liked .action-icon{
+    color:#ff3040;
+}
+
+.saved .action-icon{
+    color:#ffd400;
+}
+
+/* LOADING */
+
+.loading{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+    font-size:18px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* EMPTY */
+
+.empty{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:30px;
+}
+
+.empty h2{
+    margin-bottom:10px;
+}
+
+.empty button{
+    margin-top:20px;
+    border:0;
+    border-radius:12px;
+    padding:12px 22px;
+    background:#fff;
+    color:#000;
+    font-weight:bold;
+}
+
+/* CREATE BUTTON */
+
+.create{
+    position:fixed;
+    right:18px;
+    top:130px;
+    z-index:55;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:0;
+    background:#fff;
+    color:#000;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    z-index:200;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.modal-box{
+    width:100%;
+    max-width:600px;
+    background:#151515;
+    border-radius:25px 25px 0 0;
+    padding:22px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:#333;
+    color:#fff;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.type-buttons{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.type-btn{
+    flex:1;
+    padding:12px;
+    border:1px solid #444;
+    background:#222;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.type-btn.active{
+    background:white;
+    color:black;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    background:#222;
+    border:1px solid #444;
+    color:#fff;
+    padding:13px;
+    border-radius:10px;
+    margin-bottom:12px;
+    outline:none;
+}
+
+textarea{
+    min-height:90px;
+    resize:none;
+}
+
+.upload-box{
+    border:2px dashed #555;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.publish{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(45deg,#ff2d55,#8a2be2);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.progress{
+    margin-top:10px;
+    font-size:13px;
+    color:#aaa;
+}
+
+/* COMMENTS */
+
+.comment-panel{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    max-width:600px;
+    margin:auto;
+    background:#161616;
+    z-index:300;
+    border-radius:25px 25px 0 0;
+    padding:20px;
+    max-height:70vh;
+}
+
+.comment-list{
+    max-height:45vh;
+    overflow:auto;
+    margin:15px 0;
+}
+
+.comment{
+    padding:10px 0;
+    border-bottom:1px solid #292929;
+}
+
+.comment-input{
+    display:flex;
+    gap:8px;
+}
+
+.comment-input input{
+    margin:0;
+}
+
+.comment-input button{
+    width:55px;
+    border:0;
+    border-radius:10px;
+    background:white;
+    color:black;
+}
+
+/* DESKTOP */
+
+@media(min-width:800px){
+
+    .reel{
+        width:480px;
+        margin:auto;
+    }
+
+    .feed{
+        background:#050505;
+    }
+
+    .topbar{
+        max-width:1100px;
+        margin:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="loading" id="loading">
+    Loading Talk My Friends...
+</div>
+
+<header class="topbar">
+    <div class="logo">
+        Talk <span>My Friends</span>
+    </div>
+
+    <div class="top-actions">
+        <button class="icon-btn" onclick="openCreate()">＋</button>
+        <button class="icon-btn" onclick="toggleMuteAll()">🔊</button>
+    </div>
+</header>
+
+<div class="tabs">
+    <div class="tab active" data-type="all">For You</div>
+    <div class="tab" data-type="reel">Reels</div>
+    <div class="tab" data-type="short">Shorts</div>
+    <div class="tab" data-type="video">Videos</div>
+</div>
+
+<button class="create" onclick="openCreate()">＋</button>
+
+<main class="feed" id="feed"></main>
+
+</div>
+
+
+<!-- CREATE MODAL -->
+
+<div class="modal hidden" id="createModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+    <h2>Create</h2>
+    <button class="close" onclick="closeCreate()">×</button>
+</div>
+
+<div class="type-buttons">
+
+<button class="type-btn active" data-create-type="reel">
+    🎬 Reel
+</button>
+
+<button class="type-btn" data-create-type="short">
+    ⚡ Short
+</button>
+
+<button class="type-btn" data-create-type="video">
+    ▶ Video
+</button>
+
+</div>
+
+<div class="upload-box">
+    <input
+        type="file"
+        id="videoFile"
+        accept="video/*"
+    >
+    <p>Choose a video from your device</p>
+</div>
+
+<input
+    id="caption"
+    placeholder="Write a caption..."
+>
+
+<textarea
+    id="hashtags"
+    placeholder="#friends #fun #india"
+></textarea>
+
+<select id="privacy">
+    <option value="public">🌍 Public</option>
+    <option value="friends">👥 Friends</option>
+    <option value="private">🔒 Private</option>
+</select>
+
+<button class="publish" onclick="publishVideo()">
+    Publish
+</button>
+
+<div class="progress" id="uploadProgress"></div>
+
+</div>
+</div>
+
+
+<!-- COMMENTS -->
+
+<div class="comment-panel hidden" id="commentPanel">
+
+<div class="modal-header">
+    <h3>Comments</h3>
+    <button class="close" onclick="closeComments()">×</button>
+</div>
+
+<div class="comment-list" id="commentList"></div>
+
+<div class="comment-input">
+
+<input
+    id="commentInput"
+    placeholder="Add a comment..."
+>
+
+<button onclick="sendComment()">➤</button>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    orderBy,
+    updateDoc,
+    doc,
+    increment,
+    serverTimestamp,
+    where
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getStorage,
+    ref,
+    uploadBytesResumable,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+/* =========================================
+   FIREBASE CONFIG
+   ========================================= */
+
+const firebaseConfig = {
+
+    apiKey: "YOUR_API_KEY",
+
+    authDomain:
+        "YOUR_PROJECT.firebaseapp.com",
+
+    projectId:
+        "YOUR_PROJECT_ID",
+
+    storageBucket:
+        "YOUR_PROJECT.firebasestorage.app",
+
+    messagingSenderId:
+        "YOUR_MESSAGING_SENDER_ID",
+
+    appId:
+        "YOUR_APP_ID"
+};
+
+
+/* =========================================
+   FIREBASE INITIALIZE
+   ========================================= */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+
+let currentUser = null;
+let selectedType = "reel";
+let currentCommentReel = null;
+let muted = false;
+
+
+/* =========================================
+   AUTH
+   ========================================= */
+
+onAuthStateChanged(auth, async user => {
+
+    currentUser = user;
+
+    if(!user){
+
+        document.getElementById("loading")
+        .classList.add("hidden");
+
+        showLoginMessage();
+
+        return;
+    }
+
+    await loadVideos();
+
+});
+
+
+/* =========================================
+   LOAD VIDEOS
+   ========================================= */
+
+async function loadVideos(type = "all"){
+
+    const feed =
+        document.getElementById("feed");
+
+    feed.innerHTML = "";
+
+    try{
+
+        let q;
+
+        if(type === "all"){
+
+            q = query(
+                collection(db,"videos"),
+                orderBy("createdAt","desc")
+            );
+
+        }else{
+
+            q = query(
+                collection(db,"videos"),
+                where("type","==",type),
+                orderBy("createdAt","desc")
+            );
+
+        }
+
+        const snapshot =
+            await getDocs(q);
+
+        if(snapshot.empty){
+
+            showEmpty();
+
+        }else{
+
+            snapshot.forEach(item => {
+
+                createVideoCard(
+                    item.id,
+                    item.data()
+                );
+
+            });
+
+            startObserver();
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        feed.innerHTML = `
+            <div class="empty">
+                <h2>Unable to load videos</h2>
+                <p>${error.message}</p>
+                <button onclick="location.reload()">
+                    Retry
+                </button>
+            </div>
+        `;
+
+    }
+
+    document
+        .getElementById("loading")
+        .classList.add("hidden");
+}
+
+
+/* =========================================
+   VIDEO CARD
+   ========================================= */
+
+function createVideoCard(id,data){
+
+    const reel =
+        document.createElement("section");
+
+    reel.className = "reel";
+
+    const avatar =
+        data.photoURL ||
+        "https://via.placeholder.com/100";
+
+    const username =
+        data.username ||
+        "Talk My Friends User";
+
+    const likes =
+        data.likes || 0;
+
+    const comments =
+        data.comments || 0;
+
+    const views =
+        data.views || 0;
+
+    reel.innerHTML = `
+
+        <video
+            src="${data.videoUrl}"
+            loop
+            playsinline
+            muted
+            preload="metadata"
+        ></video>
+
+        <div class="video-gradient"></div>
+
+        <div class="info">
+
+            <div class="creator">
+
+                <img
+                    class="avatar"
+                    src="${avatar}"
+                >
+
+                <span class="username">
+                    @${username}
+                </span>
+
+                <button
+                    class="follow"
+                    onclick="followUser('${data.uid}')"
+                >
+                    Follow
+                </button>
+
+            </div>
+
+            <div class="caption">
+                ${escapeHTML(data.caption || "")}
+            </div>
+
+            <div class="hashtags">
+                ${escapeHTML(data.hashtags || "")}
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <div
+                class="action like-btn"
+                onclick="likeVideo('${id}',this)"
+            >
+
+                <div class="action-icon">
+                    ❤️
+                </div>
+
+                <div class="action-count">
+                    ${likes}
+                </div>
+
+            </div>
+
+
+            <div
+                class="action"
+                onclick="openComments('${id}')"
+            >
+
+                <div class="action-icon">
+                    💬
+                </div>
+
+                <div class="action-count">
+                    ${comments}
+                </div>
+
+            </div>
+
+
+            <div
+                class="action"
+                onclick="shareVideo('${data.videoUrl}')"
+            >
+
+                <div class="action-icon">
+                    ↗
+                </div>
+
+                <div class="action-count">
+                    Share
+                </div>
+
+            </div>
+
+
+            <div
+                class="action save-btn"
+                onclick="saveVideo('${id}',this)"
+            >
+
+                <div class="action-icon">
+                    🔖
+                </div>
+
+                <div class="action-count">
+                    Save
+                </div>
+
+            </div>
+
+
+            <div class="action">
+
+                <div class="action-icon">
+                    ⋮
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    reel.dataset.id = id;
+
+    reel.dataset.videoUrl = data.videoUrl;
+
+    document
+        .getElementById("feed")
+        .appendChild(reel);
+
+
+    const video =
+        reel.querySelector("video");
+
+
+    /* DOUBLE TAP */
+
+    let lastTap = 0;
+
+    video.addEventListener("touchend", () => {
+
+        const now = Date.now();
+
+        if(now-lastTap < 350){
+
+            const btn =
+                reel.querySelector(".like-btn");
+
+            likeVideo(id,btn);
+
+            showHeart(reel);
+
+        }
+
+        lastTap = now;
+
+    });
+
+}
+
+
+/* =========================================
+   VIDEO OBSERVER
+   ========================================= */
+
+function startObserver(){
+
+    const observer =
+        new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                const video =
+                    entry.target.querySelector("video");
+
+                if(entry.isIntersecting){
+
+                    video.muted = muted;
+
+                    video.play()
+                    .catch(()=>{});
+
+                    increaseViews(
+                        entry.target.dataset.id
+                    );
+
+                }else{
+
+                    video.pause();
+
+                }
+
+            });
+
+        },
+        {
+            threshold:.75
+        }
+    );
+
+
+    document
+        .querySelectorAll(".reel")
+        .forEach(item => {
+
+            observer.observe(item);
+
+        });
+
+}
+
+
+/* =========================================
+   LIKE
+   ========================================= */
+
+window.likeVideo = async function(id,button){
+
+    if(!currentUser){
+
+        alert("Please login first.");
+
+        return;
+    }
+
+    const videoRef =
+        doc(db,"videos",id);
+
+    try{
+
+        await updateDoc(
+            videoRef,
+            {
+                likes:increment(1)
+            }
+        );
+
+        button.classList.add("liked");
+
+        const count =
+            button.querySelector(".action-count");
+
+        count.innerText =
+            Number(count.innerText || 0)+1;
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+};
+
+
+/* =========================================
+   VIEWS
+   ========================================= */
+
+async function increaseViews(id){
+
+    try{
+
+        await updateDoc(
+            doc(db,"videos",id),
+            {
+                views:increment(1)
+            }
+        );
+
+    }catch(error){
+
+        console.log("View update:",error);
+
+    }
+
+}
+
+
+/* =========================================
+   SAVE
+   ========================================= */
+
+window.saveVideo = function(id,button){
+
+    button.classList.toggle("saved");
+
+};
+
+
+/* =========================================
+   SHARE
+   ========================================= */
+
+window.shareVideo = async function(url){
+
+    try{
+
+        if(navigator.share){
+
+            await navigator.share({
+                title:"Talk My Friends Video",
+                url:url
+            });
+
+        }else{
+
+            await navigator.clipboard.writeText(url);
+
+            alert("Video link copied!");
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+};
+
+
+/* =========================================
+   FOLLOW
+   ========================================= */
+
+window.followUser = async function(uid){
+
+    if(!currentUser){
+
+        alert("Login required.");
+
+        return;
+    }
+
+    try{
+
+        await addDoc(
+            collection(db,"follows"),
+            {
+                followerId:currentUser.uid,
+                followingId:uid,
+                createdAt:serverTimestamp()
+            }
+        );
+
+        alert("Following!");
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+};
+
+
+/* =========================================
+   COMMENTS
+   ========================================= */
+
+window.openComments = async function(id){
+
+    currentCommentReel = id;
+
+    document
+        .getElementById("commentPanel")
+        .classList.remove("hidden");
+
+    await loadComments(id);
+
+};
+
+
+window.closeComments = function(){
+
+    document
+        .getElementById("commentPanel")
+        .classList.add("hidden");
+
+};
+
+
+async function loadComments(videoId){
+
+    const list =
+        document.getElementById("commentList");
+
+    list.innerHTML =
+        "<p>Loading comments...</p>";
+
+    try{
+
+        const q =
+            query(
+                collection(
+                    db,
+                    "videos",
+                    videoId,
+                    "comments"
+                ),
+                orderBy("createdAt","asc")
+            );
+
+        const snapshot =
+            await getDocs(q);
+
+        list.innerHTML = "";
+
+        snapshot.forEach(item => {
+
+            const data = item.data();
+
+            const div =
+                document.createElement("div");
+
+            div.className = "comment";
+
+            div.innerHTML = `
+                <b>@${escapeHTML(
+                    data.username || "user"
+                )}</b>
+                <br>
+                ${escapeHTML(
+                    data.text || ""
+                )}
+            `;
+
+            list.appendChild(div);
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        list.innerHTML =
+            "<p>No comments yet.</p>";
+
+    }
+
+}
+
+
+window.sendComment = async function(){
+
+    if(!currentUser){
+
+        alert("Login first.");
+
+        return;
+    }
+
+    const input =
+        document.getElementById("commentInput");
+
+    const text =
+        input.value.trim();
+
+    if(!text) return;
+
+    try{
+
+        await addDoc(
+            collection(
+                db,
+                "videos",
+                currentCommentReel,
+                "comments"
+            ),
+            {
+                uid:currentUser.uid,
+                username:
+                    currentUser.displayName ||
+                    "User",
+                text:text,
+                createdAt:serverTimestamp()
+            }
+        );
+
+        await updateDoc(
+            doc(
+                db,
+                "videos",
+                currentCommentReel
+            ),
+            {
+                comments:increment(1)
+            }
+        );
+
+        input.value = "";
+
+        await loadComments(
+            currentCommentReel
+        );
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+
+};
+
+
+/* =========================================
+   CREATE
+   ========================================= */
+
+window.openCreate = function(){
+
+    document
+        .getElementById("createModal")
+        .classList.remove("hidden");
+
+};
+
+
+window.closeCreate = function(){
+
+    document
+        .getElementById("createModal")
+        .classList.add("hidden");
+
+};
+
+
+/* TYPE SELECT */
+
+document
+.querySelectorAll("[data-create-type]")
+.forEach(btn => {
+
+    btn.addEventListener("click",() => {
+
+        document
+        .querySelectorAll("[data-create-type]")
+        .forEach(x =>
+            x.classList.remove("active")
+        );
+
+        btn.classList.add("active");
+
+        selectedType =
+            btn.dataset.createType;
+
+    });
+
+});
+
+
+/* =========================================
+   PUBLISH VIDEO
+   ========================================= */
+
+window.publishVideo = async function(){
+
+    if(!currentUser){
+
+        alert("Please login first.");
+
+        return;
+    }
+
+    const file =
+        document.getElementById("videoFile")
+        .files[0];
+
+    if(!file){
+
+        alert("Please select a video.");
+
+        return;
+    }
+
+    const caption =
+        document.getElementById("caption")
+        .value;
+
+    const hashtags =
+        document.getElementById("hashtags")
+        .value;
+
+    const privacy =
+        document.getElementById("privacy")
+        .value;
+
+    const progress =
+        document.getElementById("uploadProgress");
+
+
+    const fileName =
+        Date.now()+"_"+file.name;
+
+    const storageRef =
+        ref(
+            storage,
+            `videos/${currentUser.uid}/${fileName}`
+        );
+
+
+    const upload =
+        uploadBytesResumable(
+            storageRef,
+            file
+        );
+
+
+    upload.on(
+        "state_changed",
+
+        snapshot => {
+
+            const percent =
+                Math.round(
+                    snapshot.bytesTransferred /
+                    snapshot.totalBytes *
+                    100
+                );
+
+            progress.innerText =
+                `Uploading ${percent}%`;
+
+        },
+
+        error => {
+
+            console.error(error);
+
+            progress.innerText =
+                error.message;
+
+        },
+
+        async () => {
+
+            const videoUrl =
+                await getDownloadURL(
+                    upload.snapshot.ref
+                );
+
+
+            await addDoc(
+                collection(db,"videos"),
+                {
+
+                    uid:
+                        currentUser.uid,
+
+                    username:
+                        currentUser.displayName ||
+                        "User",
+
+                    photoURL:
+                        currentUser.photoURL ||
+                        "",
+
+                    videoUrl:
+                        videoUrl,
+
+                    type:
+                        selectedType,
+
+                    caption:
+                        caption,
+
+                    hashtags:
+                        hashtags,
+
+                    privacy:
+                        privacy,
+
+                    likes:0,
+
+                    comments:0,
+
+                    views:0,
+
+                    createdAt:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            progress.innerText =
+                "Published successfully!";
+
+
+            document
+            .getElementById("videoFile")
+            .value = "";
+
+            document
+            .getElementById("caption")
+            .value = "";
+
+            document
+            .getElementById("hashtags")
+            .value = "";
+
+
+            setTimeout(() => {
+
+                closeCreate();
+
+                loadVideos();
+
+            },700);
+
+        }
+    );
+
+};
+
+
+/* =========================================
+   MUTE
+   ========================================= */
+
+window.toggleMuteAll = function(){
+
+    muted = !muted;
+
+    document
+    .querySelectorAll(".reel video")
+    .forEach(video => {
+
+        video.muted = muted;
+
+    });
+
+};
+
+
+/* =========================================
+   HEART
+   ========================================= */
+
+function showHeart(reel){
+
+    const heart =
+        document.createElement("div");
+
+    heart.innerHTML = "❤️";
+
+    heart.style.position =
+        "absolute";
+
+    heart.style.left =
+        "50%";
+
+    heart.style.top =
+        "50%";
+
+    heart.style.transform =
+        "translate(-50%,-50%) scale(1)";
+
+    heart.style.fontSize =
+        "100px";
+
+    heart.style.zIndex =
+        "100";
+
+    heart.style.transition =
+        ".5s";
+
+    reel.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.style.transform =
+            "translate(-50%,-50%) scale(1.8)";
+
+        heart.style.opacity="0";
+
+    },50);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    },600);
+
+}
+
+
+/* =========================================
+   EMPTY
+   ========================================= */
+
+function showEmpty(){
+
+    document
+    .getElementById("feed")
+    .innerHTML = `
+
+        <div class="empty">
+
+            <h2>No videos yet</h2>
+
+            <p>
+                Be the first person to post
+                a Reel, Short or Video.
+            </p>
+
+            <button onclick="openCreate()">
+                Create Video
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   LOGIN MESSAGE
+   ========================================= */
+
+function showLoginMessage(){
+
+    document
+    .getElementById("feed")
+    .innerHTML = `
+
+        <div class="empty">
+
+            <h2>Welcome to Talk My Friends</h2>
+
+            <p>
+                Login to watch and upload
+                Reels, Shorts and Videos.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   TABS
+   ========================================= */
+
+document
+.querySelectorAll(".tab")
+.forEach(tab => {
+
+    tab.addEventListener("click",() => {
+
+        document
+        .querySelectorAll(".tab")
+        .forEach(x =>
+            x.classList.remove("active")
+        );
+
+        tab.classList.add("active");
+
+        loadVideos(
+            tab.dataset.type
+        );
+
+    });
+
+});
+
+
+/* =========================================
+   SECURITY
+   ========================================= */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

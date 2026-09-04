@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Groups | Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left, #263c91 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d249c 0%, transparent 35%),
+        #080d1f;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .left-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.07);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #a855f7;
+    }
+
+    .add-btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 14px;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      box-shadow: 0 8px 25px rgba(100,70,255,0.25);
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Title */
+    .title-section {
+      margin-bottom: 25px;
+    }
+
+    .title-section h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .title-section p {
+      color: #9ba6c7;
+      font-size: 15px;
+    }
+
+    /* Search */
+    .search-box {
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,0.1);
+      outline: none;
+      background: rgba(255,255,255,0.07);
+      color: white;
+      font-size: 15px;
+      backdrop-filter: blur(15px);
+    }
+
+    .search-box input::placeholder {
+      color: #7e88a7;
+    }
+
+    .search-box input:focus {
+      border-color: #765cff;
+      box-shadow: 0 0 0 3px rgba(118,92,255,0.12);
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+    }
+
+    .filter {
+      padding: 10px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: #aab3cf;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .filter.active {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Group cards */
+    .groups-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .group-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(15px);
+      transition: 0.25s;
+    }
+
+    .group-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(140,120,255,0.3);
+    }
+
+    .group-avatar {
+      width: 60px;
+      height: 60px;
+      min-width: 60px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+      background: linear-gradient(135deg, #465cff, #a855f7);
+      box-shadow: 0 8px 25px rgba(92,70,255,0.2);
+    }
+
+    .group-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .group-info h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .group-info p {
+      color: #929dbc;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .group-meta {
+      margin-top: 7px;
+      color: #69738f;
+      font-size: 12px;
+    }
+
+    .open-btn {
+      border: none;
+      padding: 9px 13px;
+      border-radius: 11px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      cursor: pointer;
+    }
+
+    .open-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* Empty */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: #929dbc;
+    }
+
+    .empty-icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
+
+    .empty h2 {
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    /* Info box */
+    .info-box {
+      margin-top: 25px;
+      padding: 17px;
+      border-radius: 17px;
+      background: rgba(79,124,255,0.08);
+      border: 1px solid rgba(79,124,255,0.15);
+      color: #9ca8c9;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+
+      .page {
+        padding: 18px;
+        padding-bottom: 90px;
+      }
+
+      .header {
+        margin-bottom: 25px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .add-btn {
+        padding: 10px 13px;
+      }
+
+      .title-section h1 {
+        font-size: 27px;
+      }
+
+      .groups-list {
+        grid-template-columns: 1fr;
+      }
+
+      .group-card {
+        padding: 15px;
+      }
+
+      .group-avatar {
+        width: 54px;
+        height: 54px;
+        min-width: 54px;
+      }
+
+      .open-btn {
+        padding: 8px 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+
+      <div class="left-header">
+
+        <button class="back-btn" onclick="goHome()">←</button>
+
+        <div class="logo">
+          Connect<span>ly</span>
+        </div>
+
+      </div>
+
+      <button class="add-btn" onclick="createGroup()">
+        + Create Group
+      </button>
+
+    </div>
+
+
+    <!-- Title -->
+    <div class="title-section">
+
+      <h1>Your Groups</h1>
+
+      <p>
+        Chat, share and stay connected with your groups.
+      </p>
+
+    </div>
+
+
+    <!-- Search -->
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search groups..."
+        oninput="searchGroups()"
+      >
+
+    </div>
+
+
+    <!-- Filters -->
+    <div class="filters">
+
+      <button
+        class="filter active"
+        onclick="filterGroups('all', this)"
+      >
+        All Groups
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterGroups('active', this)"
+      >
+        Active
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterGroups('new', this)"
+      >
+        New
+      </button>
+
+    </div>
+
+
+    <!-- Groups -->
+    <div class="groups-list" id="groupsList">
+
+
+      <!-- Group 1 -->
+      <div
+        class="group-card"
+        data-name="Weekend Friends"
+        data-type="active"
+      >
+
+        <div class="group-avatar">
+          👥
+        </div>
+
+        <div class="group-info">
+
+          <h3>Weekend Friends</h3>
+
+          <p>
+            Alex: See you all this Saturday! 🎉
+          </p>
+
+          <div class="group-meta">
+            8 members • Active now
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('Weekend Friends')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+      <!-- Group 2 -->
+      <div
+        class="group-card"
+        data-name="College Friends"
+        data-type="active"
+      >
+
+        <div class="group-avatar">
+          🎓
+        </div>
+
+        <div class="group-info">
+
+          <h3>College Friends</h3>
+
+          <p>
+            Sarah: Tomorrow's plan is confirmed.
+          </p>
+
+          <div class="group-meta">
+            24 members • 5 min ago
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('College Friends')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+      <!-- Group 3 -->
+      <div
+        class="group-card"
+        data-name="Family Connect"
+        data-type="active"
+      >
+
+        <div class="group-avatar">
+          🏠
+        </div>
+
+        <div class="group-info">
+
+          <h3>Family Connect</h3>
+
+          <p>
+            Mom: Dinner will be ready at 8 PM ❤️
+          </p>
+
+          <div class="group-meta">
+            12 members • 20 min ago
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('Family Connect')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+      <!-- Group 4 -->
+      <div
+        class="group-card"
+        data-name="Gaming Squad"
+        data-type="new"
+      >
+
+        <div class="group-avatar">
+          🎮
+        </div>
+
+        <div class="group-info">
+
+          <h3>Gaming Squad</h3>
+
+          <p>
+            Daniel: Who's ready for tonight?
+          </p>
+
+          <div class="group-meta">
+            10 members • New
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('Gaming Squad')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+      <!-- Group 5 -->
+      <div
+        class="group-card"
+        data-name="Travel Buddies"
+        data-type="active"
+      >
+
+        <div class="group-avatar">
+          ✈️
+        </div>
+
+        <div class="group-info">
+
+          <h3>Travel Buddies</h3>
+
+          <p>
+            Emma: I found an amazing place! 🌄
+          </p>
+
+          <div class="group-meta">
+            15 members • 1 hour ago
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('Travel Buddies')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+      <!-- Group 6 -->
+      <div
+        class="group-card"
+        data-name="Work Team"
+        data-type="new"
+      >
+
+        <div class="group-avatar">
+          💼
+        </div>
+
+        <div class="group-info">
+
+          <h3>Work Team</h3>
+
+          <p>
+            Olivia: Meeting starts at 10 AM.
+          </p>
+
+          <div class="group-meta">
+            7 members • New
+          </div>
+
+        </div>
+
+        <button
+          class="open-btn"
+          onclick="openGroup('Work Team')"
+        >
+          Open
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- Empty state -->
+    <div class="empty" id="emptyState">
+
+      <div class="empty-icon">
+        🔍
+      </div>
+
+      <h2>No Groups Found</h2>
+
+      <p>
+        Try searching with another group name.
+      </p>
+
+    </div>
+
+
+    <!-- Info -->
+    <div class="info-box">
+
+      💡 <strong>Real Connectly version:</strong>
+      এখানে groups database-এর সঙ্গে connected থাকবে।
+      নতুন group তৈরি করলে members, messages, group photo,
+      notifications এবং group settings server/database-এ save হবে।
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* Go Home */
+    function goHome() {
+      window.location.href = "home.html";
+    }
+
+
+    /* Create Group */
+    function createGroup() {
+      window.location.href = "create-group.html";
+    }
+
+
+    /* Open Group */
+    function openGroup(groupName) {
+
+      window.location.href =
+        "group.html?group=" +
+        encodeURIComponent(groupName);
+
+    }
+
+
+    /* Search Groups */
+    function searchGroups() {
+
+      const search =
+        document
+          .getElementById("searchInput")
+          .value
+          .toLowerCase()
+          .trim();
+
+      const cards =
+        document.querySelectorAll(".group-card");
+
+      let found = 0;
+
+      cards.forEach(card => {
+
+        const name =
+          card.dataset.name.toLowerCase();
+
+        if (name.includes(search)) {
+
+          card.style.display = "flex";
+          found++;
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+      showEmpty(found);
+
+    }
+
+
+    /* Filter Groups */
+    function filterGroups(type, button) {
+
+      document
+        .querySelectorAll(".filter")
+        .forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      const cards =
+        document.querySelectorAll(".group-card");
+
+      let found = 0;
+
+      cards.forEach(card => {
+
+        if (
+          type === "all" ||
+          card.dataset.type === type
+        ) {
+
+          card.style.display = "flex";
+          found++;
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+      showEmpty(found);
+
+    }
+
+
+    /* Empty State */
+    function showEmpty(count) {
+
+      const empty =
+        document.getElementById("emptyState");
+
+      const list =
+        document.getElementById("groupsList");
+
+      if (count === 0) {
+
+        empty.style.display = "block";
+        list.style.display = "none";
+
+      } else {
+
+        empty.style.display = "none";
+        list.style.display = "grid";
+
+      }
+
+    }
+
+
+    /* Load Created Group */
+    const savedGroup =
+      localStorage.getItem("connectlyGroup");
+
+    if (savedGroup) {
+
+      try {
+
+        const group =
+          JSON.parse(savedGroup);
+
+        if (group.name) {
+
+          const groupsList =
+            document.getElementById("groupsList");
+
+          const card =
+            document.createElement("div");
+
+          card.className = "group-card";
+
+          card.dataset.name = group.name;
+          card.dataset.type = "new";
+
+          card.innerHTML = `
+
+            <div class="group-avatar">
+              ${group.photo ? "🖼️" : "👥"}
+            </div>
+
+            <div class="group-info">
+
+              <h3>${escapeHTML(group.name)}</h3>
+
+              <p>
+                ${escapeHTML(
+                  group.description || "New group created."
+                )}
+              </p>
+
+              <div class="group-meta">
+                New group • You created this
+              </div>
+
+            </div>
+
+            <button class="open-btn"
+              onclick="openGroup('${escapeJS(group.name)}')">
+              Open
+            </button>
+
+          `;
+
+          groupsList.prepend(card);
+
+        }
+
+      } catch (error) {
+
+        console.log(
+          "Saved group could not be loaded."
+        );
+
+      }
+
+    }
+
+
+    /* Security helper */
+    function escapeHTML(text) {
+
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function escapeJS(text) {
+
+      return text
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,924 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>New Chat - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(80, 90, 255, 0.22), transparent 35%),
+        radial-gradient(circle at 85% 85%, rgba(180, 60, 255, 0.18), transparent 35%),
+        #070b18;
+      color: white;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    .back-btn {
+      width: 43px;
+      height: 43px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .header-title h1 {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .header-title p {
+      color: #7d879d;
+      font-size: 12px;
+    }
+
+    /* =========================
+       SEARCH
+    ========================== */
+
+    .search-box {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 55px;
+      padding: 0 18px 0 50px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-box input::placeholder {
+      color: #687188;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(145,105,255,0.7);
+      box-shadow: 0 0 0 3px rgba(145,105,255,0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 17px;
+      color: #7a849b;
+      font-size: 19px;
+    }
+
+    /* =========================
+       FILTERS
+    ========================== */
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+    }
+
+    .filter {
+      flex-shrink: 0;
+      padding: 9px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.05);
+      color: #8992a8;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .filter.active,
+    .filter:hover {
+      color: white;
+      background: rgba(130,100,255,0.16);
+      border-color: rgba(145,105,255,0.3);
+    }
+
+    /* =========================
+       SECTION
+    ========================== */
+
+    .section-title {
+      color: #777f95;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 4px 12px;
+    }
+
+    .users {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.045);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .user-card:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(145,105,255,0.25);
+    }
+
+    .avatar {
+      width: 53px;
+      height: 53px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#5965ff,#a34dff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .online {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3cdb8c;
+      border: 2px solid #11162c;
+      position: absolute;
+      right: 0;
+      bottom: 1px;
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .username {
+      color: #727c93;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .status {
+      color: #39d98a;
+      font-size: 10px;
+    }
+
+    .offline {
+      color: #70798f;
+    }
+
+    .chat-btn {
+      border: none;
+      padding: 9px 13px;
+      border-radius: 10px;
+      background: rgba(130,100,255,0.13);
+      color: #a887ff;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .chat-btn:hover {
+      background: rgba(130,100,255,0.23);
+      color: white;
+    }
+
+    /* =========================
+       NO RESULTS
+    ========================== */
+
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 50px 20px;
+      color: #737d94;
+    }
+
+    .no-results-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .no-results h3 {
+      color: #b5bdce;
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .no-results p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FOOTER INFO
+    ========================== */
+
+    .info {
+      margin-top: 30px;
+      padding: 15px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #69738a;
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 600px) {
+
+      .page {
+        padding: 20px 13px;
+      }
+
+      .header-title h1 {
+        font-size: 22px;
+      }
+
+      .user-card {
+        padding: 12px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 19px;
+      }
+
+      .chat-btn {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="container">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="header">
+
+      <button
+        class="back-btn"
+        onclick="window.location.href='home.html'">
+        ←
+      </button>
+
+      <div class="header-title">
+
+        <h1>New Chat</h1>
+
+        <p>
+          Find someone and start a conversation
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         SEARCH
+    ========================== -->
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔎
+      </span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name or @username..."
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         FILTERS
+    ========================== -->
+
+    <div class="filters">
+
+      <button
+        class="filter active"
+        onclick="filterUsers('all', this)">
+        All
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterUsers('online', this)">
+        🟢 Online
+      </button>
+
+      <button
+        class="filter"
+        onclick="filterUsers('offline', this)">
+        Offline
+      </button>
+
+    </div>
+
+
+    <div class="section-title">
+      People
+    </div>
+
+
+    <!-- =========================
+         USERS
+    ========================== -->
+
+    <div
+      class="users"
+      id="users">
+
+
+      <!-- USER 1 -->
+
+      <div
+        class="user-card"
+        data-name="alex morgan"
+        data-username="@alexmorgan"
+        data-status="online">
+
+        <div class="avatar">
+
+          👨
+
+          <span class="online"></span>
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Alex Morgan
+          </div>
+
+          <div class="username">
+            @alexmorgan
+          </div>
+
+          <div class="status">
+            ● Online
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Alex Morgan')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 2 -->
+
+      <div
+        class="user-card"
+        data-name="sarah wilson"
+        data-username="@sarahwilson"
+        data-status="online">
+
+        <div class="avatar">
+
+          👩
+
+          <span class="online"></span>
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Sarah Wilson
+          </div>
+
+          <div class="username">
+            @sarahwilson
+          </div>
+
+          <div class="status">
+            ● Online
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Sarah Wilson')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 3 -->
+
+      <div
+        class="user-card"
+        data-name="daniel lee"
+        data-username="@daniellee"
+        data-status="offline">
+
+        <div class="avatar">
+          👨
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Daniel Lee
+          </div>
+
+          <div class="username">
+            @daniellee
+          </div>
+
+          <div class="status offline">
+            Last seen recently
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Daniel Lee')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 4 -->
+
+      <div
+        class="user-card"
+        data-name="emma brown"
+        data-username="@emmabrown"
+        data-status="online">
+
+        <div class="avatar">
+
+          👩
+
+          <span class="online"></span>
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Emma Brown
+          </div>
+
+          <div class="username">
+            @emmabrown
+          </div>
+
+          <div class="status">
+            ● Online
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Emma Brown')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 5 -->
+
+      <div
+        class="user-card"
+        data-name="ryan cooper"
+        data-username="@ryancooper"
+        data-status="offline">
+
+        <div class="avatar">
+          👨
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Ryan Cooper
+          </div>
+
+          <div class="username">
+            @ryancooper
+          </div>
+
+          <div class="status offline">
+            Last seen yesterday
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Ryan Cooper')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 6 -->
+
+      <div
+        class="user-card"
+        data-name="olivia smith"
+        data-username="@oliviasmith"
+        data-status="online">
+
+        <div class="avatar">
+
+          👩
+
+          <span class="online"></span>
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Olivia Smith
+          </div>
+
+          <div class="username">
+            @oliviasmith
+          </div>
+
+          <div class="status">
+            ● Online
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Olivia Smith')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 7 -->
+
+      <div
+        class="user-card"
+        data-name="noah williams"
+        data-username="@noahw"
+        data-status="offline">
+
+        <div class="avatar">
+          🧑
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Noah Williams
+          </div>
+
+          <div class="username">
+            @noahw
+          </div>
+
+          <div class="status offline">
+            Last seen recently
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Noah Williams')">
+          Chat
+        </button>
+
+      </div>
+
+
+      <!-- USER 8 -->
+
+      <div
+        class="user-card"
+        data-name="mia johnson"
+        data-username="@mia_j"
+        data-status="online">
+
+        <div class="avatar">
+
+          👩
+
+          <span class="online"></span>
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            Mia Johnson
+          </div>
+
+          <div class="username">
+            @mia_j
+          </div>
+
+          <div class="status">
+            ● Online
+          </div>
+
+        </div>
+
+        <button
+          class="chat-btn"
+          onclick="startChat('Mia Johnson')">
+          Chat
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         NO RESULTS
+    ========================== -->
+
+    <div
+      class="no-results"
+      id="noResults">
+
+      <div class="no-results-icon">
+        🔎
+      </div>
+
+      <h3>
+        No people found
+      </h3>
+
+      <p>
+        Try searching with another name or username.
+      </p>
+
+    </div>
+
+
+    <!-- =========================
+         INFO
+    ========================== -->
+
+    <div class="info">
+
+      🌎 In the real Connectly app, this section will
+      search registered users from the database.
+
+      <br>
+
+      You will be able to find people by their
+      name or unique username.
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  const userCards =
+    document.querySelectorAll(".user-card");
+
+  const noResults =
+    document.getElementById("noResults");
+
+
+  let currentFilter = "all";
+
+
+  // ============================================
+  // SEARCH USERS
+  // ============================================
+
+  searchInput.addEventListener("input", function() {
+
+    applyFilters();
+
+  });
+
+
+  function applyFilters() {
+
+    const search =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+    let visibleUsers = 0;
+
+
+    userCards.forEach(card => {
+
+      const name =
+        card.dataset.name;
+
+      const username =
+        card.dataset.username;
+
+      const status =
+        card.dataset.status;
+
+
+      const matchesSearch =
+        name.includes(search) ||
+        username.includes(search);
+
+
+      const matchesFilter =
+        currentFilter === "all" ||
+        currentFilter === status;
+
+
+      if (matchesSearch && matchesFilter) {
+
+        card.style.display = "flex";
+
+        visibleUsers++;
+
+      } else {
+
+        card.style.display = "none";
+
+      }
+
+    });
+
+
+    if (visibleUsers === 0) {
+
+      noResults.style.display = "block";
+
+    } else {
+
+      noResults.style.display = "none";
+
+    }
+
+  }
+
+
+  // ============================================
+  // FILTER
+  // ============================================
+
+  function filterUsers(type, button) {
+
+    currentFilter = type;
+
+
+    document
+      .querySelectorAll(".filter")
+      .forEach(btn => {
+
+        btn.classList.remove("active");
+
+      });
+
+
+    button.classList.add("active");
+
+
+    applyFilters();
+
+  }
+
+
+  // ============================================
+  // START CHAT
+  // ============================================
+
+  function startChat(name) {
+
+    window.location.href =
+      "chat.html?user=" +
+      encodeURIComponent(name);
+
+  }
+
+
+  // ============================================
+  // READ SEARCH FROM HOME PAGE
+  // Example:
+  // new-chat.html?search=Alex
+  // ============================================
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const searchFromURL =
+    params.get("search");
+
+
+  if (searchFromURL) {
+
+    searchInput.value =
+      searchFromURL;
+
+    applyFilters();
+
+  }
+
+</script>
+
+</body>
+</html>
+```

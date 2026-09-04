@@ -1,0 +1,1031 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Upload Reel • Talk MY Friends</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, #24115c 0, transparent 35%),
+        radial-gradient(circle at bottom right, #102f68 0, transparent 35%),
+        #050816;
+      color: white;
+    }
+
+    /* HEADER */
+    .header {
+      height: 70px;
+      padding: 0 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(5,8,22,.75);
+      backdrop-filter: blur(15px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #a855f7;
+    }
+
+    .back-btn {
+      border: none;
+      background: rgba(255,255,255,.1);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.18);
+    }
+
+    /* MAIN */
+    .container {
+      width: 100%;
+      max-width: 1050px;
+      margin: auto;
+      padding: 35px 20px 60px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .title p {
+      color: #aeb7ca;
+      font-size: 14px;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* UPLOAD CARD */
+    .card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(15px);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    /* DROP AREA */
+    .drop-area {
+      min-height: 430px;
+      border: 2px dashed rgba(168,85,247,.55);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 25px;
+      cursor: pointer;
+      transition: .2s;
+      background: rgba(124,58,237,.04);
+    }
+
+    .drop-area:hover {
+      background: rgba(124,58,237,.1);
+      border-color: #a855f7;
+    }
+
+    .drop-icon {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    .drop-area h3 {
+      margin-bottom: 8px;
+    }
+
+    .drop-area p {
+      color: #9ca8bd;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .choose-btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#7c3aed,#2563eb);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    #videoInput {
+      display: none;
+    }
+
+    /* VIDEO PREVIEW */
+    .preview-area {
+      display: none;
+      position: relative;
+      height: 500px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .preview-area.show {
+      display: block;
+    }
+
+    .preview-area video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .remove-video {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0,0,0,.7);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* FORM */
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 14px;
+    }
+
+    .field textarea {
+      height: 125px;
+      resize: none;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #8b5cf6;
+    }
+
+    .field select option {
+      background: #111827;
+      color: white;
+    }
+
+    .counter {
+      text-align: right;
+      color: #8994aa;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* SETTINGS */
+    .setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .setting:last-child {
+      border-bottom: none;
+    }
+
+    .setting-text strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .setting-text span {
+      font-size: 12px;
+      color: #8e99ad;
+    }
+
+    /* TOGGLE */
+    .switch {
+      position: relative;
+      width: 45px;
+      height: 24px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #374151;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: white;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #7c3aed;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(21px);
+    }
+
+    /* POST BUTTON */
+    .post-btn {
+      width: 100%;
+      margin-top: 25px;
+      padding: 15px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg,#7c3aed,#2563eb);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .post-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(124,58,237,.25);
+    }
+
+    .post-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* INFO */
+    .info {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 13px;
+      background: rgba(59,130,246,.08);
+      border: 1px solid rgba(59,130,246,.15);
+      color: #b9c6df;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* SUCCESS */
+    .success {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .success.show {
+      display: flex;
+    }
+
+    .success-box {
+      width: 350px;
+      max-width: 100%;
+      background: #111827;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    .success-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .success-box p {
+      color: #9ca8bd;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .success-box button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#7c3aed,#2563eb);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* MOBILE */
+    @media(max-width: 800px) {
+
+      .upload-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .title h1 {
+        font-size: 27px;
+      }
+
+      .drop-area {
+        min-height: 350px;
+      }
+
+      .preview-area {
+        height: 500px;
+      }
+    }
+
+    @media(max-width: 500px) {
+
+      .header {
+        padding: 0 15px;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .container {
+        padding: 25px 13px 45px;
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      .preview-area {
+        height: 480px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="logo">
+      Talk MY <span>Friends</span>
+    </div>
+
+    <button
+      class="back-btn"
+      onclick="location.href='reels.html'">
+      ← Back to Reels
+    </button>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="title">
+
+      <h1>🎬 Create a Reel</h1>
+
+      <p>
+        Share your favorite moments with the Talk MY Friends community.
+      </p>
+
+    </div>
+
+
+    <div class="upload-grid">
+
+
+      <!-- VIDEO -->
+      <section class="card">
+
+        <h2>Choose Your Video</h2>
+
+
+        <!-- DROP AREA -->
+        <label
+          class="drop-area"
+          id="dropArea"
+          for="videoInput">
+
+          <div id="uploadContent">
+
+            <div class="drop-icon">🎥</div>
+
+            <h3>Upload a Reel</h3>
+
+            <p>
+              Choose a vertical short video from your device.
+              <br>
+              Recommended format: MP4
+            </p>
+
+            <span class="choose-btn">
+              Choose Video
+            </span>
+
+          </div>
+
+        </label>
+
+
+        <input
+          type="file"
+          id="videoInput"
+          accept="video/*">
+
+
+        <!-- PREVIEW -->
+        <div
+          class="preview-area"
+          id="previewArea">
+
+          <video
+            id="videoPreview"
+            controls
+            playsinline>
+          </video>
+
+          <button
+            class="remove-video"
+            onclick="removeVideo()">
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="info">
+
+          📌 <strong>Tip:</strong>
+          Vertical videos look best in Reels.
+          Keep your video short and engaging.
+
+        </div>
+
+      </section>
+
+
+      <!-- DETAILS -->
+      <section class="card">
+
+        <h2>Reel Details</h2>
+
+
+        <!-- CAPTION -->
+        <div class="field">
+
+          <label for="caption">
+            Caption
+          </label>
+
+          <textarea
+            id="caption"
+            maxlength="220"
+            placeholder="Write something about your Reel..."></textarea>
+
+          <div class="counter">
+            <span id="captionCount">0</span>/220
+          </div>
+
+        </div>
+
+
+        <!-- MUSIC -->
+        <div class="field">
+
+          <label for="music">
+            🎵 Music / Audio
+          </label>
+
+          <input
+            type="text"
+            id="music"
+            maxlength="80"
+            placeholder="Example: Original Audio">
+
+        </div>
+
+
+        <!-- VISIBILITY -->
+        <div class="field">
+
+          <label for="visibility">
+            👁️ Who can see this Reel?
+          </label>
+
+          <select id="visibility">
+
+            <option value="public">
+              Everyone
+            </option>
+
+            <option value="followers">
+              My Followers
+            </option>
+
+            <option value="private">
+              Only Me
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+        <div class="field">
+
+          <label>Reel Settings</label>
+
+
+          <div class="setting">
+
+            <div class="setting-text">
+
+              <strong>Allow Comments</strong>
+
+              <span>
+                People can comment on your Reel.
+              </span>
+
+            </div>
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                id="commentsToggle"
+                checked>
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+
+          <div class="setting">
+
+            <div class="setting-text">
+
+              <strong>Allow Sharing</strong>
+
+              <span>
+                People can share your Reel.
+              </span>
+
+            </div>
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                id="sharingToggle"
+                checked>
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+
+          <div class="setting">
+
+            <div class="setting-text">
+
+              <strong>Show Like Count</strong>
+
+              <span>
+                Show the number of likes publicly.
+              </span>
+
+            </div>
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                id="likesToggle"
+                checked>
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- POST -->
+        <button
+          class="post-btn"
+          id="postBtn"
+          onclick="postReel()"
+          disabled>
+
+          🚀 Post Reel
+
+        </button>
+
+
+        <div class="info">
+
+          🔒 Your privacy settings will control who can
+          discover and interact with your Reel.
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- SUCCESS MODAL -->
+  <div
+    class="success"
+    id="successModal">
+
+    <div class="success-box">
+
+      <div class="success-icon">
+        🎉
+      </div>
+
+      <h2>Reel Ready!</h2>
+
+      <p>
+        Your Reel has been prepared successfully.
+        Firebase upload will be connected next.
+      </p>
+
+      <button onclick="location.href='reels.html'">
+        Go to Reels
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let selectedVideo = null;
+    let videoURL = null;
+
+
+    /* VIDEO SELECT */
+    const videoInput =
+      document.getElementById("videoInput");
+
+    const dropArea =
+      document.getElementById("dropArea");
+
+    const previewArea =
+      document.getElementById("previewArea");
+
+    const videoPreview =
+      document.getElementById("videoPreview");
+
+    const uploadContent =
+      document.getElementById("uploadContent");
+
+    const postBtn =
+      document.getElementById("postBtn");
+
+
+    videoInput.addEventListener("change", function () {
+
+      const file = this.files[0];
+
+      if (!file) return;
+
+      handleVideo(file);
+
+    });
+
+
+    /* HANDLE VIDEO */
+    function handleVideo(file) {
+
+      if (!file.type.startsWith("video/")) {
+
+        alert("Please select a video file.");
+
+        return;
+      }
+
+
+      selectedVideo = file;
+
+
+      if (videoURL) {
+        URL.revokeObjectURL(videoURL);
+      }
+
+
+      videoURL =
+        URL.createObjectURL(file);
+
+
+      videoPreview.src = videoURL;
+
+
+      dropArea.style.display = "none";
+
+      previewArea.classList.add("show");
+
+      postBtn.disabled = false;
+
+
+      /* Basic video validation */
+      videoPreview.onloadedmetadata = function () {
+
+        const duration =
+          videoPreview.duration;
+
+        if (duration > 180) {
+
+          alert(
+            "This video is longer than 3 minutes. Please choose a shorter Reel."
+          );
+
+          removeVideo();
+
+          return;
+        }
+
+      };
+
+    }
+
+
+    /* REMOVE VIDEO */
+    function removeVideo() {
+
+      selectedVideo = null;
+
+      videoInput.value = "";
+
+      videoPreview.pause();
+
+      videoPreview.removeAttribute("src");
+
+      videoPreview.load();
+
+
+      if (videoURL) {
+
+        URL.revokeObjectURL(videoURL);
+
+        videoURL = null;
+      }
+
+
+      previewArea.classList.remove("show");
+
+      dropArea.style.display = "flex";
+
+      postBtn.disabled = true;
+
+    }
+
+
+    /* CAPTION COUNTER */
+    const caption =
+      document.getElementById("caption");
+
+    const captionCount =
+      document.getElementById("captionCount");
+
+
+    caption.addEventListener("input", function () {
+
+      captionCount.textContent =
+        this.value.length;
+
+    });
+
+
+    /* DRAG & DROP */
+    dropArea.addEventListener(
+      "dragover",
+      function (event) {
+
+        event.preventDefault();
+
+        dropArea.style.borderColor =
+          "#a855f7";
+
+      }
+    );
+
+
+    dropArea.addEventListener(
+      "dragleave",
+      function () {
+
+        dropArea.style.borderColor =
+          "rgba(168,85,247,.55)";
+
+      }
+    );
+
+
+    dropArea.addEventListener(
+      "drop",
+      function (event) {
+
+        event.preventDefault();
+
+        dropArea.style.borderColor =
+          "rgba(168,85,247,.55)";
+
+
+        const file =
+          event.dataTransfer.files[0];
+
+        if (file) {
+
+          handleVideo(file);
+
+        }
+
+      }
+    );
+
+
+    /* POST REEL */
+    function postReel() {
+
+      if (!selectedVideo) {
+
+        alert("Please choose a video first.");
+
+        return;
+      }
+
+
+      const reelData = {
+
+        caption:
+          caption.value.trim(),
+
+        music:
+          document.getElementById("music").value.trim(),
+
+        visibility:
+          document.getElementById("visibility").value,
+
+        allowComments:
+          document.getElementById("commentsToggle").checked,
+
+        allowSharing:
+          document.getElementById("sharingToggle").checked,
+
+        showLikes:
+          document.getElementById("likesToggle").checked,
+
+        videoName:
+          selectedVideo.name,
+
+        createdAt:
+          new Date().toISOString()
+
+      };
+
+
+      /*
+        TEMPORARY DEMO STORAGE
+
+        Real version:
+
+        1. Firebase Authentication
+           ↓
+        2. Get logged-in user's UID
+           ↓
+        3. Upload video to Firebase Storage
+           ↓
+        4. Get video download URL
+           ↓
+        5. Save Reel information to Firestore
+           ↓
+        6. reels.html loads Reels from Firestore
+      */
+
+
+      localStorage.setItem(
+        "talkMyFriendsLastReel",
+        JSON.stringify(reelData)
+      );
+
+
+      document
+        .getElementById("successModal")
+        .classList.add("show");
+
+    }
+
+
+    /* CLEAN OBJECT URL */
+    window.addEventListener(
+      "beforeunload",
+      function () {
+
+        if (videoURL) {
+
+          URL.revokeObjectURL(videoURL);
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
+```

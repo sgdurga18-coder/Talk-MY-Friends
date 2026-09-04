@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Talk My Friends Premium</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#080812,#17132c,#28104b);
+    color:white;
+}
+
+.header{
+    text-align:center;
+    padding:35px 20px 25px;
+}
+
+.crown{
+    font-size:55px;
+}
+
+.header h1{
+    font-size:32px;
+    margin-top:8px;
+}
+
+.header p{
+    color:#c8c5d8;
+    margin-top:8px;
+}
+
+.container{
+    width:92%;
+    max-width:1100px;
+    margin:auto;
+}
+
+.back{
+    display:inline-block;
+    color:white;
+    text-decoration:none;
+    background:rgba(255,255,255,.1);
+    padding:10px 18px;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+
+.plans{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.plan{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:22px;
+    padding:28px 22px;
+    text-align:center;
+    backdrop-filter:blur(15px);
+    position:relative;
+    transition:.3s;
+}
+
+.plan:hover{
+    transform:translateY(-6px);
+}
+
+.plan.popular{
+    border:2px solid #a855f7;
+}
+
+.badge{
+    position:absolute;
+    top:-14px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#8b5cf6;
+    padding:6px 16px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.plan h2{
+    font-size:24px;
+    margin-bottom:18px;
+}
+
+.price{
+    font-size:36px;
+    font-weight:bold;
+}
+
+.price span{
+    font-size:14px;
+    color:#aaa;
+    font-weight:normal;
+}
+
+.video-limit{
+    margin:20px 0;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.features{
+    list-style:none;
+    text-align:left;
+    margin:20px 0;
+}
+
+.features li{
+    padding:8px 0;
+    color:#ddd;
+}
+
+.buy-btn{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    opacity:.9;
+}
+
+.info{
+    margin:30px 0 50px;
+    padding:22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.07);
+    text-align:center;
+    color:#d0cedb;
+    line-height:1.6;
+}
+
+@media(max-width:800px){
+    .plans{
+        grid-template-columns:1fr;
+    }
+
+    .header h1{
+        font-size:27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="crown">👑</div>
+
+    <h1>Talk My Friends Premium</h1>
+
+    <p>
+        Create more AI videos and unlock premium features.
+    </p>
+</div>
+
+<div class="container">
+
+    <a href="status.html" class="back">
+        ← Back to Status
+    </a>
+
+    <div class="plans">
+
+        <!-- ₹39 PLAN -->
+        <div class="plan">
+
+            <h2>Starter</h2>
+
+            <div class="price">
+                ₹39 <span>/month</span>
+            </div>
+
+            <div class="video-limit">
+                🎬 50 AI Videos / Month
+            </div>
+
+            <ul class="features">
+                <li>✓ 50 AI video creations</li>
+                <li>✓ Premium AI creation</li>
+                <li>✓ Higher video limit</li>
+                <li>✓ Premium features</li>
+            </ul>
+
+            <button
+                class="buy-btn"
+                onclick="buyPremium('starter',39,50)">
+                Buy Now
+            </button>
+
+        </div>
+
+
+        <!-- ₹89 PLAN -->
+        <div class="plan popular">
+
+            <div class="badge">
+                MOST POPULAR
+            </div>
+
+            <h2>Pro</h2>
+
+            <div class="price">
+                ₹89 <span>/month</span>
+            </div>
+
+            <div class="video-limit">
+                🎬 100 AI Videos / Month
+            </div>
+
+            <ul class="features">
+                <li>✓ 100 AI video creations</li>
+                <li>✓ Premium AI creation</li>
+                <li>✓ Higher monthly limit</li>
+                <li>✓ Premium features</li>
+            </ul>
+
+            <button
+                class="buy-btn"
+                onclick="buyPremium('pro',89,100)">
+                Buy Now
+            </button>
+
+        </div>
+
+
+        <!-- ₹199 PLAN -->
+        <div class="plan">
+
+            <h2>Ultra</h2>
+
+            <div class="price">
+                ₹199 <span>/month</span>
+            </div>
+
+            <div class="video-limit">
+                🎬 250 AI Videos / Month
+            </div>
+
+            <ul class="features">
+                <li>✓ 250 AI video creations</li>
+                <li>✓ Maximum AI creation</li>
+                <li>✓ Highest video limit</li>
+                <li>✓ Premium features</li>
+            </ul>
+
+            <button
+                class="buy-btn"
+                onclick="buyPremium('ultra',199,250)">
+                Buy Now
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="info">
+
+        <strong>🆓 Free Plan</strong>
+
+        <br>
+
+        Free users can create
+        <strong>4 AI videos per day</strong>.
+
+        <br><br>
+
+        <strong>⭐ Premium Plans</strong>
+
+        <br>
+
+        ₹39 → 50 videos/month
+
+        <br>
+
+        ₹89 → 100 videos/month
+
+        <br>
+
+        ₹199 → 250 videos/month
+
+        <br><br>
+
+        Payment will be securely processed through the
+        payment gateway. Google Pay/UPI can be offered at checkout.
+
+    </div>
+
+</div>
+
+
+<script>
+
+function buyPremium(plan, price, videoLimit){
+
+    /*
+       PAYMENT INTEGRATION WILL GO HERE.
+
+       Example:
+
+       starter → ₹39 → 50 videos
+       pro     → ₹89 → 100 videos
+       ultra   → ₹199 → 250 videos
+
+       Later this button will open
+       Razorpay Checkout.
+
+       After successful payment:
+
+       1. Payment verified on server
+       2. Firebase user plan updated
+       3. Monthly video limit activated
+    */
+
+    alert(
+        "Premium Plan: " +
+        plan.toUpperCase() +
+        "\\n\\nPrice: ₹" +
+        price +
+        "/month" +
+        "\\nAI Videos: " +
+        videoLimit +
+        "/month" +
+        "\\n\\nPayment gateway will open here."
+    );
+}
+
+</script>
+
+</body>
+</html>

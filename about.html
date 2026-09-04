@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>About Connectly</title>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(105, 70, 240, 0.28),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at bottom right,
+          rgba(0, 180, 255, 0.16),
+          transparent 35%
+        ),
+        #070b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 25px;
+    }
+
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 45px;
+      height: 45px;
+
+      border-radius: 14px;
+
+      border: 1px solid rgba(255,255,255,0.1);
+
+      background: rgba(255,255,255,0.06);
+
+      color: white;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      color: #929bb0;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+      text-align: center;
+
+      padding: 45px 25px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(105,70,240,0.16),
+          rgba(0,170,255,0.08)
+        );
+
+      border: 1px solid rgba(255,255,255,0.1);
+
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+
+      margin: auto auto 20px;
+
+      border-radius: 28px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 42px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6847ff,
+          #a23cff
+        );
+
+      box-shadow:
+        0 15px 40px rgba(100,70,255,0.25);
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .hero h2 span {
+      color: #9b78ff;
+    }
+
+    .tagline {
+      color: #9ba4b9;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .version {
+      display: inline-block;
+
+      padding: 7px 13px;
+
+      border-radius: 20px;
+
+      background: rgba(255,255,255,0.07);
+
+      border: 1px solid rgba(255,255,255,0.1);
+
+      color: #b5bed2;
+
+      font-size: 12px;
+    }
+
+
+    /* CARD */
+
+    .card {
+      padding: 23px;
+
+      border-radius: 21px;
+
+      background: rgba(255,255,255,0.055);
+
+      border: 1px solid rgba(255,255,255,0.09);
+
+      backdrop-filter: blur(15px);
+
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 13px;
+    }
+
+    .card p {
+      color: #929bb0;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+
+    /* FEATURES */
+
+    .features {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 13px;
+    }
+
+    .feature {
+      padding: 19px;
+
+      border-radius: 17px;
+
+      background: rgba(255,255,255,0.04);
+
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .feature-icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6847ff,
+          #a23cff
+        );
+
+      font-size: 20px;
+
+      margin-bottom: 13px;
+    }
+
+    .feature h3 {
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .feature p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #858ea3;
+    }
+
+
+    /* MISSION */
+
+    .mission {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission::before {
+      content: "";
+
+      position: absolute;
+
+      width: 130px;
+      height: 130px;
+
+      border-radius: 50%;
+
+      background: rgba(110,75,255,0.12);
+
+      right: -50px;
+      top: -50px;
+    }
+
+
+    /* VALUES */
+
+    .values {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+    }
+
+    .value {
+      text-align: center;
+
+      padding: 20px 12px;
+
+      border-radius: 16px;
+
+      background: rgba(255,255,255,0.04);
+
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .value-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .value h3 {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .value p {
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+
+    /* LINKS */
+
+    .links {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .link-item {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 15px 16px;
+
+      border-radius: 14px;
+
+      background: rgba(255,255,255,0.04);
+
+      border: 1px solid rgba(255,255,255,0.07);
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .link-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .link-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .link-icon {
+      font-size: 20px;
+    }
+
+    .link-left span {
+      font-size: 14px;
+    }
+
+    .arrow {
+      color: #9b84ff;
+      font-size: 18px;
+    }
+
+
+    /* DISCLAIMER */
+
+    .disclaimer {
+      padding: 17px;
+
+      border-radius: 15px;
+
+      background: rgba(255,180,60,0.05);
+
+      border: 1px solid rgba(255,180,60,0.1);
+
+      color: #969fb3;
+
+      font-size: 12px;
+
+      line-height: 1.7;
+    }
+
+
+    /* FOOTER */
+
+    .footer {
+      text-align: center;
+
+      color: #687186;
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+      padding: 15px 0 10px;
+    }
+
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+
+      inset: 0;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0,0,0,0.72);
+
+      z-index: 100;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+
+      padding: 25px;
+
+      border-radius: 22px;
+
+      background: #101628;
+
+      border: 1px solid rgba(255,255,255,0.1);
+
+      text-align: center;
+    }
+
+    .modal-icon {
+      font-size: 42px;
+      margin-bottom: 14px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #929bb0;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+
+      margin-bottom: 20px;
+    }
+
+    .close-btn {
+      width: 100%;
+
+      padding: 12px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-weight: 600;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6847ff,
+          #a23cff
+        );
+    }
+
+
+    /* MOBILE */
+
+    @media(max-width:650px) {
+
+      .container {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+
+      .hero {
+        padding: 35px 18px;
+      }
+
+      .hero h2 {
+        font-size: 27px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .values {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <button
+        class="back-btn"
+        onclick="goBack()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>About Connectly</h1>
+
+        <p>
+          Learn more about Connectly
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+      <div class="logo">
+        💬
+      </div>
+
+      <h2>
+        Connect<span>ly</span>
+      </h2>
+
+      <div class="tagline">
+        Connect. Chat. Share.
+      </div>
+
+      <div class="version">
+        Version 1.0.0
+      </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+
+    <div class="card">
+
+      <h2>
+        About Connectly
+      </h2>
+
+      <p>
+
+        Connectly is a modern communication platform
+        designed to help people connect, chat and share
+        moments with others from anywhere in the world.
+
+        <br><br>
+
+        Our goal is to create a simple, fast and enjoyable
+        communication experience while giving users
+        meaningful control over their privacy and account.
+
+        <br><br>
+
+        Connectly is being designed for messaging,
+        voice calls, video calls, groups, status updates,
+        media sharing and more.
+
+      </p>
+
+    </div>
+
+
+    <!-- MISSION -->
+
+    <div class="card mission">
+
+      <h2>
+        Our Mission
+      </h2>
+
+      <p>
+
+        Our mission is to make communication easier,
+        more personal and accessible.
+
+        We believe technology should help people stay
+        connected without making communication complicated.
+
+      </p>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="card">
+
+      <h2>
+        What Connectly Offers
+      </h2>
+
+      <div class="features">
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            💬
+          </div>
+
+          <h3>
+            Real-Time Chat
+          </h3>
+
+          <p>
+            Connect with people through fast
+            one-to-one and group messaging.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            📞
+          </div>
+
+          <h3>
+            Voice & Video
+          </h3>
+
+          <p>
+            Stay connected through voice and
+            video communication.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            👥
+          </div>
+
+          <h3>
+            Groups
+          </h3>
+
+          <p>
+            Create communities and conversations
+            with multiple people.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🌎
+          </div>
+
+          <h3>
+            Find People
+          </h3>
+
+          <p>
+            Discover Connectly users using their
+            name or username.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            📸
+          </div>
+
+          <h3>
+            Status & Stories
+          </h3>
+
+          <p>
+            Share photos, videos and moments
+            with your connections.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🔐
+          </div>
+
+          <h3>
+            Privacy
+          </h3>
+
+          <p>
+            Manage your visibility, blocking and
+            communication preferences.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- VALUES -->
+
+    <div class="card">
+
+      <h2>
+        Our Values
+      </h2>
+
+      <div class="values">
+
+
+        <div class="value">
+
+          <div class="value-icon">
+            🔒
+          </div>
+
+          <h3>
+            Privacy
+          </h3>
+
+          <p>
+            Your conversations and account
+            should be protected.
+          </p>
+
+        </div>
+
+
+        <div class="value">
+
+          <div class="value-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Simplicity
+          </h3>
+
+          <p>
+            Communication should be easy
+            and straightforward.
+          </p>
+
+        </div>
+
+
+        <div class="value">
+
+          <div class="value-icon">
+            🌎
+          </div>
+
+          <h3>
+            Connection
+          </h3>
+
+          <p>
+            Technology should bring people
+            closer together.
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- IMPORTANT LINKS -->
+
+    <div class="card">
+
+      <h2>
+        Connectly Information
+      </h2>
+
+      <div class="links">
+
+
+        <div
+          class="link-item"
+          onclick="openPrivacy()"
+        >
+
+          <div class="link-left">
+
+            <div class="link-icon">
+              🔐
+            </div>
+
+            <span>
+              Privacy
+            </span>
+
+          </div>
+
+          <div class="arrow">
+            →
+          </div>
+
+        </div>
+
+
+        <div
+          class="link-item"
+          onclick="openTerms()"
+        >
+
+          <div class="link-left">
+
+            <div class="link-icon">
+              📄
+            </div>
+
+            <span>
+              Terms of Service
+            </span>
+
+          </div>
+
+          <div class="arrow">
+            →
+          </div>
+
+        </div>
+
+
+        <div
+          class="link-item"
+          onclick="openHelp()"
+        >
+
+          <div class="link-left">
+
+            <div class="link-icon">
+              🆘
+            </div>
+
+            <span>
+              Help & Support
+            </span>
+
+          </div>
+
+          <div class="arrow">
+            →
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- DISCLAIMER -->
+
+    <div class="disclaimer">
+
+      ℹ️ <strong>Development Notice</strong>
+
+      <br><br>
+
+      This current Connectly interface is the frontend
+      version of the project.
+
+      Real authentication, backend database,
+      real-time messaging, file storage, notifications,
+      WebRTC calling and production security will be
+      connected during the backend development phase.
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+      <strong>Connectly</strong><br>
+
+      Connect. Chat. Share.<br><br>
+
+      © 2026 Connectly. All rights reserved.
+
+    </div>
+
+
+  </div>
+
+
+  <!-- MODAL -->
+
+  <div
+    class="modal"
+    id="modal"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-icon">
+        ℹ️
+      </div>
+
+      <h2 id="modalTitle">
+        Connectly
+      </h2>
+
+      <p id="modalText">
+        Connectly information.
+      </p>
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+
+    /* BACK */
+
+    function goBack() {
+
+      window.location.href =
+        "settings.html";
+
+    }
+
+
+    /* PRIVACY */
+
+    function openPrivacy() {
+
+      window.location.href =
+        "privacy.html";
+
+    }
+
+
+    /* TERMS */
+
+    function openTerms() {
+
+      /*
+        If terms.html already exists,
+        open the real Terms page.
+      */
+
+      window.location.href =
+        "terms.html";
+
+    }
+
+
+    /* HELP */
+
+    function openHelp() {
+
+      window.location.href =
+        "help.html";
+
+    }
+
+
+    /* MODAL */
+
+    function showModal(title, text) {
+
+      document.getElementById("modalTitle")
+        .textContent = title;
+
+      document.getElementById("modalText")
+        .textContent = text;
+
+      document.getElementById("modal")
+        .style.display = "flex";
+
+    }
+
+
+    function closeModal() {
+
+      document.getElementById("modal")
+        .style.display = "none";
+
+    }
+
+
+    /* OUTSIDE CLICK */
+
+    document.getElementById("modal")
+      .addEventListener(
+        "click",
+        function(e) {
+
+          if (e.target === this) {
+            closeModal();
+          }
+
+        }
+      );
+
+
+  </script>
+
+</body>
+</html>

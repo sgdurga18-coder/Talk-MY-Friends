@@ -1,0 +1,18 @@
+.premium-btn {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.3);
+    z-index: 9999;
+}
+
+.premium-btn:hover {
+    transform: scale(1.05);
+}

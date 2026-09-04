@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile | Talk MY Friends</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#060914;
+    color:#fff;
+    min-height:100vh;
+}
+
+button{
+    font-family:inherit;
+}
+
+.app{
+    max-width:1100px;
+    margin:auto;
+    min-height:100vh;
+}
+
+/* TOP BAR */
+
+.topbar{
+    height:70px;
+    padding:0 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background:rgba(7,10,25,.92);
+    backdrop-filter:blur(20px);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+    letter-spacing:.3px;
+}
+
+.logo span{
+    color:#a855f7;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.top-btn{
+    width:42px;
+    height:42px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.07);
+    color:#fff;
+    font-size:19px;
+    cursor:pointer;
+}
+
+/* PROFILE HERO */
+
+.profile-area{
+    padding:35px 22px 20px;
+}
+
+.identity-card{
+    position:relative;
+    overflow:hidden;
+    padding:28px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:28px;
+    background:
+      radial-gradient(circle at 10% 0%,rgba(91,92,246,.28),transparent 35%),
+      radial-gradient(circle at 100% 100%,rgba(168,85,247,.18),transparent 35%),
+      #0d1326;
+}
+
+.identity-card:before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(139,92,246,.13);
+    filter:blur(45px);
+    right:-60px;
+    top:-70px;
+}
+
+.identity-main{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.profile-photo-wrap{
+    position:relative;
+}
+
+.profile-photo{
+    width:125px;
+    height:125px;
+    border-radius:35px;
+    object-fit:cover;
+    border:3px solid rgba(168,85,247,.65);
+    background:linear-gradient(135deg,#4f46e5,#a855f7);
+}
+
+.online-dot{
+    position:absolute;
+    right:5px;
+    bottom:5px;
+    width:19px;
+    height:19px;
+    border-radius:50%;
+    background:#22c55e;
+    border:4px solid #0d1326;
+}
+
+.identity-text{
+    flex:1;
+}
+
+.identity-text h1{
+    font-size:29px;
+    margin-bottom:5px;
+}
+
+.username{
+    color:#aeb9d4;
+    font-size:15px;
+    margin-bottom:13px;
+}
+
+.bio{
+    color:#d5dbeb;
+    line-height:1.5;
+    max-width:600px;
+}
+
+.profile-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    border:0;
+    padding:11px 18px;
+    border-radius:14px;
+    cursor:pointer;
+    color:#fff;
+    font-weight:700;
+}
+
+.primary{
+    background:linear-gradient(135deg,#5b5cff,#a855f7);
+}
+
+.secondary{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+/* STATS */
+
+.stats{
+    position:relative;
+    margin-top:27px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.stat{
+    padding:18px 10px;
+    border-radius:19px;
+    background:rgba(255,255,255,.055);
+    text-align:center;
+    border:1px solid rgba(255,255,255,.055);
+    cursor:pointer;
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    margin-bottom:5px;
+}
+
+.stat span{
+    color:#8f9ab6;
+    font-size:12px;
+}
+
+/* UNIQUE ID */
+
+.identity-code{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    background:rgba(0,0,0,.18);
+    border-radius:16px;
+}
+
+.identity-code small{
+    color:#78839f;
+}
+
+.identity-code strong{
+    color:#c8d0e5;
+    font-size:12px;
+    word-break:break-all;
+}
+
+.copy-btn{
+    border:0;
+    background:#242d48;
+    color:white;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* YOUR WORLD */
+
+.section{
+    padding:20px 22px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.section-title h2{
+    font-size:20px;
+}
+
+.section-title span{
+    color:#8d98b4;
+    font-size:12px;
+}
+
+.world{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:15px;
+}
+
+.world-card{
+    min-height:190px;
+    padding:22px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,.07);
+    background:#0d1428;
+}
+
+.world-card h3{
+    margin-bottom:8px;
+}
+
+.world-card p{
+    color:#8f9ab5;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.big-icon{
+    font-size:35px;
+    margin-bottom:17px;
+}
+
+.world-button{
+    margin-top:20px;
+    border:0;
+    background:#19223b;
+    color:#fff;
+    padding:10px 15px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:5px;
+}
+
+.tab{
+    white-space:nowrap;
+    border:0;
+    padding:11px 17px;
+    border-radius:13px;
+    background:#111a31;
+    color:#8f9ab4;
+    cursor:pointer;
+}
+
+.tab.active{
+    color:#fff;
+    background:linear-gradient(135deg,#4f46e5,#9333ea);
+}
+
+/* CONTENT */
+
+.content-box{
+    margin-top:15px;
+    padding:35px 20px;
+    min-height:190px;
+    border-radius:23px;
+    background:#0d1428;
+    border:1px solid rgba(255,255,255,.07);
+    text-align:center;
+}
+
+.content-icon{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.content-box h3{
+    margin-bottom:7px;
+}
+
+.content-box p{
+    color:#818ca7;
+    font-size:13px;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    padding:30px 20px 45px;
+    color:#59647d;
+    font-size:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .topbar{
+        padding:0 14px;
+    }
+
+    .profile-area{
+        padding:20px 12px 10px;
+    }
+
+    .identity-card{
+        padding:20px;
+        border-radius:23px;
+    }
+
+    .identity-main{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .profile-photo{
+        width:105px;
+        height:105px;
+        border-radius:29px;
+    }
+
+    .identity-text h1{
+        font-size:24px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .world{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        padding:15px 12px;
+    }
+
+    .identity-code{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+    <div class="logo">
+        Talk MY <span>Friends</span>
+    </div>
+
+    <div class="top-actions">
+
+        <button class="top-btn" onclick="goHome()">
+            ⌂
+        </button>
+
+        <button class="top-btn" onclick="openSettings()">
+            ⚙
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- PROFILE -->
+
+<section class="profile-area">
+
+    <div class="identity-card">
+
+        <div class="identity-main">
+
+            <div class="profile-photo-wrap">
+
+                <img
+                    id="profilePhoto"
+                    class="profile-photo"
+                    src="https://via.placeholder.com/200"
+                    alt="Profile"
+                >
+
+                <div class="online-dot"></div>
+
+            </div>
+
+
+            <div class="identity-text">
+
+                <h1 id="fullName">
+                    Loading...
+                </h1>
+
+                <div class="username" id="username">
+                    @loading
+                </div>
+
+                <p class="bio" id="bio">
+                    Loading profile...
+                </p>
+
+
+                <div class="profile-actions">
+
+                    <button
+                        class="action-btn primary"
+                        onclick="editProfile()"
+                    >
+                        ✦ Edit Identity
+                    </button>
+
+                    <button
+                        class="action-btn secondary"
+                        onclick="shareProfile()"
+                    >
+                        ↗ Share Profile
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat" onclick="showFollowers()">
+                <strong id="followersCount">0</strong>
+                <span>Followers</span>
+            </div>
+
+            <div class="stat" onclick="showFollowing()">
+                <strong id="followingCount">0</strong>
+                <span>Following</span>
+            </div>
+
+            <div class="stat" onclick="showFriends()">
+                <strong id="friendsCount">0</strong>
+                <span>Friends</span>
+            </div>
+
+            <div class="stat" onclick="showReels()">
+                <strong id="reelsCount">0</strong>
+                <span>Reels</span>
+            </div>
+
+        </div>
+
+
+        <!-- UNIQUE USER ID -->
+
+        <div class="identity-code">
+
+            <div>
+                <small>Talk MY Friends ID</small>
+                <br>
+                <strong id="userId">
+                    Loading...
+                </strong>
+            </div>
+
+            <button
+                class="copy-btn"
+                onclick="copyUserId()"
+            >
+                Copy
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- YOUR WORLD -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>Your World</h2>
+
+        <span>Your social space</span>
+
+    </div>
+
+
+    <div class="world">
+
+        <div class="world-card">
+
+            <div class="big-icon">🌐</div>
+
+            <h3>Your Circle</h3>
+
+            <p>
+                Your followers, friends and people
+                you connect with will appear here.
+            </p>
+
+            <button
+                class="world-button"
+                onclick="findPeople()"
+            >
+                Find People
+            </button>
+
+        </div>
+
+
+        <div class="world-card">
+
+            <div class="big-icon">⚡</div>
+
+            <h3>Your Activity</h3>
+
+            <p>
+                See your latest moments, reels and
+                social activity.
+            </p>
+
+            <button
+                class="world-button"
+                onclick="openActivity()"
+            >
+                View Activity
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTENT -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>Your Space</h2>
+
+        <span id="spaceLabel">
+            Moments
+        </span>
+
+    </div>
+
+
+    <div class="tabs">
+
+        <button
+            class="tab active"
+            onclick="selectTab(this,'moments')"
+        >
+            ✨ Moments
+        </button>
+
+        <button
+            class="tab"
+            onclick="selectTab(this,'reels')"
+        >
+            🎬 Reels
+        </button>
+
+        <button
+            class="tab"
+            onclick="selectTab(this,'media')"
+        >
+            🖼 Media
+        </button>
+
+        <button
+            class="tab"
+            onclick="selectTab(this,'saved')"
+        >
+            🔖 Saved
+        </button>
+
+    </div>
+
+
+    <div class="content-box">
+
+        <div
+            class="content-icon"
+            id="contentIcon"
+        >
+            ✨
+        </div>
+
+        <h3 id="contentTitle">
+            Your Moments
+        </h3>
+
+        <p id="contentText">
+            Your shared moments will appear here.
+        </p>
+
+    </div>
+
+</section>
+
+
+<div class="footer">
+    Talk MY Friends · Connect. Chat. Share.
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    auth,
+    db
+} from "./firebase-config.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+let currentUser = null;
+
+
+/* =========================
+   AUTH
+========================= */
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    await loadProfile();
+
+});
+
+
+/* =========================
+   LOAD PROFILE
+========================= */
+
+async function loadProfile(){
+
+    try{
+
+        const profileRef =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+        const profileSnap =
+            await getDoc(profileRef);
+
+
+        if(!profileSnap.exists()){
+
+            document.getElementById("fullName")
+                .textContent =
+                currentUser.email
+                ?.split("@")[0]
+                || "Talk MY Friends User";
+
+            document.getElementById("username")
+                .textContent =
+                "@user";
+
+            document.getElementById("bio")
+                .textContent =
+                "Welcome to Talk MY Friends.";
+
+        }else{
+
+            const data =
+                profileSnap.data();
+
+
+            document.getElementById("fullName")
+                .textContent =
+                data.fullName
+                || "Talk MY Friends User";
+
+
+            document.getElementById("username")
+                .textContent =
+                data.username
+                ? "@" + data.username
+                : "@user";
+
+
+            document.getElementById("bio")
+                .textContent =
+                data.bio
+                || "Connecting with people around the world.";
+
+
+            if(data.photoURL){
+
+                document.getElementById("profilePhoto")
+                    .src =
+                    data.photoURL;
+
+            }
+
+        }
+
+
+        document.getElementById("userId")
+            .textContent =
+            currentUser.uid;
+
+
+        /*
+          Temporary counters.
+
+          Real Followers/Following/Reels counts
+          will be connected to Firestore next.
+        */
+
+        document.getElementById("followersCount")
+            .textContent = "0";
+
+        document.getElementById("followingCount")
+            .textContent = "0";
+
+        document.getElementById("friendsCount")
+            .textContent = "0";
+
+        document.getElementById("reelsCount")
+            .textContent = "0";
+
+
+    }catch(error){
+
+        console.error(
+            "Profile loading error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   EDIT PROFILE
+========================= */
+
+window.editProfile = function(){
+
+    window.location.href =
+        "profile-setup.html";
+
+};
+
+
+/* =========================
+   SHARE PROFILE
+========================= */
+
+window.shareProfile = async function(){
+
+    const profileUrl =
+        window.location.origin +
+        window.location.pathname +
+        "?uid=" +
+        encodeURIComponent(
+            currentUser.uid
+        );
+
+
+    if(navigator.share){
+
+        try{
+
+            await navigator.share({
+
+                title:
+                    "Talk MY Friends Profile",
+
+                text:
+                    "Connect with me on Talk MY Friends",
+
+                url:
+                    profileUrl
+
+            });
+
+        }catch(error){
+
+            console.log(error);
+
+        }
+
+    }else{
+
+        await navigator.clipboard.writeText(
+            profileUrl
+        );
+
+        alert(
+            "Profile link copied!"
+        );
+
+    }
+
+};
+
+
+/* =========================
+   COPY UID
+========================= */
+
+window.copyUserId = async function(){
+
+    try{
+
+        await navigator.clipboard.writeText(
+            currentUser.uid
+        );
+
+        alert(
+            "Talk MY Friends ID copied!"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+};
+
+
+/* =========================
+   FOLLOWERS
+========================= */
+
+window.showFollowers = function(){
+
+    alert(
+        "Followers system will be connected to Firebase next."
+    );
+
+};
+
+
+/* =========================
+   FOLLOWING
+========================= */
+
+window.showFollowing = function(){
+
+    alert(
+        "Following system will be connected to Firebase next."
+    );
+
+};
+
+
+/* =========================
+   FRIENDS
+========================= */
+
+window.showFriends = function(){
+
+    alert(
+        "Friends system will be connected next."
+    );
+
+};
+
+
+/* =========================
+   REELS
+========================= */
+
+window.showReels = function(){
+
+    window.location.href =
+        "reels.html";
+
+};
+
+
+/* =========================
+   TABS
+========================= */
+
+window.selectTab = function(
+    button,
+    type
+){
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    button.classList.add("active");
+
+
+    const icon =
+        document.getElementById(
+            "contentIcon"
+        );
+
+    const title =
+        document.getElementById(
+            "contentTitle"
+        );
+
+    const text =
+        document.getElementById(
+            "contentText"
+        );
+
+    const label =
+        document.getElementById(
+            "spaceLabel"
+        );
+
+
+    if(type === "moments"){
+
+        icon.textContent = "✨";
+        title.textContent = "Your Moments";
+        text.textContent =
+            "Your shared moments will appear here.";
+        label.textContent = "Moments";
+
+    }
+
+    else if(type === "reels"){
+
+        icon.textContent = "🎬";
+        title.textContent = "Your Reels";
+        text.textContent =
+            "Your short videos will appear here.";
+        label.textContent = "Reels";
+
+    }
+
+    else if(type === "media"){
+
+        icon.textContent = "🖼";
+        title.textContent = "Your Media";
+        text.textContent =
+            "Photos, videos and shared files will appear here.";
+        label.textContent = "Media";
+
+    }
+
+    else if(type === "saved"){
+
+        icon.textContent = "🔖";
+        title.textContent = "Saved Space";
+        text.textContent =
+            "Your saved content will appear here.";
+        label.textContent = "Saved";
+
+    }
+
+};
+
+
+/* =========================
+   FIND PEOPLE
+========================= */
+
+window.findPeople = function(){
+
+    window.location.href =
+        "users.html";
+
+};
+
+
+/* =========================
+   ACTIVITY
+========================= */
+
+window.openActivity = function(){
+
+    alert(
+        "Your activity timeline will be connected next."
+    );
+
+};
+
+
+/* =========================
+   HOME
+========================= */
+
+window.goHome = function(){
+
+    window.location.href =
+        "home.html";
+
+};
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+window.openSettings = function(){
+
+    window.location.href =
+        "settings.html";
+
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Talk My Friends - Status</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#080914;
+    color:white;
+    min-height:100vh;
+}
+
+/* HEADER */
+
+.header{
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    background:rgba(12,13,28,.95);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:20px;
+    font-weight:800;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#7c5cff,#c45cff);
+    box-shadow:0 0 25px rgba(124,92,255,.35);
+}
+
+.back{
+    width:42px;
+    height:42px;
+    border:0;
+    border-radius:13px;
+    background:#171827;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:30px 18px 100px;
+}
+
+.heading{
+    font-size:34px;
+    font-weight:800;
+}
+
+.subheading{
+    color:#8e91a8;
+    margin-top:7px;
+}
+
+/* MY STATUS */
+
+.my-status{
+    margin-top:28px;
+    padding:20px;
+    border-radius:24px;
+    background:linear-gradient(
+        135deg,
+        rgba(124,92,255,.16),
+        rgba(196,92,255,.07)
+    );
+    border:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.my-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.my-photo{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #815cff;
+}
+
+.my-name{
+    font-size:17px;
+    font-weight:700;
+}
+
+.my-text{
+    color:#8e91a8;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.add-btn{
+    border:0;
+    padding:13px 18px;
+    border-radius:15px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    background:linear-gradient(135deg,#7157ff,#bd55ff);
+    box-shadow:0 8px 25px rgba(113,87,255,.3);
+}
+
+/* SECTION */
+
+.section{
+    margin-top:32px;
+}
+
+.section-title{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:18px;
+}
+
+/* STATUS GRID */
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+    gap:18px;
+}
+
+.status-card{
+    position:relative;
+    background:#111321;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:23px;
+    padding:14px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.status-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(139,102,255,.5);
+    box-shadow:0 15px 35px rgba(0,0,0,.3);
+}
+
+.story-ring{
+    width:105px;
+    height:105px;
+    margin:auto;
+    padding:4px;
+    border-radius:50%;
+    background:linear-gradient(
+        135deg,
+        #7157ff,
+        #d35cff,
+        #ff65a3
+    );
+}
+
+.story-ring img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #111321;
+}
+
+.card-name{
+    margin-top:12px;
+    font-weight:700;
+}
+
+.card-time{
+    color:#777b91;
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* DELETE */
+
+.delete-btn{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:50%;
+    background:rgba(0,0,0,.7);
+    color:white;
+    cursor:pointer;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:60px 20px;
+    color:#777b91;
+}
+
+.empty-icon{
+    font-size:48px;
+    margin-bottom:12px;
+}
+
+/* MODAL */
+
+.viewer{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+}
+
+.viewer.show{
+    display:flex;
+}
+
+.viewer-content{
+    position:relative;
+    width:min(430px,100%);
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.viewer-media{
+    max-width:100%;
+    max-height:88vh;
+    object-fit:contain;
+}
+
+.viewer-top{
+    position:absolute;
+    top:18px;
+    left:18px;
+    right:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:5;
+}
+
+.viewer-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.viewer-user img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.close{
+    border:0;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.prev,.next{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:46px;
+    height:46px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.prev{left:-60px}
+.next{right:-60px}
+
+.viewer-bottom{
+    position:absolute;
+    bottom:25px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#aaa;
+    font-size:13px;
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#888ca1;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .header{
+        padding:0 14px;
+    }
+
+    .brand{
+        font-size:17px;
+    }
+
+    .container{
+        padding:25px 13px 90px;
+    }
+
+    .heading{
+        font-size:29px;
+    }
+
+    .my-status{
+        padding:15px;
+    }
+
+    .my-photo{
+        width:55px;
+        height:55px;
+    }
+
+    .add-btn{
+        padding:11px 13px;
+        font-size:12px;
+    }
+
+    .status-grid{
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+    }
+
+    .status-card{
+        padding:9px 5px;
+        border-radius:17px;
+    }
+
+    .story-ring{
+        width:75px;
+        height:75px;
+    }
+
+    .card-name{
+        font-size:12px;
+    }
+
+    .prev{left:8px}
+    .next{right:8px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <button class="back" onclick="history.back()">←</button>
+
+    <div class="brand">
+        <div class="logo">💬</div>
+        Talk My Friends
+    </div>
+
+    <div style="width:42px"></div>
+
+</header>
+
+
+<main class="container">
+
+    <h1 class="heading">Status</h1>
+    <p class="subheading">
+        Share your moments with your friends.
+    </p>
+
+
+    <!-- MY STATUS -->
+
+    <div class="my-status">
+
+        <div class="my-left">
+
+            <img
+                id="myPhoto"
+                class="my-photo"
+                src="https://i.pravatar.cc/150"
+            >
+
+            <div>
+                <div id="myName" class="my-name">
+                    My Status
+                </div>
+
+                <div class="my-text">
+                    Share a photo or video
+                </div>
+            </div>
+
+        </div>
+
+        <button class="add-btn" onclick="chooseStatus()">
+            + Add Status
+        </button>
+
+    </div>
+
+
+    <input
+        type="file"
+        id="statusFile"
+        accept="image/*,video/*"
+        hidden
+    >
+
+
+    <!-- FRIENDS -->
+
+    <section class="section">
+
+        <div class="section-title">
+            Recent Updates
+        </div>
+
+        <div id="loading" class="loading">
+            Loading statuses...
+        </div>
+
+        <div
+            id="statusGrid"
+            class="status-grid"
+        ></div>
+
+        <div
+            id="empty"
+            class="empty"
+            style="display:none"
+        >
+            <div class="empty-icon">✨</div>
+            <h3>No recent status</h3>
+            <p>Your friends haven't posted anything yet.</p>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- STATUS VIEWER -->
+
+<div id="viewer" class="viewer">
+
+    <div class="viewer-content">
+
+        <div class="viewer-top">
+
+            <div class="viewer-user">
+
+                <img id="viewerPhoto">
+
+                <div>
+                    <strong id="viewerName"></strong>
+                    <div id="viewerTime"></div>
+                </div>
+
+            </div>
+
+            <button class="close" onclick="closeViewer()">
+                ×
+            </button>
+
+        </div>
+
+
+        <button class="prev" onclick="previousStatus()">
+            ‹
+        </button>
+
+        <img
+            id="viewerImage"
+            class="viewer-media"
+            style="display:none"
+        >
+
+        <video
+            id="viewerVideo"
+            class="viewer-media"
+            controls
+            autoplay
+            style="display:none"
+        ></video>
+
+        <button class="next" onclick="nextStatus()">
+            ›
+        </button>
+
+        <div class="viewer-bottom">
+            👁 <span id="viewerViews">0</span> views
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================
+   FIREBASE
+===================================== */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    updateDoc,
+    arrayUnion,
+    serverTimestamp,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+
+/* =====================================
+   YOUR FIREBASE CONFIG
+===================================== */
+
+const firebaseConfig = {
+
+    apiKey: "YOUR_API_KEY",
+
+    authDomain:
+        "YOUR_PROJECT.firebaseapp.com",
+
+    projectId:
+        "YOUR_PROJECT_ID",
+
+    storageBucket:
+        "YOUR_PROJECT.firebasestorage.app",
+
+    messagingSenderId:
+        "YOUR_MESSAGING_SENDER_ID",
+
+    appId:
+        "YOUR_APP_ID"
+};
+
+
+/* =====================================
+   INITIALIZE
+===================================== */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+
+/* =====================================
+   GLOBAL VARIABLES
+===================================== */
+
+let currentUser = null;
+
+let statuses = [];
+
+let currentIndex = 0;
+
+
+/* =====================================
+   AUTH
+===================================== */
+
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+
+        alert("Please login first.");
+
+        window.location.href = "login.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    document.getElementById("myName").textContent =
+        user.displayName || "My Status";
+
+    if(user.photoURL){
+
+        document.getElementById("myPhoto").src =
+            user.photoURL;
+    }
+
+    await loadStatuses();
+});
+
+
+/* =====================================
+   ADD STATUS
+===================================== */
+
+window.chooseStatus = function(){
+
+    document
+        .getElementById("statusFile")
+        .click();
+};
+
+
+document
+    .getElementById("statusFile")
+    .addEventListener("change", async(e)=>{
+
+        const file = e.target.files[0];
+
+        if(!file) return;
+
+        if(!file.type.startsWith("image/") &&
+           !file.type.startsWith("video/")){
+
+            alert("Please select an image or video.");
+
+            return;
+        }
+
+        try{
+
+            const button =
+                document.querySelector(".add-btn");
+
+            button.disabled = true;
+
+            button.textContent =
+                "Uploading...";
+
+
+            const extension =
+                file.name.split(".").pop();
+
+            const fileName =
+                `${currentUser.uid}_${Date.now()}.${extension}`;
+
+
+            const storageRef =
+                ref(
+                    storage,
+                    `statuses/${currentUser.uid}/${fileName}`
+                );
+
+
+            await uploadBytes(
+                storageRef,
+                file
+            );
+
+
+            const downloadURL =
+                await getDownloadURL(storageRef);
+
+
+            await addDoc(
+                collection(db,"statuses"),
+                {
+
+                    uid:currentUser.uid,
+
+                    name:
+                        currentUser.displayName ||
+                        "User",
+
+                    photoURL:
+                        currentUser.photoURL || "",
+
+                    mediaURL:
+                        downloadURL,
+
+                    mediaType:
+                        file.type.startsWith("video/")
+                        ? "video"
+                        : "image",
+
+                    storagePath:
+                        `statuses/${currentUser.uid}/${fileName}`,
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    expiresAt:
+                        Date.now() +
+                        (24 * 60 * 60 * 1000),
+
+                    viewers:[]
+                }
+            );
+
+
+            alert("Status uploaded successfully!");
+
+            await loadStatuses();
+
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "Upload failed: " +
+                error.message
+            );
+
+        }finally{
+
+            const button =
+                document.querySelector(".add-btn");
+
+            button.disabled = false;
+
+            button.textContent =
+                "+ Add Status";
+
+            e.target.value = "";
+        }
+
+    });
+
+
+/* =====================================
+   LOAD STATUSES
+===================================== */
+
+async function loadStatuses(){
+
+    const loading =
+        document.getElementById("loading");
+
+    const grid =
+        document.getElementById("statusGrid");
+
+    const empty =
+        document.getElementById("empty");
+
+
+    loading.style.display = "block";
+
+    grid.innerHTML = "";
+
+    statuses = [];
+
+
+    try{
+
+        const q =
+            query(
+                collection(db,"statuses"),
+                orderBy("createdAt","desc")
+            );
+
+
+        const snapshot =
+            await getDocs(q);
+
+
+        const now = Date.now();
+
+
+        snapshot.forEach((statusDoc)=>{
+
+            const data =
+                statusDoc.data();
+
+
+            if(
+                data.expiresAt &&
+                data.expiresAt <= now
+            ){
+
+                return;
+            }
+
+
+            statuses.push({
+
+                id:statusDoc.id,
+
+                ...data
+
+            });
+
+        });
+
+
+        loading.style.display = "none";
+
+
+        if(statuses.length === 0){
+
+            empty.style.display = "block";
+
+            return;
+        }
+
+
+        empty.style.display = "none";
+
+
+        statuses.forEach(
+            (status,index)=>{
+
+                createStatusCard(
+                    status,
+                    index
+                );
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        loading.textContent =
+            "Unable to load statuses.";
+
+    }
+
+}
+
+
+/* =====================================
+   CREATE CARD
+===================================== */
+
+function createStatusCard(status,index){
+
+    const grid =
+        document.getElementById("statusGrid");
+
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "status-card";
+
+
+    const ring =
+        document.createElement("div");
+
+    ring.className =
+        "story-ring";
+
+
+    const img =
+        document.createElement("img");
+
+    img.src =
+        status.photoURL ||
+        "https://i.pravatar.cc/150";
+
+
+    ring.appendChild(img);
+
+
+    const name =
+        document.createElement("div");
+
+    name.className =
+        "card-name";
+
+    name.textContent =
+        status.name || "User";
+
+
+    const time =
+        document.createElement("div");
+
+    time.className =
+        "card-time";
+
+    time.textContent =
+        formatTime(status.createdAt);
+
+
+    card.appendChild(ring);
+
+    card.appendChild(name);
+
+    card.appendChild(time);
+
+
+    /* DELETE OWN STATUS */
+
+    if(
+        currentUser &&
+        status.uid === currentUser.uid
+    ){
+
+        const deleteBtn =
+            document.createElement("button");
+
+        deleteBtn.className =
+            "delete-btn";
+
+        deleteBtn.innerHTML =
+            "🗑";
+
+        deleteBtn.onclick =
+            async(event)=>{
+
+                event.stopPropagation();
+
+                await deleteStatus(status);
+
+            };
+
+        card.appendChild(deleteBtn);
+    }
+
+
+    card.onclick = ()=>{
+        openViewer(index);
+    };
+
+
+    grid.appendChild(card);
+}
+
+
+/* =====================================
+   DELETE STATUS
+===================================== */
+
+async function deleteStatus(status){
+
+    if(!confirm(
+        "Delete this status?"
+    )) return;
+
+
+    try{
+
+        await deleteDoc(
+            doc(
+                db,
+                "statuses",
+                status.id
+            )
+        );
+
+
+        if(status.storagePath){
+
+            try{
+
+                const fileRef =
+                    ref(
+                        storage,
+                        status.storagePath
+                    );
+
+                await deleteObject(fileRef);
+
+            }catch(e){
+
+                console.log(
+                    "Storage file already missing."
+                );
+            }
+        }
+
+
+        await loadStatuses();
+
+
+    }catch(error){
+
+        alert(
+            "Delete failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================
+   OPEN VIEWER
+===================================== */
+
+window.openViewer = async function(index){
+
+    currentIndex = index;
+
+    const status =
+        statuses[currentIndex];
+
+    if(!status) return;
+
+
+    const viewer =
+        document.getElementById("viewer");
+
+    viewer.classList.add("show");
+
+
+    document.getElementById("viewerName")
+        .textContent =
+        status.name || "User";
+
+
+    document.getElementById("viewerPhoto")
+        .src =
+        status.photoURL ||
+        "https://i.pravatar.cc/150";
+
+
+    document.getElementById("viewerTime")
+        .textContent =
+        formatTime(status.createdAt);
+
+
+    document.getElementById("viewerViews")
+        .textContent =
+        status.viewers?.length || 0;
+
+
+    const image =
+        document.getElementById("viewerImage");
+
+    const video =
+        document.getElementById("viewerVideo");
+
+
+    image.style.display = "none";
+
+    video.style.display = "none";
+
+    video.pause();
+
+
+    if(status.mediaType === "video"){
+
+        video.src =
+            status.mediaURL;
+
+        video.style.display =
+            "block";
+
+        video.play().catch(()=>{});
+
+    }else{
+
+        image.src =
+            status.mediaURL;
+
+        image.style.display =
+            "block";
+    }
+
+
+    /* ADD VIEW */
+
+    if(
+        currentUser &&
+        status.uid !== currentUser.uid &&
+        !status.viewers?.includes(currentUser.uid)
+    ){
+
+        try{
+
+            await updateDoc(
+                doc(
+                    db,
+                    "statuses",
+                    status.id
+                ),
+                {
+
+                    viewers:
+                        arrayUnion(
+                            currentUser.uid
+                        )
+                }
+            );
+
+            status.viewers =
+                [
+                    ...(status.viewers || []),
+                    currentUser.uid
+                ];
+
+            document.getElementById(
+                "viewerViews"
+            ).textContent =
+                status.viewers.length;
+
+        }catch(error){
+
+            console.log(
+                "View update failed",
+                error
+            );
+        }
+    }
+
+};
+
+
+/* =====================================
+   CLOSE VIEWER
+===================================== */
+
+window.closeViewer = function(){
+
+    const viewer =
+        document.getElementById("viewer");
+
+    viewer.classList.remove("show");
+
+
+    const video =
+        document.getElementById("viewerVideo");
+
+    video.pause();
+
+    video.src = "";
+
+};
+
+
+/* =====================================
+   NEXT
+===================================== */
+
+window.nextStatus = function(){
+
+    if(statuses.length === 0)
+        return;
+
+    currentIndex++;
+
+    if(
+        currentIndex >=
+        statuses.length
+    ){
+
+        currentIndex = 0;
+    }
+
+    openViewer(currentIndex);
+};
+
+
+/* =====================================
+   PREVIOUS
+===================================== */
+
+window.previousStatus = function(){
+
+    if(statuses.length === 0)
+        return;
+
+    currentIndex--;
+
+    if(currentIndex < 0){
+
+        currentIndex =
+            statuses.length - 1;
+    }
+
+    openViewer(currentIndex);
+};
+
+
+/* =====================================
+   TIME
+===================================== */
+
+function formatTime(timestamp){
+
+    if(!timestamp)
+        return "Just now";
+
+
+    const date =
+        timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
+
+
+    const diff =
+        Date.now() -
+        date.getTime();
+
+
+    const minutes =
+        Math.floor(
+            diff / 60000
+        );
+
+
+    if(minutes < 1)
+        return "Just now";
+
+
+    if(minutes < 60)
+        return minutes + " min ago";
+
+
+    const hours =
+        Math.floor(minutes / 60);
+
+
+    if(hours < 24)
+        return hours + " hour ago";
+
+
+    return "Yesterday";
+}
+
+
+/* =====================================
+   KEYBOARD
+===================================== */
+
+document.addEventListener(
+    "keydown",
+    (e)=>{
+
+        if(e.key === "Escape")
+            closeViewer();
+
+        if(e.key === "ArrowRight")
+            nextStatus();
+
+        if(e.key === "ArrowLeft")
+            previousStatus();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

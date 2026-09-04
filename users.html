@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Find People - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #382080 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #152f72 0%, transparent 35%),
+        #080b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 35px;
+    }
+
+    .left-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #9b6cff;
+    }
+
+    .profile-btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      cursor: pointer;
+    }
+
+    .profile-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Title */
+
+    .title-section {
+      margin-bottom: 25px;
+    }
+
+    .title-section h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .title-section p {
+      color: #a9afc4;
+      font-size: 15px;
+    }
+
+    /* Search */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      border-radius: 17px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .search-icon {
+      font-size: 20px;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+    }
+
+    .search-box input::placeholder {
+      color: #858ca3;
+    }
+
+    .clear-btn {
+      border: none;
+      background: transparent;
+      color: #aaa;
+      font-size: 20px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Filters */
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #b9bed0;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      color: white;
+      background: linear-gradient(135deg, #7652ff, #a45cff);
+      border-color: transparent;
+    }
+
+    /* User Grid */
+
+    .user-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .user-card {
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(15px);
+      transition: 0.25s;
+    }
+
+    .user-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(155,108,255,0.4);
+    }
+
+    .user-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 17px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #7652ff, #b14cff);
+    }
+
+    .online-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      background: #28d17c;
+      border: 3px solid #101426;
+      border-radius: 50%;
+      bottom: 2px;
+      right: 1px;
+    }
+
+    .offline-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      background: #74798c;
+      border: 3px solid #101426;
+      border-radius: 50%;
+      bottom: 2px;
+      right: 1px;
+    }
+
+    .user-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .username {
+      color: #969db3;
+      font-size: 13px;
+    }
+
+    .status {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #6ee7a4;
+    }
+
+    .status.offline {
+      color: #888ea2;
+    }
+
+    .bio {
+      color: #a9afc2;
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 40px;
+      margin-bottom: 17px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border-radius: 11px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .chat-btn {
+      background: linear-gradient(135deg, #7652ff, #9d54ff);
+      color: white;
+    }
+
+    .profile-btn-small {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .action-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* No Results */
+
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: #969db3;
+    }
+
+    .no-results .icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    .no-results h2 {
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    /* Info */
+
+    .info-box {
+      margin-top: 30px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(108,76,255,0.08);
+      border: 1px solid rgba(125,91,255,0.15);
+      color: #aeb4c7;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      color: white;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 900px) {
+      .user-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 17px;
+      }
+
+      .header {
+        margin-bottom: 25px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .profile-btn {
+        display: none;
+      }
+
+      .title-section h1 {
+        font-size: 28px;
+      }
+
+      .user-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .user-card {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+
+      <div class="left-header">
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <div class="logo">
+          Connect<span>ly</span>
+        </div>
+      </div>
+
+      <button class="profile-btn" onclick="openProfile()">
+        My Profile
+      </button>
+
+    </div>
+
+
+    <!-- Title -->
+    <div class="title-section">
+      <h1>Find People</h1>
+      <p>Search for people around the world and start a conversation.</p>
+    </div>
+
+
+    <!-- Search -->
+    <div class="search-box">
+
+      <span class="search-icon">🔍</span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name or @username..."
+        autocomplete="off"
+      >
+
+      <button
+        class="clear-btn"
+        id="clearBtn"
+        onclick="clearSearch()">
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Filters -->
+    <div class="filters">
+
+      <button
+        class="filter-btn active"
+        data-filter="all"
+        onclick="changeFilter('all', this)">
+        All
+      </button>
+
+      <button
+        class="filter-btn"
+        data-filter="online"
+        onclick="changeFilter('online', this)">
+        🟢 Online
+      </button>
+
+      <button
+        class="filter-btn"
+        data-filter="offline"
+        onclick="changeFilter('offline', this)">
+        ⚪ Offline
+      </button>
+
+    </div>
+
+
+    <!-- Users -->
+    <div class="user-grid" id="userGrid">
+
+
+      <!-- User 1 -->
+      <div
+        class="user-card"
+        data-name="Alex Morgan"
+        data-username="alexmorgan"
+        data-status="online">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">AM</div>
+            <div class="online-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Alex Morgan</div>
+            <div class="username">@alexmorgan</div>
+            <div class="status">Online</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Love photography, travel and technology.
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Alex Morgan')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Alex Morgan')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 2 -->
+      <div
+        class="user-card"
+        data-name="Sarah Wilson"
+        data-username="sarahwilson"
+        data-status="online">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">SW</div>
+            <div class="online-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Sarah Wilson</div>
+            <div class="username">@sarahwilson</div>
+            <div class="status">Online</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Designer • Coffee lover • Creative mind ☕
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Sarah Wilson')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Sarah Wilson')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 3 -->
+      <div
+        class="user-card"
+        data-name="Daniel Lee"
+        data-username="daniellee"
+        data-status="offline">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">DL</div>
+            <div class="offline-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Daniel Lee</div>
+            <div class="username">@daniellee</div>
+            <div class="status offline">Offline</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Software developer building something awesome.
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Daniel Lee')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Daniel Lee')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 4 -->
+      <div
+        class="user-card"
+        data-name="Emma Brown"
+        data-username="emmabrown"
+        data-status="online">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">EB</div>
+            <div class="online-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Emma Brown</div>
+            <div class="username">@emmabrown</div>
+            <div class="status">Online</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Music, books and good conversations 🎵
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Emma Brown')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Emma Brown')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 5 -->
+      <div
+        class="user-card"
+        data-name="Ryan Cooper"
+        data-username="ryancooper"
+        data-status="offline">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">RC</div>
+            <div class="offline-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Ryan Cooper</div>
+            <div class="username">@ryancooper</div>
+            <div class="status offline">Offline</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Traveler 🌍 | Fitness | Adventure
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Ryan Cooper')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Ryan Cooper')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 6 -->
+      <div
+        class="user-card"
+        data-name="Olivia Smith"
+        data-username="oliviasmith"
+        data-status="online">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">OS</div>
+            <div class="online-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Olivia Smith</div>
+            <div class="username">@oliviasmith</div>
+            <div class="status">Online</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Digital creator & coffee enthusiast.
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Olivia Smith')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Olivia Smith')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 7 -->
+      <div
+        class="user-card"
+        data-name="Noah Williams"
+        data-username="noahw"
+        data-status="offline">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">NW</div>
+            <div class="offline-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Noah Williams</div>
+            <div class="username">@noahw</div>
+            <div class="status offline">Offline</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Learning, building and exploring the world.
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Noah Williams')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Noah Williams')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- User 8 -->
+      <div
+        class="user-card"
+        data-name="Mia Johnson"
+        data-username="mia_j"
+        data-status="online">
+
+        <div class="user-top">
+
+          <div class="avatar-wrapper">
+            <div class="avatar">MJ</div>
+            <div class="online-dot"></div>
+          </div>
+
+          <div>
+            <div class="user-name">Mia Johnson</div>
+            <div class="username">@mia_j</div>
+            <div class="status">Online</div>
+          </div>
+
+        </div>
+
+        <div class="bio">
+          Smile more. Travel more. Live more. ✨
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn chat-btn"
+            onclick="startChat('Mia Johnson')">
+            💬 Chat
+          </button>
+
+          <button
+            class="action-btn profile-btn-small"
+            onclick="viewProfile('Mia Johnson')">
+            Profile
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- No Results -->
+    <div class="no-results" id="noResults">
+
+      <div class="icon">🔎</div>
+
+      <h2>No people found</h2>
+
+      <p>
+        Try searching with another name or username.
+      </p>
+
+    </div>
+
+
+    <!-- Info -->
+    <div class="info-box">
+
+      <strong>🌍 Worldwide Search</strong><br>
+
+      In the real Connectly version, this page will search
+      registered users from the database by name or username.
+      Only real registered accounts will appear here.
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const searchInput = document.getElementById("searchInput");
+    const clearBtn = document.getElementById("clearBtn");
+    const userCards = document.querySelectorAll(".user-card");
+    const noResults = document.getElementById("noResults");
+
+    let currentFilter = "all";
+
+
+    // Search
+    searchInput.addEventListener("input", function () {
+
+      const searchText = this.value.toLowerCase().trim();
+
+      clearBtn.style.display =
+        searchText.length > 0 ? "block" : "none";
+
+      filterUsers();
+
+    });
+
+
+    // Filter users
+    function filterUsers() {
+
+      const searchText =
+        searchInput.value.toLowerCase().trim();
+
+      let visibleCount = 0;
+
+      userCards.forEach(card => {
+
+        const name =
+          card.dataset.name.toLowerCase();
+
+        const username =
+          card.dataset.username.toLowerCase();
+
+        const status =
+          card.dataset.status;
+
+        const matchesSearch =
+          name.includes(searchText) ||
+          username.includes(
+            searchText.replace("@", "")
+          );
+
+        const matchesFilter =
+          currentFilter === "all" ||
+          status === currentFilter;
+
+        if (matchesSearch && matchesFilter) {
+
+          card.style.display = "block";
+          visibleCount++;
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+
+      if (visibleCount === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+
+    }
+
+
+    // Change filter
+    function changeFilter(filter, button) {
+
+      currentFilter = filter;
+
+      document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      filterUsers();
+
+    }
+
+
+    // Clear search
+    function clearSearch() {
+
+      searchInput.value = "";
+
+      clearBtn.style.display = "none";
+
+      filterUsers();
+
+      searchInput.focus();
+
+    }
+
+
+    // Start chat
+    function startChat(name) {
+
+      window.location.href =
+        "chat.html?user=" +
+        encodeURIComponent(name);
+
+    }
+
+
+    // View profile
+    function viewProfile(name) {
+
+      window.location.href =
+        "user-profile.html?user=" +
+        encodeURIComponent(name);
+
+    }
+
+
+    // My profile
+    function openProfile() {
+
+      window.location.href = "profile.html";
+
+    }
+
+
+    // Back
+    function goBack() {
+
+      window.location.href = "home.html";
+
+    }
+
+
+    // Read search from URL
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const urlSearch =
+      params.get("search");
+
+    if (urlSearch) {
+
+      searchInput.value = urlSearch;
+
+      filterUsers();
+
+      clearBtn.style.display = "block";
+
+    }
+
+  </script>
+
+</body>
+</html>

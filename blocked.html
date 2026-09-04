@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blocked Users - Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left, rgba(90,70,220,.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0,180,255,.15), transparent 35%),
+        #070b18;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.12);
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      color: #929bb0;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    /* Info */
+    .info-box {
+      background: rgba(90,100,255,.08);
+      border: 1px solid rgba(100,120,255,.15);
+      border-radius: 18px;
+      padding: 17px;
+      color: #aeb7cd;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 22px;
+      padding: 20px;
+      backdrop-filter: blur(15px);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .card-title h2 {
+      font-size: 18px;
+    }
+
+    .count {
+      min-width: 30px;
+      height: 30px;
+      padding: 0 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(120,80,255,.18);
+      color: #c6baff;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* Search */
+    .search-box {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 18px 14px 45px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 14px;
+    }
+
+    .search-box input::placeholder {
+      color: #747d91;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 13px;
+      color: #8790a5;
+      font-size: 18px;
+    }
+
+    /* User */
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.06);
+      transition: .2s;
+    }
+
+    .user:hover {
+      background: rgba(255,255,255,.07);
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: bold;
+      flex-shrink: 0;
+      background: linear-gradient(135deg,#6847ff,#a23cff);
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-info h3 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .username {
+      color: #8d96aa;
+      font-size: 12px;
+    }
+
+    .blocked-text {
+      color: #ff7886;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .unblock-btn {
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(120,100,255,.25);
+      background: rgba(100,75,255,.12);
+      color: #bdb1ff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .unblock-btn:hover {
+      background: rgba(100,75,255,.22);
+    }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 55px 20px;
+      display: none;
+    }
+
+    .empty-icon {
+      width: 75px;
+      height: 75px;
+      margin: auto auto 18px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.06);
+      font-size: 34px;
+    }
+
+    .empty h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .empty p {
+      color: #858ea3;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Bottom */
+    .bottom-note {
+      margin-top: 20px;
+      color: #697287;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.72);
+      z-index: 100;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 25px;
+      border-radius: 22px;
+      background: #101628;
+      border: 1px solid rgba(255,255,255,.1);
+      text-align: center;
+    }
+
+    .modal-icon {
+      font-size: 42px;
+      margin-bottom: 14px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #929bb0;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .cancel {
+      background: #272e42;
+    }
+
+    .confirm {
+      background: linear-gradient(135deg,#6847ff,#a23cff);
+    }
+
+    @media(max-width:600px) {
+      .container {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .user {
+        padding: 12px;
+      }
+
+      .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 13px;
+      }
+
+      .unblock-btn {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+
+      <button class="back-btn" onclick="goBack()">←</button>
+
+      <div>
+        <h1>Blocked Users</h1>
+        <p>Manage people you've blocked</p>
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="info-box">
+      🛡️ <strong>Blocking protects your privacy.</strong>
+      <br><br>
+
+      Blocked users won't be able to message or call you.
+      They also won't be able to see information that your
+      privacy settings restrict.
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="card">
+
+      <div class="card-title">
+
+        <h2>Blocked Accounts</h2>
+
+        <div class="count" id="count">0</div>
+
+      </div>
+
+
+      <!-- Search -->
+      <div class="search-box">
+
+        <span class="search-icon">🔎</span>
+
+        <input
+          type="text"
+          id="search"
+          placeholder="Search blocked users..."
+        >
+
+      </div>
+
+
+      <!-- User List -->
+      <div class="user-list" id="userList"></div>
+
+
+      <!-- Empty -->
+      <div class="empty" id="empty">
+
+        <div class="empty-icon">
+          🛡️
+        </div>
+
+        <h3>No blocked users</h3>
+
+        <p>
+          You haven't blocked anyone yet.<br>
+          Blocked accounts will appear here.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="bottom-note">
+      Connectly Privacy • You can unblock a person at any time.
+    </div>
+
+  </div>
+
+
+  <!-- Unblock Modal -->
+  <div class="modal" id="modal">
+
+    <div class="modal-box">
+
+      <div class="modal-icon">
+        🔓
+      </div>
+
+      <h2>Unblock User?</h2>
+
+      <p id="modalText">
+        Are you sure you want to unblock this user?
+      </p>
+
+      <div class="modal-buttons">
+
+        <button class="cancel" onclick="closeModal()">
+          Cancel
+        </button>
+
+        <button class="confirm" onclick="confirmUnblock()">
+          Unblock
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+      Demo blocked users.
+
+      In the REAL Connectly app:
+      These users will come from the backend/database
+      for the currently logged-in account.
+    */
+
+    const defaultBlockedUsers = [
+
+      {
+        id: 1,
+        name: "Daniel Lee",
+        username: "@daniellee",
+        initials: "DL"
+      },
+
+      {
+        id: 2,
+        name: "Ryan Cooper",
+        username: "@ryancooper",
+        initials: "RC"
+      },
+
+      {
+        id: 3,
+        name: "Michael Adams",
+        username: "@michaeladams",
+        initials: "MA"
+      }
+
+    ];
+
+
+    /*
+      Load blocked users from localStorage.
+      If there is no saved list, use demo users.
+    */
+
+    let blockedUsers =
+      JSON.parse(
+        localStorage.getItem("connectlyBlockedUsers")
+      ) || defaultBlockedUsers;
+
+
+    let selectedUserId = null;
+
+
+    /* Render users */
+
+    function renderUsers() {
+
+      const list =
+        document.getElementById("userList");
+
+      const empty =
+        document.getElementById("empty");
+
+      const count =
+        document.getElementById("count");
+
+      const search =
+        document.getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+      const filtered =
+        blockedUsers.filter(user =>
+
+          user.name.toLowerCase().includes(search) ||
+
+          user.username.toLowerCase().includes(search)
+
+        );
+
+
+      count.textContent = blockedUsers.length;
+
+
+      list.innerHTML = "";
+
+
+      if (filtered.length === 0) {
+
+        list.style.display = "none";
+        empty.style.display = "block";
+
+        return;
+
+      }
+
+
+      list.style.display = "flex";
+      empty.style.display = "none";
+
+
+      filtered.forEach(user => {
+
+        const div =
+          document.createElement("div");
+
+        div.className = "user";
+
+        div.innerHTML = `
+
+          <div class="avatar">
+            ${user.initials}
+          </div>
+
+          <div class="user-info">
+
+            <h3>${user.name}</h3>
+
+            <div class="username">
+              ${user.username}
+            </div>
+
+            <div class="blocked-text">
+              🚫 Blocked
+            </div>
+
+          </div>
+
+          <button
+            class="unblock-btn"
+            onclick="openUnblock(${user.id})"
+          >
+            Unblock
+          </button>
+
+        `;
+
+        list.appendChild(div);
+
+      });
+
+    }
+
+
+    /* Search */
+
+    document
+      .getElementById("search")
+      .addEventListener(
+        "input",
+        renderUsers
+      );
+
+
+    /* Open modal */
+
+    function openUnblock(id) {
+
+      selectedUserId = id;
+
+      const user =
+        blockedUsers.find(
+          item => item.id === id
+        );
+
+      if (!user) return;
+
+      document.getElementById("modalText")
+        .textContent =
+        `Are you sure you want to unblock ${user.name}?`;
+
+      document.getElementById("modal")
+        .style.display = "flex";
+
+    }
+
+
+    /* Close modal */
+
+    function closeModal() {
+
+      document.getElementById("modal")
+        .style.display = "none";
+
+      selectedUserId = null;
+
+    }
+
+
+    /* Confirm unblock */
+
+    function confirmUnblock() {
+
+      if (selectedUserId === null) {
+        return;
+      }
+
+
+      blockedUsers =
+        blockedUsers.filter(
+          user => user.id !== selectedUserId
+        );
+
+
+      localStorage.setItem(
+        "connectlyBlockedUsers",
+        JSON.stringify(blockedUsers)
+      );
+
+
+      closeModal();
+
+      renderUsers();
+
+    }
+
+
+    /* Back */
+
+    function goBack() {
+
+      window.location.href =
+        "settings.html";
+
+    }
+
+
+    /* Close modal outside */
+
+    document
+      .getElementById("modal")
+      .addEventListener(
+        "click",
+        function(e) {
+
+          if (e.target === this) {
+            closeModal();
+          }
+
+        }
+      );
+
+
+    /* Initial render */
+
+    renderUsers();
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Group Info | Connectly</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background:
+        radial-gradient(circle at top left, #263c91 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d249c 0%, transparent 35%),
+        #080d1f;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,.14);
+    }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Main profile */
+    .group-profile {
+      text-align: center;
+      padding: 30px 20px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 25px;
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(20px);
+    }
+
+    .group-photo {
+      width: 105px;
+      height: 105px;
+      margin: auto;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      box-shadow: 0 15px 40px rgba(80,70,255,.3);
+      overflow: hidden;
+    }
+
+    .group-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .group-profile h1 {
+      margin-top: 18px;
+      font-size: 27px;
+    }
+
+    .members-count {
+      margin-top: 7px;
+      color: #9ba6c7;
+      font-size: 14px;
+    }
+
+    .description {
+      max-width: 550px;
+      margin: 15px auto 0;
+      color: #aab3cf;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* Action buttons */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .action {
+      padding: 15px 8px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 17px;
+      background: rgba(255,255,255,.06);
+      color: white;
+      cursor: pointer;
+    }
+
+    .action:hover {
+      background: rgba(255,255,255,.12);
+    }
+
+    .action-icon {
+      display: block;
+      font-size: 23px;
+      margin-bottom: 7px;
+    }
+
+    .action-text {
+      color: #aab3cf;
+      font-size: 12px;
+    }
+
+    /* Sections */
+    .section {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 22px;
+      background: rgba(255,255,255,.05);
+    }
+
+    .section-title {
+      color: #9ba6c7;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 15px;
+    }
+
+    /* Menu */
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 5px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:hover {
+      background: rgba(255,255,255,.04);
+    }
+
+    .menu-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.08);
+      font-size: 20px;
+    }
+
+    .menu-info {
+      flex: 1;
+    }
+
+    .menu-info h3 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .menu-info p {
+      color: #7f8aa9;
+      font-size: 12px;
+    }
+
+    .arrow {
+      color: #68738f;
+      font-size: 20px;
+    }
+
+    /* Members */
+    .members-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .add-member {
+      border: none;
+      padding: 9px 13px;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .member:last-child {
+      border-bottom: none;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      min-width: 45px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      background: linear-gradient(135deg, #445cff, #9d4edd);
+    }
+
+    .member-info {
+      flex: 1;
+    }
+
+    .member-info h3 {
+      font-size: 14px;
+    }
+
+    .member-info p {
+      margin-top: 4px;
+      color: #78839f;
+      font-size: 12px;
+    }
+
+    .online {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #38d996;
+      margin-right: 5px;
+      display: inline-block;
+    }
+
+    .admin {
+      padding: 5px 9px;
+      border-radius: 8px;
+      background: rgba(168,85,247,.15);
+      color: #c084fc;
+      font-size: 10px;
+    }
+
+    /* Danger */
+    .danger {
+      color: #ff6b81;
+    }
+
+    .danger .menu-icon {
+      background: rgba(255,80,100,.1);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 430px;
+      padding: 25px;
+      border-radius: 24px;
+      background: #111831;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #9ba6c7;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .cancel {
+      background: rgba(255,255,255,.1);
+    }
+
+    .confirm {
+      background: linear-gradient(135deg, #4f7cff, #a855f7);
+    }
+
+    @media (max-width: 650px) {
+
+      .page {
+        padding: 15px;
+        padding-bottom: 40px;
+      }
+
+      .group-profile {
+        padding: 25px 15px;
+      }
+
+      .group-photo {
+        width: 90px;
+        height: 90px;
+        font-size: 40px;
+      }
+
+      .group-profile h1 {
+        font-size: 23px;
+      }
+
+      .actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+
+      <button class="back-btn" onclick="goBack()">
+        ←
+      </button>
+
+      <div class="header-title">
+        Group Info
+      </div>
+
+    </div>
+
+
+    <!-- Group Profile -->
+    <div class="group-profile">
+
+      <div class="group-photo" id="groupPhoto">
+        👥
+      </div>
+
+      <h1 id="groupName">
+        Weekend Friends
+      </h1>
+
+      <div class="members-count" id="memberCount">
+        8 members
+      </div>
+
+      <p class="description" id="groupDescription">
+        Friends, fun and memories together! 🎉
+      </p>
+
+
+      <!-- Actions -->
+      <div class="actions">
+
+        <button class="action" onclick="openGroupChat()">
+          <span class="action-icon">💬</span>
+          <span class="action-text">Message</span>
+        </button>
+
+        <button class="action" onclick="openMedia()">
+          <span class="action-icon">🖼️</span>
+          <span class="action-text">Media</span>
+        </button>
+
+        <button class="action" onclick="shareGroup()">
+          <span class="action-icon">↗️</span>
+          <span class="action-text">Share</span>
+        </button>
+
+        <button class="action" onclick="editGroup()">
+          <span class="action-icon">✏️</span>
+          <span class="action-text">Edit</span>
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Group Settings -->
+    <div class="section">
+
+      <div class="section-title">
+        Group Settings
+      </div>
+
+
+      <div class="menu-item" onclick="openMedia()">
+
+        <div class="menu-icon">
+          🖼️
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Media, Links & Files</h3>
+
+          <p>
+            View shared photos, videos and files
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+
+      <div class="menu-item" onclick="toggleNotifications()">
+
+        <div class="menu-icon">
+          🔔
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Notifications</h3>
+
+          <p id="notificationStatus">
+            Notifications are enabled
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+
+      <div class="menu-item" onclick="inviteMembers()">
+
+        <div class="menu-icon">
+          🔗
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Invite via Link</h3>
+
+          <p>
+            Invite people to join this group
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+
+      <div class="menu-item" onclick="searchMessages()">
+
+        <div class="menu-icon">
+          🔍
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Search Messages</h3>
+
+          <p>
+            Find messages inside this group
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Members -->
+    <div class="section">
+
+      <div class="members-header">
+
+        <div class="section-title" style="margin:0;">
+          Members
+        </div>
+
+        <button
+          class="add-member"
+          onclick="addMember()"
+        >
+          + Add
+        </button>
+
+      </div>
+
+
+      <div id="membersList">
+
+
+        <!-- Member -->
+        <div class="member">
+
+          <div class="avatar">
+            AM
+          </div>
+
+          <div class="member-info">
+
+            <h3>Alex Morgan</h3>
+
+            <p>
+              <span class="online"></span>
+              Online
+            </p>
+
+          </div>
+
+          <span class="admin">
+            Admin
+          </span>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            SW
+          </div>
+
+          <div class="member-info">
+
+            <h3>Sarah Wilson</h3>
+
+            <p>
+              <span class="online"></span>
+              Online
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            DL
+          </div>
+
+          <div class="member-info">
+
+            <h3>Daniel Lee</h3>
+
+            <p>
+              Offline
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            EB
+          </div>
+
+          <div class="member-info">
+
+            <h3>Emma Brown</h3>
+
+            <p>
+              <span class="online"></span>
+              Online
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            OS
+          </div>
+
+          <div class="member-info">
+
+            <h3>Olivia Smith</h3>
+
+            <p>
+              Online
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            RC
+          </div>
+
+          <div class="member-info">
+
+            <h3>Ryan Cooper</h3>
+
+            <p>
+              Offline
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            NW
+          </div>
+
+          <div class="member-info">
+
+            <h3>Noah Williams</h3>
+
+            <p>
+              Offline
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="member">
+
+          <div class="avatar">
+            SJ
+          </div>
+
+          <div class="member-info">
+
+            <h3>You</h3>
+
+            <p>
+              Online
+            </p>
+
+          </div>
+
+          <span class="admin">
+            You
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Danger Zone -->
+    <div class="section">
+
+      <div class="section-title">
+        Group Actions
+      </div>
+
+
+      <div
+        class="menu-item danger"
+        onclick="confirmLeave()"
+      >
+
+        <div class="menu-icon">
+          🚪
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Leave Group</h3>
+
+          <p>
+            You will no longer receive messages
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+
+      <div
+        class="menu-item danger"
+        onclick="reportGroup()"
+      >
+
+        <div class="menu-icon">
+          ⚠️
+        </div>
+
+        <div class="menu-info">
+
+          <h3>Report Group</h3>
+
+          <p>
+            Report inappropriate content
+          </p>
+
+        </div>
+
+        <div class="arrow">
+          ›
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="modal">
+
+    <div class="modal-box">
+
+      <h2 id="modalTitle">
+        Leave Group?
+      </h2>
+
+      <p id="modalText">
+        Are you sure you want to leave this group?
+      </p>
+
+      <div class="modal-buttons">
+
+        <button
+          class="cancel"
+          onclick="closeModal()"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="confirm"
+          onclick="confirmAction()"
+        >
+          Confirm
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* Get group from URL */
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const groupFromURL =
+      params.get("group");
+
+
+    if (groupFromURL) {
+
+      document.getElementById("groupName").textContent =
+        groupFromURL;
+
+    }
+
+
+    /* Back */
+    function goBack() {
+
+      if (groupFromURL) {
+
+        window.location.href =
+          "group.html?group=" +
+          encodeURIComponent(groupFromURL);
+
+      } else {
+
+        window.location.href =
+          "group.html";
+
+      }
+
+    }
+
+
+    /* Open Group Chat */
+    function openGroupChat() {
+
+      if (groupFromURL) {
+
+        window.location.href =
+          "group.html?group=" +
+          encodeURIComponent(groupFromURL);
+
+      } else {
+
+        window.location.href =
+          "group.html";
+
+      }
+
+    }
+
+
+    /* Media */
+    function openMedia() {
+
+      window.location.href =
+        "media.html?group=" +
+        encodeURIComponent(
+          groupFromURL || "Weekend Friends"
+        );
+
+    }
+
+
+    /* Edit Group */
+    function editGroup() {
+
+      alert(
+        "Group editing will be connected to the backend later."
+      );
+
+    }
+
+
+    /* Add Member */
+    function addMember() {
+
+      window.location.href =
+        "users.html";
+
+    }
+
+
+    /* Invite */
+    function inviteMembers() {
+
+      const inviteLink =
+        "https://connectly.example/join/" +
+        encodeURIComponent(
+          groupFromURL || "weekend-friends"
+        );
+
+      if (
+        navigator.clipboard &&
+        window.isSecureContext
+      ) {
+
+        navigator.clipboard.writeText(inviteLink);
+
+        alert(
+          "Invite link copied!"
+        );
+
+      } else {
+
+        alert(
+          "Invite link: " + inviteLink
+        );
+
+      }
+
+    }
+
+
+    /* Share Group */
+    function shareGroup() {
+
+      const text =
+        "Join my Connectly group: " +
+        (groupFromURL || "Weekend Friends");
+
+      if (navigator.share) {
+
+        navigator.share({
+          title: "Connectly Group",
+          text: text
+        });
+
+      } else {
+
+        alert(text);
+
+      }
+
+    }
+
+
+    /* Search Messages */
+    function searchMessages() {
+
+      alert(
+        "Group message search will be connected to the database later."
+      );
+
+    }
+
+
+    /* Notifications */
+    function toggleNotifications() {
+
+      const status =
+        document.getElementById(
+          "notificationStatus"
+        );
+
+      if (
+        status.textContent.includes("enabled")
+      ) {
+
+        status.textContent =
+          "Notifications are muted";
+
+      } else {
+
+        status.textContent =
+          "Notifications are enabled";
+
+      }
+
+    }
+
+
+    /* Leave Group */
+    function confirmLeave() {
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent =
+        "Leave Group?";
+
+      document.getElementById(
+        "modalText"
+      ).textContent =
+        "Are you sure you want to leave this group?";
+
+      document.getElementById(
+        "modal"
+      ).style.display = "flex";
+
+    }
+
+
+    /* Report */
+    function reportGroup() {
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent =
+        "Report Group?";
+
+      document.getElementById(
+        "modalText"
+      ).textContent =
+        "This demo will send the report to the Connectly support system when the backend is connected.";
+
+      document.getElementById(
+        "modal"
+      ).style.display = "flex";
+
+    }
+
+
+    /* Close Modal */
+    function closeModal() {
+
+      document.getElementById(
+        "modal"
+      ).style.display = "none";
+
+    }
+
+
+    /* Confirm */
+    function confirmAction() {
+
+      const title =
+        document.getElementById(
+          "modalTitle"
+        ).textContent;
+
+      closeModal();
+
+      if (title === "Leave Group?") {
+
+        alert(
+          "You left the group. Real group membership will be removed from the database later."
+        );
+
+        window.location.href =
+          "groups.html";
+
+      } else {
+
+        alert(
+          "Report submitted successfully."
+        );
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
